@@ -1,5 +1,5 @@
 ## distinct_value_connectable_observable
-## Distinct and behavior subject rxdart
+### Distinct and behavior subject rxdart. Distinct behavior subject rxdart. Distinct and ValueObservable rxdart. Distinct ValueObservable rxdart
 
 A library for Dart developers.
 Created from templates made available by Stagehand under a BSD-style
