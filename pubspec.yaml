@@ -1,6 +1,6 @@
 name: distinct_value_connectable_observable
 description: A starting point for Dart libraries or applications.
-version: 1.0.0
+version: 1.0.0+1
 homepage: https://github.com/hoc081098/distinct_value_connectable_observable
 author: Petrus Nguyễn Thái Học <hoc081098@gmail.com>
 
