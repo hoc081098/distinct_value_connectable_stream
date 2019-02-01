@@ -11,7 +11,10 @@ A simple usage example:
 import 'package:distinct_value_connectable_observable/distinct_value_connectable_observable.dart';
 
 main() {
-  var awesome = new Awesome();
+  DistinctValueConnectableObservable(
+      Stream.fromIterable([1, 2, 3]),
+      seedValue: [1],
+  );
 }
 ```
 

@@ -80,7 +80,7 @@ class DistinctValueConnectableObservable<T> extends ConnectableObservable<T>
 
   void _onData(T data) {
     if (_equals == null) {
-      if (data != _subject.value) {
+      if (!(data == _subject.value)) {
         _subject.add(data);
       }
     } else {

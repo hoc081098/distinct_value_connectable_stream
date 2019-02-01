@@ -147,5 +147,25 @@ void main() {
         expect(actual, expected);
       }));
     });
+
+    test('distinct until changed with custom equals function', () async {
+      const expected1 = [1, 2, 3];
+      const expected2 = [1, 1, 4];
+
+      final observable = DistinctValueConnectableObservable(
+        Observable.fromIterable(
+          const [expected1, expected2, expected1],
+        ),
+        seedValue: expected2,
+        equals: (List<int> prev, List<int> cur) {
+          return prev.reduce((acc, e) => acc + e) ==
+              cur.reduce((acc, e) => acc + e);
+        },
+      ).refCount();
+
+      observable.listen(expectAsync1((actual) {
+        expect(actual, expected2);
+      }));
+    });
   });
 }
