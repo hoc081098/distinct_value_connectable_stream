@@ -1,6 +1,8 @@
 ## distinct_value_connectable_observable
 ### Distinct and behavior subject rxdart. Distinct behavior subject rxdart. Distinct and ValueObservable rxdart. Distinct ValueObservable rxdart
 
+Dart package: https://pub.dartlang.org/packages/distinct_value_connectable_observable. Useful for flutter BLoC pattern, expose state to UI, can synchronous access to the last emitted item, and distinct until changed
+
 A library for Dart developers.
 Created from templates made available by Stagehand under a BSD-style
 [license](https://github.com/dart-lang/stagehand/blob/master/LICENSE).
