@@ -102,7 +102,7 @@ void main() {
     });
 
     test('transform Observables with initial value', () async {
-      final observable = DistinctValueConnectableObservable(
+      final observable = DistinctValueConnectableObservable.seeded(
         Observable.fromIterable(const [1, 2, 3]),
         seedValue: 0,
       ).refCount();
@@ -138,7 +138,7 @@ void main() {
     test('distinct until changed', () async {
       const expected = 1;
 
-      final observable = DistinctValueConnectableObservable(
+      final observable = DistinctValueConnectableObservable.seeded(
         Observable.fromIterable(const [expected, expected]),
         seedValue: 1,
       ).refCount();
@@ -152,7 +152,7 @@ void main() {
       const expected1 = [1, 2, 3];
       const expected2 = [1, 1, 4];
 
-      final observable = DistinctValueConnectableObservable(
+      final observable = DistinctValueConnectableObservable.seeded(
         Observable.fromIterable(
           const [expected1, expected2, expected1],
         ),

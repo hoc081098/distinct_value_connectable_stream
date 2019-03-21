@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 
 ///
@@ -22,14 +23,23 @@ class DistinctValueConnectableObservable<T> extends ConnectableObservable<T>
     this._equals,
   ) : super(_subject);
 
-  factory DistinctValueConnectableObservable(
+  factory DistinctValueConnectableObservable(Stream<T> source,
+      {bool equals(T previous, T next)}) {
+    return DistinctValueConnectableObservable<T>._(
+      source,
+      BehaviorSubject<T>(),
+      equals,
+    );
+  }
+
+  factory DistinctValueConnectableObservable.seeded(
     Stream<T> source, {
-    T seedValue,
+    @required T seedValue,
     bool equals(T previous, T next),
   }) {
     return DistinctValueConnectableObservable<T>._(
       source,
-      BehaviorSubject<T>(seedValue: seedValue),
+      BehaviorSubject<T>.seeded(seedValue),
       equals,
     );
   }
@@ -89,4 +99,7 @@ class DistinctValueConnectableObservable<T> extends ConnectableObservable<T>
       }
     }
   }
+
+  @override
+  bool get hasValue => _subject.hasValue;
 }
