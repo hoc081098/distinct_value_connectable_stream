@@ -1,3 +1,7 @@
+## 2.0.0
+
+- Add new functions 💘💘💘 : publishValueDistinct, publishValueSeededDistinct, shareValueDistinct, shareValueSeededDistinct 🔥🔥🔥🔥🔥🔥.
+
 ## 1.0.0+3
 
 - Change meta version
