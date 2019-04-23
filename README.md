@@ -1,9 +1,10 @@
 # distinct_value_connectable_observable
-
 Distinct & Connectable & ValueObservable RxDart
 
+[![Build Status](https://travis-ci.org/hoc081098/distinct_value_connectable_observable.svg?branch=master)](https://travis-ci.org/hoc081098/distinct_value_connectable_observable) 
+<img alt="Pub" src="https://img.shields.io/pub/v/distinct_value_connectable_observable.svg"> <br>
+
 Dart package: https://pub.dartlang.org/packages/distinct_value_connectable_observable.
-<img alt="Pub" src="https://img.shields.io/pub/v/distinct_value_connectable_observable.svg">
 
 Useful for flutter BLoC pattern, expose state stream to UI, can synchronous access to the last emitted item, and distinct until changed
 
