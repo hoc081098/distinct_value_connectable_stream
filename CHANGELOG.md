@@ -1,3 +1,7 @@
+## 2.0.0+1
+
+- Update README.md
+
 ## 2.0.0
 
 - Add new functions 💘💘💘 : publishValueDistinct, publishValueSeededDistinct, shareValueDistinct, shareValueSeededDistinct 🔥🔥🔥🔥🔥🔥.
