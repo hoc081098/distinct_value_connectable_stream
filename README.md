@@ -6,7 +6,7 @@ Distinct & Connectable & ValueObservable RxDart
 
 Dart package: https://pub.dartlang.org/packages/distinct_value_connectable_observable.
 
-Useful for flutter BLoC pattern, expose state stream to UI, can synchronous access to the last emitted item, and distinct until changed
+Useful for flutter BLoC pattern, expose broadcast state stream to UI, can synchronous access to the last emitted item, and distinct until changed
 
 A library for Dart developers.
 Created from templates made available by Stagehand under a BSD-style
@@ -16,15 +16,64 @@ Created from templates made available by Stagehand under a BSD-style
 
 A simple usage example:
 
+Import `distinct_value_connectable_observable`:
+
 ```dart
 import 'package:distinct_value_connectable_observable/distinct_value_connectable_observable.dart';
+```
 
-main() {
-  DistinctValueConnectableObservable(
-      Stream.fromIterable([1, 2, 3]),
-      seedValue: [1],
-  );
-}
+Wrap your `Stream` or `Observable` in a `DistinctValueConnectableObservable` using `constructor`:
+
+```dart
+final Stream<State> state$;
+final distinctValueConnectable$ = DistinctValueConnectableObservable(state$);
+```
+
+or
+
+```dart
+final Stream<State> state$;
+final distinctValueConnectable$ = DistinctValueConnectableObservable.seeded(
+  state$,
+  seedValue: State.initial(),
+);
+```
+
+You can pass `equals` parameter to `constructor`, used to determined qquality:
+
+```dart
+final Stream<State> state$;
+final bool Function(State, State) isEquals;
+
+final distinctValueConnectable$ = DistinctValueConnectableObservable.seeded(
+  state$,
+  seedValue: State.initial(),
+  equals: isEquals,
+);
+```
+
+Another approach, using helper `functions`: `publishValueDistinct`, `publishValueSeededDistinct`, `shareValueDistinct`, `shareValueSeededDistinct`.
+
+```dart
+final source = Observable.fromIterable([1, 2, 2, 3, 3, 3]);
+final connectable = publishValueDistinct(source);
+
+// Does not print anything at first
+connectable.listen(print);
+
+// Start listening to the source Observable. Will cause the previous
+// line to start printing 1, 2, 3
+final subscription = connectable.connect();
+
+// Late subscribers will receive the last emitted value
+connectable.listen(print); // Prints 3
+
+// Can access the latest emitted value synchronously. Prints 3
+print(connectable.value);
+
+// Stop emitting items from the source stream and close the underlying
+// BehaviorSubject
+await subscription.cancel();
 ```
 
 ## Features and bugs
@@ -32,3 +81,27 @@ main() {
 Please file feature requests and bugs at the [issue tracker][tracker].
 
 [tracker]: https://github.com/hoc081098/distinct_value_connectable_observable/issues
+
+License
+-------
+    MIT License
+
+    Copyright (c) 2019 Petrus Nguyễn Thái Học
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
