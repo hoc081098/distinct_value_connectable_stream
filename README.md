@@ -39,7 +39,7 @@ final distinctValueConnectable$ = DistinctValueConnectableObservable.seeded(
 );
 ```
 
-You can pass `equals` parameter to `constructor`, used to determined qquality:
+You can pass `equals` parameter to `constructor`, used to determined equality:
 
 ```dart
 final Stream<State> state$;
