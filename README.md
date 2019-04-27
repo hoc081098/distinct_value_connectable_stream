@@ -1,4 +1,4 @@
-# distinct_value_connectable_observable
+# distinct_value_connectable_observable <img src="https://avatars3.githubusercontent.com/u/6407041?s=200&v=4" width="32">
 Distinct & Connectable & ValueObservable RxDart
 
 [![Build Status](https://travis-ci.org/hoc081098/distinct_value_connectable_observable.svg?branch=master)](https://travis-ci.org/hoc081098/distinct_value_connectable_observable) [![Pub](https://img.shields.io/pub/v/distinct_value_connectable_observable.svg)](https://pub.dartlang.org/packages/distinct_value_connectable_observable)
