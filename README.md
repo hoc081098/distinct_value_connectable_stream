@@ -11,6 +11,12 @@ A library for Dart developers.
 Created from templates made available by Stagehand under a BSD-style
 [license](https://github.com/dart-lang/stagehand/blob/master/LICENSE).
 
+## Implement BLoC
+
+| Without using package  | Using package |
+| ------------- | ------------- |
+|<img src="https://i.ibb.co/ZJjfjKG/carbon-5.png">  | <img src="https://imgbbb.com/images/2019/04/27/carbon-6.png"> |
+
 ## Usage
 
 A simple usage example:
