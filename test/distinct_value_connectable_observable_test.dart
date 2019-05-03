@@ -6,7 +6,7 @@ import 'package:test/test.dart';
 class MockStream<T> extends Mock implements Stream<T> {}
 
 void main() {
-  group('BehaviorConnectableObservable', () {
+  group('$DistinctValueConnectableObservable', () {
     test('should not emit before connecting', () {
       final stream = MockStream<int>();
       final observable = DistinctValueConnectableObservable(stream);

@@ -1,6 +1,6 @@
 name: distinct_value_connectable_observable
 description: Distinct value connectable observable for RxDart, useful for BLoC pattern
-version: 2.0.0+2
+version: 2.0.1
 homepage: https://github.com/hoc081098/distinct_value_connectable_observable
 author: Petrus Nguyễn Thái Học <hoc081098@gmail.com>
 
@@ -8,7 +8,7 @@ environment:
   sdk: '>=2.1.0 <3.0.0'
 
 dependencies:
-  rxdart: ^0.21.0
+  rxdart: ^0.22.0
   meta: ">=1.1.1 <2.0.0"
 
 dev_dependencies:
