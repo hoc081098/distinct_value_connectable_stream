@@ -5,10 +5,16 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Dart: Run all Tests",
+            "name": "Dart",
             "type": "dart",
             "request": "launch",
-            "program": "./test/"
-        }
+            "program": "example/distinct_value_connectable_observable_example.dart"
+        },
+        // {
+        //     "name": "Dart: Run all Tests",
+        //     "type": "dart",
+        //     "request": "launch",
+        //     "program": "./test/"
+        // }
     ]
 }
