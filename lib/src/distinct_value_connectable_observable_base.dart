@@ -89,6 +89,10 @@ class DistinctValueConnectableObservable<T> extends ConnectableObservable<T>
   T get value => _subject.value;
 
   void _onData(T data) {
+    if (!_subject.hasValue) {
+      _subject.add(data);
+      return;
+    }
     if (_equals == null) {
       if (!(data == _subject.value)) {
         _subject.add(data);
