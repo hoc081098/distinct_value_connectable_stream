@@ -12,7 +12,7 @@ void main() {
       final observable = DistinctValueConnectableObservable(stream);
 
       when(stream.listen(any, onError: anyNamed('onError')))
-          .thenReturn(new Stream.fromIterable(const [1, 2, 3]).listen(null));
+          .thenReturn(Stream.fromIterable(const [1, 2, 3]).listen(null));
 
       verifyNever(stream.listen(any, onError: anyNamed('onError')));
 
@@ -68,7 +68,7 @@ void main() {
     });
 
     test('multicasts a single-subscription stream', () async {
-      final observable = new DistinctValueConnectableObservable(
+      final observable = DistinctValueConnectableObservable(
         Stream.fromIterable(const [1, 2, 3]),
       ).autoConnect();
 
@@ -78,7 +78,7 @@ void main() {
     });
 
     test('replays the latest item', () async {
-      final observable = new DistinctValueConnectableObservable(
+      final observable = DistinctValueConnectableObservable(
         Stream.fromIterable(const [1, 2, 3]),
       ).autoConnect();
 

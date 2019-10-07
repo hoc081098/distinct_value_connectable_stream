@@ -1,3 +1,7 @@
+## 2.0.3+1
+
+- Update `rxdart` dependency to version `0.22.3`
+
 ## 2.0.3
 
 - Update `rxdart` dependency to version `0.22.2`
