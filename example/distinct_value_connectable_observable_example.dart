@@ -30,24 +30,14 @@ class CounterBloc {
     final incrementController = PublishSubject<int>();
     final decrementController = PublishSubject<int>();
 
-    final state$ = DistinctValueConnectableObservable.seeded(
-      Observable.merge(<Stream<int>>[
-        incrementController,
-        decrementController.map((i) => -i),
-      ]).scan<int>((acc, e, _) => acc + e, 0),
-      seedValue: 0,
-    );
+    final streams = [
+      incrementController,
+      decrementController.map((i) => -i),
+    ];
+    final DistinctValueConnectableObservable<int> state$ = Observable.merge(streams)
+        .scan<int>((acc, e, _) => acc + e, 0)
+        .publishValueSeededDistinct(seedValue: 0);
 
-    /// or:
-    ///```
-    /// final state$ = publishValueSeededDistinct(
-    ///   Observable.merge(<Stream<int>>[
-    ///     incrementController,
-    ///     decrementController.map((i) => -i),
-    ///   ]).scan<int>((acc, e, _) => acc + e, 0),
-    ///   seedValue: 0,
-    /// );
-    /// ```
     final subscription = state$.connect();
 
     return CounterBloc._(
