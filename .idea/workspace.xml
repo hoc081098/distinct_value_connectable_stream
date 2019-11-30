@@ -2,13 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ec595a3b-c726-4e67-8cf1-8c7504a16b88" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/lib/src/extension_functions.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/distinct_value_connectable_observable_example.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/distinct_value_connectable_observable_example.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/distinct_value_connectable_observable.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/distinct_value_connectable_observable.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/functions.dart" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />

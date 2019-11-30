@@ -1,3 +1,7 @@
+## 2.0.3+2
+
+- Update `rxdart` dependency
+
 ## 2.0.3+1
 
 - Update `rxdart` dependency to version `0.22.3`
@@ -42,4 +46,3 @@
 ## 1.0.0
 
 - Initial version, created by Stagehand
-
