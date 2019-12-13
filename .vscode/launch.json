@@ -8,7 +8,7 @@
         //     "name": "Dart",
         //     "type": "dart",
         //     "request": "launch",
-        //     "program": "example/distinct_value_connectable_observable_example.dart"
+        //     "program": "example/distinct_value_connectable_stream_example.dart"
         // },
         {
             "name": "Dart: Run all Tests",

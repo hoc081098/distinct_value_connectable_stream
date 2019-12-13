@@ -1,9 +1,9 @@
-# distinct_value_connectable_observable <img src="https://avatars3.githubusercontent.com/u/6407041?s=200&v=4" width="32">
+# distinct_value_connectable_stream <img src="https://avatars3.githubusercontent.com/u/6407041?s=200&v=4" width="32">
 Distinct & Connectable & ValueObservable RxDart
 
-[![Build Status](https://travis-ci.org/hoc081098/distinct_value_connectable_observable.svg?branch=master)](https://travis-ci.org/hoc081098/distinct_value_connectable_observable) [![Pub](https://img.shields.io/pub/v/distinct_value_connectable_observable.svg)](https://pub.dartlang.org/packages/distinct_value_connectable_observable)
+[![Build Status](https://travis-ci.org/hoc081098/distinct_value_connectable_stream.svg?branch=master)](https://travis-ci.org/hoc081098/distinct_value_connectable_stream) [![Pub](https://img.shields.io/pub/v/distinct_value_connectable_stream.svg)](https://pub.dartlang.org/packages/distinct_value_connectable_stream)
 
-Dart package: https://pub.dartlang.org/packages/distinct_value_connectable_observable.
+Dart package: https://pub.dartlang.org/packages/distinct_value_connectable_stream.
 
 Useful for flutter BLoC pattern, expose broadcast state stream to UI, can synchronous access to the last emitted item, and distinct until changed
 
@@ -19,62 +19,70 @@ Created from templates made available by Stagehand under a BSD-style
 
 ## Usage
 
-A simple usage example:
-
-Import `distinct_value_connectable_observable`:
+Import `distinct_value_connectable_stream`:
 
 ```dart
-import 'package:distinct_value_connectable_observable/distinct_value_connectable_observable.dart';
+import 'package:distinct_value_connectable_stream/distinct_value_connectable_stream.dart';
 ```
 
-Wrap your `Stream` or `Observable` in a `DistinctValueConnectableObservable` using `constructor`:
+### 1. Constructor based
+
+Wrap your `Stream` in a `DistinctValueConnectableStream` using `constructor`:
 
 ```dart
 final Stream<State> state$;
-final distinctValueConnectable$ = DistinctValueConnectableObservable(state$);
-```
-
-or
-
-```dart
-final Stream<State> state$;
-final distinctValueConnectable$ = DistinctValueConnectableObservable.seeded(
+final distinct$ = DistinctValueConnectableStream(state$);
+final distinctSeeded$ = DistinctValueConnectableStream.seeded(
   state$,
   seedValue: State.initial(),
 );
 ```
 
-You can pass `equals` parameter to `constructor`, used to determined equality:
+You can pass `equals` parameter type `bool Function(T, T)` to `constructor`, used to determined equality (default is `operator ==`):
 
 ```dart
 final Stream<State> state$;
 final bool Function(State, State) isEquals;
 
-final distinctValueConnectable$ = DistinctValueConnectableObservable.seeded(
+final distinct$ = DistinctValueConnectableStream.seeded(
   state$,
   seedValue: State.initial(),
   equals: isEquals,
 );
 ```
 
-Another approach, using helper `functions`: `publishValueDistinct`, `publishValueSeededDistinct`, `shareValueDistinct`, `shareValueSeededDistinct`.
+### 2. Extension method based
 
 ```dart
-final source = Observable.fromIterable([1, 2, 2, 3, 3, 3]);
-final connectable = publishValueDistinct(source);
+final source$ = Stream.fromIterable([1, 2, 2, 3, 3, 3]);
+
+// publish
+final connectable$       = source$.publishValueDistinct();
+final connectableSeeded$ = source$.publishValueSeededDistinct(seedValue: 0);
+
+// share
+final shared$            = source$.shareValueDistinct();
+final sharedSeeded$      = source$.shareValueSeededDistinct(seedValue: 0);
+```
+
+All extension methods have optional parameter `equals` type `bool Function(T, T)` like constructor based
+
+```dart
+final source$ = Stream.fromIterable([1, 2, 2, 3, 3, 3]);
+final connectable$ = source$.publishValueDistinct();
 
 // Does not print anything at first
-connectable.listen(print);
+connectable$.listen(print);
 
-// Start listening to the source Observable. Will cause the previous
+// Start listening to the source Stream. Will cause the previous
 // line to start printing 1, 2, 3
-final subscription = connectable.connect();
+final subscription = connectable$.connect();
 
 // Late subscribers will receive the last emitted value
-connectable.listen(print); // Prints 3
+connectable$.listen(print); // Prints 3
 
 // Can access the latest emitted value synchronously. Prints 3
-print(connectable.value);
+print(connectable$.value);
 
 // Stop emitting items from the source stream and close the underlying
 // BehaviorSubject
@@ -85,7 +93,7 @@ await subscription.cancel();
 
 Please file feature requests and bugs at the [issue tracker][tracker].
 
-[tracker]: https://github.com/hoc081098/distinct_value_connectable_observable/issues
+[tracker]: https://github.com/hoc081098/distinct_value_connectable_stream/issues
 
 License
 -------

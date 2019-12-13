@@ -1,18 +1,19 @@
-import 'package:distinct_value_connectable_observable/distinct_value_connectable_observable.dart';
+import 'package:distinct_value_connectable_stream/distinct_value_connectable_stream.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 
 ///
 /// Include 4 extension functions on Stream:
 ///              |        not seeded      |            seeded
+/// -------------------------------------------------------------------
 /// publishValue | [publishValueDistinct] | [publishValueSeededDistinct]
 /// shareValue   | [shareValueDistinct]   | [shareValueSeededDistinct]
 ///
 
 extension DistinctValueConnectableExtension<T> on Stream<T> {
-  /// Convert the [this$] Observable into a [DistinctValueConnectableObservable]
+  /// Convert the this Stream into a [DistinctValueConnectableStream]
   /// that can be listened to multiple times. It will not begin emitting items
-  /// from the original Observable until the `connect` method is invoked.
+  /// from the original Stream until the `connect` method is invoked.
   ///
   /// This is useful for converting a single-subscription stream into a
   /// broadcast Stream that replays the latest emitted value to any new
@@ -21,13 +22,13 @@ extension DistinctValueConnectableExtension<T> on Stream<T> {
   /// ### Example
   ///
   /// ```
-  /// final source = Observable.fromIterable([1, 2, 2, 3, 3, 3]);
+  /// final source = Stream.fromIterable([1, 2, 2, 3, 3, 3]);
   /// final connectable = publishValueDistinct(source);
   ///
   /// // Does not print anything at first
   /// connectable.listen(print);
   ///
-  /// // Start listening to the source Observable. Will cause the previous
+  /// // Start listening to the source Stream. Will cause the previous
   /// // line to start printing 1, 2, 3
   /// final subscription = connectable.connect();
   ///
@@ -41,18 +42,18 @@ extension DistinctValueConnectableExtension<T> on Stream<T> {
   /// // BehaviorSubject
   /// await subscription.cancel();
   /// ```
-  DistinctValueConnectableObservable<T> publishValueDistinct({
+  DistinctValueConnectableStream<T> publishValueDistinct({
     bool equals(T previous, T next),
   }) {
-    return DistinctValueConnectableObservable<T>(
+    return DistinctValueConnectableStream<T>(
       this,
       equals: equals,
     );
   }
 
-  /// Convert the [this$] Observable into a [DistinctValueConnectableObservable]
+  /// Convert the this Stream into a [DistinctValueConnectableStream]
   /// that can be listened to multiple times, providing an initial seeded value.
-  /// It will not begin emitting items from the original Observable
+  /// It will not begin emitting items from the original Stream
   /// until the `connect` method is invoked.
   ///
   /// This is useful for converting a single-subscription stream into a
@@ -62,13 +63,13 @@ extension DistinctValueConnectableExtension<T> on Stream<T> {
   /// ### Example
   ///
   /// ```
-  /// final source = Observable.fromIterable([1, 2, 2, 3, 3, 3]);
+  /// final source = Stream.fromIterable([1, 2, 2, 3, 3, 3]);
   /// final connectable = publishValueSeededDistinct(source, seedValue: 0);
   ///
   /// // Does not print anything at first
   /// connectable.listen(print);
   ///
-  /// // Start listening to the source Observable. Will cause the previous
+  /// // Start listening to the source Stream. Will cause the previous
   /// // line to start printing 0, 1, 2, 3
   /// final subscription = connectable.connect();
   ///
@@ -82,18 +83,18 @@ extension DistinctValueConnectableExtension<T> on Stream<T> {
   /// // BehaviorSubject
   /// subscription.cancel();
   /// ```
-  DistinctValueConnectableObservable<T> publishValueSeededDistinct({
+  DistinctValueConnectableStream<T> publishValueSeededDistinct({
     @required T seedValue,
     bool equals(T previous, T next),
   }) {
-    return DistinctValueConnectableObservable<T>.seeded(
+    return DistinctValueConnectableStream<T>.seeded(
       this,
       seedValue: seedValue,
       equals: equals,
     );
   }
 
-  /// Convert the [this$] Observable into a new [ValueObservable] that can
+  /// Convert the this Stream into a new [ValueObservable] that can
   /// be listened to multiple times. It will automatically begin emitting items
   /// when first listened to, and shut down when no listeners remain.
   ///
@@ -108,30 +109,30 @@ extension DistinctValueConnectableExtension<T> on Stream<T> {
   /// ```
   /// // Convert a single-subscription fromIterable stream into a broadcast
   /// // stream that will emit the latest value to any new listeners
-  /// final observable = shareValueDistinct(Observable.fromIterable([1, 2, 2, 3, 3, 3]));
+  /// final stream = shareValueDistinct(Stream.fromIterable([1, 2, 2, 3, 3, 3]));
   ///
-  /// // Start listening to the source Observable. Will start printing 1, 2, 3
-  /// final subscription = observable.listen(print);
+  /// // Start listening to the source Stream. Will start printing 1, 2, 3
+  /// final subscription = stream.listen(print);
   ///
   /// // Synchronously print the latest value
-  /// print(observable.value);
+  /// print(stream.value);
   ///
   /// // Subscribe again later. This will print 3 because it receives the last
   /// // emitted value.
-  /// final subscription2 = observable.listen(print);
+  /// final subscription2 = stream.listen(print);
   ///
   /// // Stop emitting items from the source stream and close the underlying
   /// // BehaviorSubject by cancelling all subscriptions.
   /// subscription.cancel();
   /// subscription2.cancel();
   /// ```
-  ValueObservable<T> shareValueDistinct({
+  Stream<T> shareValueDistinct({
     bool equals(T previous, T next),
   }) {
     return publishValueDistinct(equals: equals).refCount();
   }
 
-  /// Convert the [this$] Observable into a new [ValueObservable] that can
+  /// Convert the this Stream into a new [ValueObservable] that can
   /// be listened to multiple times, providing an initial value.
   /// It will automatically begin emitting items when first listened to,
   /// and shut down when no listeners remain.
@@ -147,28 +148,27 @@ extension DistinctValueConnectableExtension<T> on Stream<T> {
   /// ```
   /// // Convert a single-subscription fromIterable stream into a broadcast
   /// // stream that will emit the latest value to any new listeners
-  /// final observable = shareValueSeededDistinct(
-  ///    Observable.fromIterable([1, 2, 2, 3, 3, 3]),
+  /// final stream = shareValueSeededDistinct(
+  ///    Stream.fromIterable([1, 2, 2, 3, 3, 3]),
   ///    seedValue: 0,
   /// );
   ///
-  /// // Start listening to the source Observable. Will start printing 0, 1, 2, 3
-  /// final subscription = observable.listen(print);
+  /// // Start listening to the source Stream. Will start printing 0, 1, 2, 3
+  /// final subscription = stream.listen(print);
   ///
   /// // Synchronously print the latest value
-  /// print(observable.value);
+  /// print(stream.value);
   ///
   /// // Subscribe again later. This will print 3 because it receives the last
   /// // emitted value.
-  /// final subscription2 = observable.listen(print);
+  /// final subscription2 = stream.listen(print);
   ///
   /// // Stop emitting items from the source stream and close the underlying
   /// // BehaviorSubject by cancelling all subscriptions.
   /// subscription.cancel();
   /// subscription2.cancel();
   /// ```
-  ValueObservable<T> shareValueSeededDistinct(
-    Observable<T> this$, {
+  ValueConnectableStream<T> shareValueSeededDistinct({
     @required T seedValue,
     bool equals(T previous, T next),
   }) {

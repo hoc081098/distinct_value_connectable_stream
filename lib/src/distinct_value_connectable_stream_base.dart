@@ -4,40 +4,42 @@ import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 
 ///
-/// Like [ValueConnectableObservable] of RxDart package
+/// Like [ValueConnectableStream] of RxDart package
 ///
 /// Except: data events are skipped if they are equal to the previous data event
 ///
 /// Equality is determined by the provided equals method. If that is omitted,
 /// the '==' operator on the last provided data element is used.
 ///
-class DistinctValueConnectableObservable<T> extends ConnectableObservable<T>
-    implements ValueObservable<T> {
+class DistinctValueConnectableStream<T> extends ConnectableStream<T>
+    implements ValueStream<T> {
   final Stream<T> _source;
   final BehaviorSubject<T> _subject;
   final bool Function(T, T) _equals;
 
-  DistinctValueConnectableObservable._(
+  DistinctValueConnectableStream._(
     this._source,
     this._subject,
     this._equals,
   ) : super(_subject);
 
-  factory DistinctValueConnectableObservable(Stream<T> source,
-      {bool equals(T previous, T next)}) {
-    return DistinctValueConnectableObservable<T>._(
+  factory DistinctValueConnectableStream(
+    Stream<T> source, {
+    bool equals(T previous, T next),
+  }) {
+    return DistinctValueConnectableStream<T>._(
       source,
       BehaviorSubject<T>(),
       equals,
     );
   }
 
-  factory DistinctValueConnectableObservable.seeded(
+  factory DistinctValueConnectableStream.seeded(
     Stream<T> source, {
     @required T seedValue,
     bool equals(T previous, T next),
   }) {
-    return DistinctValueConnectableObservable<T>._(
+    return DistinctValueConnectableStream<T>._(
       source,
       BehaviorSubject<T>.seeded(seedValue),
       equals,
@@ -45,7 +47,7 @@ class DistinctValueConnectableObservable<T> extends ConnectableObservable<T>
   }
 
   @override
-  ValueObservable<T> autoConnect({
+  ValueStream<T> autoConnect({
     void Function(StreamSubscription<T> subscription) connection,
   }) {
     _subject.onListen = () {
@@ -61,18 +63,18 @@ class DistinctValueConnectableObservable<T> extends ConnectableObservable<T>
 
   @override
   StreamSubscription<T> connect() {
-    return ConnectableObservableStreamSubscription<T>(
+    return ConnectableStreamSubscription<T>(
       _source.listen(_onData, onError: _subject.addError),
       _subject,
     );
   }
 
   @override
-  ValueObservable<T> refCount() {
-    ConnectableObservableStreamSubscription<T> subscription;
+  ValueStream<T> refCount() {
+    ConnectableStreamSubscription<T> subscription;
 
     _subject.onListen = () {
-      subscription = ConnectableObservableStreamSubscription<T>(
+      subscription = ConnectableStreamSubscription<T>(
         _source.listen(_onData, onError: _subject.addError),
         _subject,
       );
@@ -84,9 +86,6 @@ class DistinctValueConnectableObservable<T> extends ConnectableObservable<T>
 
     return _subject;
   }
-
-  @override
-  T get value => _subject.value;
 
   void _onData(T data) {
     if (!_subject.hasValue) {
@@ -106,4 +105,7 @@ class DistinctValueConnectableObservable<T> extends ConnectableObservable<T>
 
   @override
   bool get hasValue => _subject.hasValue;
+
+  @override
+  T get value => _subject.value;
 }

@@ -36,7 +36,7 @@
 
 ## 1.0.0+2
 
-- Update RxDart package to ^0.21.0, DistinctValueConnectableObservable now has a separate factory constructor seeded().
+- Update RxDart package to ^0.21.0, DistinctValueConnectableStream now has a separate factory constructor seeded().
   This allows you to seed this stream with a null value.
 
 ## 1.0.0+1
