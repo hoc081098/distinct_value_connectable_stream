@@ -10,7 +10,7 @@ import 'package:rxdart/rxdart.dart';
 /// shareValue   | [shareValueDistinct]   | [shareValueSeededDistinct]
 ///
 
-extension DistinctValueConnectableExtension<T> on Stream<T> {
+extension DistinctValueConnectableExtensions<T> on Stream<T> {
   /// Convert the this Stream into a [DistinctValueConnectableStream]
   /// that can be listened to multiple times. It will not begin emitting items
   /// from the original Stream until the `connect` method is invoked.
@@ -23,7 +23,7 @@ extension DistinctValueConnectableExtension<T> on Stream<T> {
   ///
   /// ```
   /// final source = Stream.fromIterable([1, 2, 2, 3, 3, 3]);
-  /// final connectable = publishValueDistinct(source);
+  /// final connectable = source.publishValueDistinct();
   ///
   /// // Does not print anything at first
   /// connectable.listen(print);
@@ -44,12 +44,8 @@ extension DistinctValueConnectableExtension<T> on Stream<T> {
   /// ```
   DistinctValueConnectableStream<T> publishValueDistinct({
     bool equals(T previous, T next),
-  }) {
-    return DistinctValueConnectableStream<T>(
-      this,
-      equals: equals,
-    );
-  }
+  }) =>
+      DistinctValueConnectableStream<T>(this, equals: equals);
 
   /// Convert the this Stream into a [DistinctValueConnectableStream]
   /// that can be listened to multiple times, providing an initial seeded value.
@@ -64,7 +60,7 @@ extension DistinctValueConnectableExtension<T> on Stream<T> {
   ///
   /// ```
   /// final source = Stream.fromIterable([1, 2, 2, 3, 3, 3]);
-  /// final connectable = publishValueSeededDistinct(source, seedValue: 0);
+  /// final connectable = source.publishValueSeededDistinct(seedValue: 0);
   ///
   /// // Does not print anything at first
   /// connectable.listen(print);
@@ -86,15 +82,14 @@ extension DistinctValueConnectableExtension<T> on Stream<T> {
   DistinctValueConnectableStream<T> publishValueSeededDistinct({
     @required T seedValue,
     bool equals(T previous, T next),
-  }) {
-    return DistinctValueConnectableStream<T>.seeded(
-      this,
-      seedValue: seedValue,
-      equals: equals,
-    );
-  }
+  }) =>
+      DistinctValueConnectableStream<T>.seeded(
+        this,
+        seedValue: seedValue,
+        equals: equals,
+      );
 
-  /// Convert the this Stream into a new [ValueObservable] that can
+  /// Convert the this Stream into a new [ValueStream] that can
   /// be listened to multiple times. It will automatically begin emitting items
   /// when first listened to, and shut down when no listeners remain.
   ///
@@ -109,7 +104,7 @@ extension DistinctValueConnectableExtension<T> on Stream<T> {
   /// ```
   /// // Convert a single-subscription fromIterable stream into a broadcast
   /// // stream that will emit the latest value to any new listeners
-  /// final stream = shareValueDistinct(Stream.fromIterable([1, 2, 2, 3, 3, 3]));
+  /// final stream = Stream.fromIterable([1, 2, 2, 3, 3, 3]).shareValueDistinct();
   ///
   /// // Start listening to the source Stream. Will start printing 1, 2, 3
   /// final subscription = stream.listen(print);
@@ -126,13 +121,12 @@ extension DistinctValueConnectableExtension<T> on Stream<T> {
   /// subscription.cancel();
   /// subscription2.cancel();
   /// ```
-  Stream<T> shareValueDistinct({
+  ValueStream<T> shareValueDistinct({
     bool equals(T previous, T next),
-  }) {
-    return publishValueDistinct(equals: equals).refCount();
-  }
+  }) =>
+      publishValueDistinct(equals: equals).refCount();
 
-  /// Convert the this Stream into a new [ValueObservable] that can
+  /// Convert the this Stream into a new [ValueStream] that can
   /// be listened to multiple times, providing an initial value.
   /// It will automatically begin emitting items when first listened to,
   /// and shut down when no listeners remain.
@@ -148,10 +142,9 @@ extension DistinctValueConnectableExtension<T> on Stream<T> {
   /// ```
   /// // Convert a single-subscription fromIterable stream into a broadcast
   /// // stream that will emit the latest value to any new listeners
-  /// final stream = shareValueSeededDistinct(
-  ///    Stream.fromIterable([1, 2, 2, 3, 3, 3]),
-  ///    seedValue: 0,
-  /// );
+  /// final stream = Stream
+  ///   .fromIterable([1, 2, 2, 3, 3, 3])
+  ///   .shareValueSeededDistinct(seedValue: 0);
   ///
   /// // Start listening to the source Stream. Will start printing 0, 1, 2, 3
   /// final subscription = stream.listen(print);
@@ -168,13 +161,10 @@ extension DistinctValueConnectableExtension<T> on Stream<T> {
   /// subscription.cancel();
   /// subscription2.cancel();
   /// ```
-  ValueConnectableStream<T> shareValueSeededDistinct({
+  ValueStream<T> shareValueSeededDistinct({
     @required T seedValue,
     bool equals(T previous, T next),
-  }) {
-    return publishValueSeededDistinct(
-      seedValue: seedValue,
-      equals: equals,
-    ).refCount();
-  }
+  }) =>
+      publishValueSeededDistinct(seedValue: seedValue, equals: equals)
+          .refCount();
 }

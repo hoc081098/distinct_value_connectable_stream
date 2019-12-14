@@ -1,20 +1,13 @@
 # distinct_value_connectable_stream <img src="https://avatars3.githubusercontent.com/u/6407041?s=200&v=4" width="32">
-Distinct & Connectable & ValueObservable RxDart
+- `Distinct` & `Connectable` & `ValueStream` rxdart
+- Useful for flutter BLoC pattern, expose broadcast state stream to UI, can synchronous access to the last emitted item, and distinct until changed
 
 [![Build Status](https://travis-ci.org/hoc081098/distinct_value_connectable_stream.svg?branch=master)](https://travis-ci.org/hoc081098/distinct_value_connectable_stream) [![Pub](https://img.shields.io/pub/v/distinct_value_connectable_stream.svg)](https://pub.dartlang.org/packages/distinct_value_connectable_stream)
 
-Dart package: https://pub.dartlang.org/packages/distinct_value_connectable_stream.
-
-Useful for flutter BLoC pattern, expose broadcast state stream to UI, can synchronous access to the last emitted item, and distinct until changed
-
-A library for Dart developers.
-Created from templates made available by Stagehand under a BSD-style
-[license](https://github.com/dart-lang/stagehand/blob/master/LICENSE).
-
 ## Implement BLoC
 
-| Without using package  | Using package |
-| ------------- | ------------- |
+|                   Without using package |                           Using package |
+| --------------------------------------- | --------------------------------------- |
 |<img src="https://i.ibb.co/ZJjfjKG/carbon-5.png">  | <img src="https://imgbbb.com/images/2019/04/27/carbon-6.png"> |
 
 ## Usage

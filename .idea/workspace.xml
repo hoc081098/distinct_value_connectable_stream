@@ -2,21 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ec595a3b-c726-4e67-8cf1-8c7504a16b88" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/Admin.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/distinct_value_connectable_stream_test.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.travis.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.travis.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.vscode/launch.json" beforeDir="false" afterPath="$PROJECT_DIR$/.vscode/launch.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CHANGELOG.md" beforeDir="false" afterPath="$PROJECT_DIR$/CHANGELOG.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/distinct_value_connectable_observable_example.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/distinct_value_connectable_stream_example.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/distinct_value_connectable_observable.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/distinct_value_connectable_stream.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/distinct_value_connectable_observable_base.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/distinct_value_connectable_stream_base.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/distinct_value_connectable_stream.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/distinct_value_connectable_stream.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/distinct_value_connectable_stream_base.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/distinct_value_connectable_stream.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/src/extension_methods.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/extension_methods.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/distinct_value_connectable_observable_test.dart" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -54,7 +45,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Dart Command Line App.distinct_value_connectable_stream_example.dart">
     <configuration name="distinct_value_connectable_stream_example.dart" type="DartCommandLineRunConfigurationType" factoryName="Dart Command Line Application" nameIsGenerated="true">
       <option name="filePath" value="$PROJECT_DIR$/example/distinct_value_connectable_stream_example.dart" />
       <method v="2" />
