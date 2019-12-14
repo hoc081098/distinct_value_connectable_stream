@@ -2,8 +2,21 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ec595a3b-c726-4e67-8cf1-8c7504a16b88" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/Admin.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/distinct_value_connectable_stream_test.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.travis.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.travis.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vscode/launch.json" beforeDir="false" afterPath="$PROJECT_DIR$/.vscode/launch.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CHANGELOG.md" beforeDir="false" afterPath="$PROJECT_DIR$/CHANGELOG.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/distinct_value_connectable_observable_example.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/distinct_value_connectable_stream_example.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/distinct_value_connectable_observable.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/distinct_value_connectable_stream.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/distinct_value_connectable_observable_base.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/distinct_value_connectable_stream_base.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/extension_methods.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/extension_methods.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/distinct_value_connectable_observable_test.dart" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -11,24 +24,22 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>ValueConnectableObservable</find>
-      <find>shareValue</find>
-      <find>publish</find>
-    </findStrings>
-    <replaceStrings>
-      <replace>DistinctValueConnectableObservable</replace>
-    </replaceStrings>
-  </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="ProjectId" id="1S3erlYJjB442eDcbW1aTt4D0an" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
     <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1553158434798" />
     <property name="dart.analysis.tool.window.force.activate" value="false" />
+    <property name="settings.editor.selected.configurable" value="flutter.settings" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="RunDashboard">
@@ -43,37 +54,37 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Dart Test.Test">
-    <configuration name="Unnamed" type="DartCommandLineRunConfigurationType" factoryName="Dart Command Line Application" nameIsGenerated="true">
-      <option name="filePath" value="$PROJECT_DIR$/example/distinct_value_connectable_observable_example.dart" />
+  <component name="RunManager">
+    <configuration name="distinct_value_connectable_stream_example.dart" type="DartCommandLineRunConfigurationType" factoryName="Dart Command Line Application" nameIsGenerated="true">
+      <option name="filePath" value="$PROJECT_DIR$/example/distinct_value_connectable_stream_example.dart" />
       <method v="2" />
     </configuration>
     <configuration name="Test" type="DartTestRunConfigurationType" factoryName="Dart Test">
-      <option name="filePath" value="$PROJECT_DIR$/test/distinct_value_connectable_observable_test.dart" />
+      <option name="filePath" value="$PROJECT_DIR$/test/distinct_value_connectable_stream_test.dart" />
       <method v="2" />
     </configuration>
-    <configuration name="distinct until changed with custom equals function in distinct_value_connectable_observable_test.dart" type="DartTestRunConfigurationType" factoryName="Dart Test" temporary="true" nameIsGenerated="true">
-      <option name="filePath" value="$PROJECT_DIR$/test/distinct_value_connectable_observable_test.dart" />
+    <configuration name="distinct until changed with custom equals function in distinct_value_connectable_stream_test.dart" type="DartTestRunConfigurationType" factoryName="Dart Test" temporary="true" nameIsGenerated="true">
+      <option name="filePath" value="$PROJECT_DIR$/test/distinct_value_connectable_stream_test.dart" />
       <option name="scope" value="GROUP_OR_TEST_BY_NAME" />
       <option name="testName" value="distinct until changed with custom equals function" />
       <method v="2" />
     </configuration>
-    <configuration name="should not emit before connecting in distinct_value_connectable_observable_test.dart" type="DartTestRunConfigurationType" factoryName="Dart Test" temporary="true" nameIsGenerated="true">
-      <option name="filePath" value="$PROJECT_DIR$/test/distinct_value_connectable_observable_test.dart" />
+    <configuration name="should not emit before connecting in distinct_value_connectable_stream_test.dart" type="DartTestRunConfigurationType" factoryName="Dart Test" temporary="true" nameIsGenerated="true">
+      <option name="filePath" value="$PROJECT_DIR$/test/distinct_value_connectable_stream_test.dart" />
       <option name="scope" value="GROUP_OR_TEST_BY_NAME" />
       <option name="testName" value="should not emit before connecting" />
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Dart Command Line App.Unnamed" />
+      <item itemvalue="Dart Command Line App.distinct_value_connectable_stream_example.dart" />
       <item itemvalue="Dart Test.Test" />
-      <item itemvalue="Dart Test.should not emit before connecting in distinct_value_connectable_observable_test.dart" />
-      <item itemvalue="Dart Test.distinct until changed with custom equals function in distinct_value_connectable_observable_test.dart" />
+      <item itemvalue="Dart Test.should not emit before connecting in distinct_value_connectable_stream_test.dart" />
+      <item itemvalue="Dart Test.distinct until changed with custom equals function in distinct_value_connectable_stream_test.dart" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Dart Test.distinct until changed with custom equals function in distinct_value_connectable_observable_test.dart" />
-        <item itemvalue="Dart Test.should not emit before connecting in distinct_value_connectable_observable_test.dart" />
+        <item itemvalue="Dart Test.distinct until changed with custom equals function in distinct_value_connectable_stream_test.dart" />
+        <item itemvalue="Dart Test.should not emit before connecting in distinct_value_connectable_stream_test.dart" />
       </list>
     </recent_temporary>
   </component>
@@ -111,38 +122,6 @@
     </task>
     <option name="localTasksCounter" value="4" />
     <servers />
-  </component>
-  <component name="TestHistory">
-    <history-entry file="distinct_until_changed_with_custom_equals_function_in_distinct_value_connectable_observable_test_dart - 2019.02.01 at 21h 49m 21s.xml">
-      <configuration name="distinct until changed with custom equals function in distinct_value_connectable_observable_test.dart" configurationId="DartTestRunConfigurationType" />
-    </history-entry>
-    <history-entry file="distinct_until_changed_with_custom_equals_function_in_distinct_value_connectable_observable_test_dart - 2019.02.01 at 21h 49m 37s.xml">
-      <configuration name="distinct until changed with custom equals function in distinct_value_connectable_observable_test.dart" configurationId="DartTestRunConfigurationType" />
-    </history-entry>
-    <history-entry file="distinct_until_changed_with_custom_equals_function_in_distinct_value_connectable_observable_test_dart - 2019.02.01 at 21h 50m 33s.xml">
-      <configuration name="distinct until changed with custom equals function in distinct_value_connectable_observable_test.dart" configurationId="DartTestRunConfigurationType" />
-    </history-entry>
-    <history-entry file="distinct_until_changed_with_custom_equals_function_in_distinct_value_connectable_observable_test_dart - 2019.02.01 at 21h 51m 20s.xml">
-      <configuration name="distinct until changed with custom equals function in distinct_value_connectable_observable_test.dart" configurationId="DartTestRunConfigurationType" />
-    </history-entry>
-    <history-entry file="distinct_until_changed_with_custom_equals_function_in_distinct_value_connectable_observable_test_dart - 2019.02.01 at 21h 51m 51s.xml">
-      <configuration name="distinct until changed with custom equals function in distinct_value_connectable_observable_test.dart" configurationId="DartTestRunConfigurationType" />
-    </history-entry>
-    <history-entry file="Test - 2019.03.21 at 15h 33m 20s.xml">
-      <configuration name="Test" configurationId="DartTestRunConfigurationType" />
-    </history-entry>
-    <history-entry file="Test - 2019.03.21 at 15h 37m 19s.xml">
-      <configuration name="Test" configurationId="DartTestRunConfigurationType" />
-    </history-entry>
-    <history-entry file="Test - 2019.03.21 at 15h 38m 09s.xml">
-      <configuration name="Test" configurationId="DartTestRunConfigurationType" />
-    </history-entry>
-    <history-entry file="Test - 2019.03.21 at 15h 46m 22s.xml">
-      <configuration name="Test" configurationId="DartTestRunConfigurationType" />
-    </history-entry>
-    <history-entry file="Test - 2019.03.21 at 15h 53m 23s.xml">
-      <configuration name="Test" configurationId="DartTestRunConfigurationType" />
-    </history-entry>
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">

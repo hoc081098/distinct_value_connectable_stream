@@ -4,7 +4,7 @@ os:
 sudo: false
 script:
   - pub get
-  - pub run test test/distinct_value_connectable_observable_test.dart
+  - pub run test test/distinct_value_connectable_stream_test.dart
 cache:
   directories:
     - $HOME/.pub-cache

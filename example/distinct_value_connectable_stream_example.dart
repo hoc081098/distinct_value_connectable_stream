@@ -1,22 +1,16 @@
-import 'package:distinct_value_connectable_observable/distinct_value_connectable_observable.dart';
+import 'package:distinct_value_connectable_stream/distinct_value_connectable_stream.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 
 class CounterBloc {
-  ///
   /// Inputs
-  ///
   final void Function(int) increment;
   final void Function(int) decrement;
 
-  ///
   /// Outputs
-  ///
-  final ValueObservable<int> state;
+  final ValueStream<int> state;
 
-  ///
   /// Clean up
-  ///
   final void Function() dispose;
 
   CounterBloc._({
@@ -30,24 +24,14 @@ class CounterBloc {
     final incrementController = PublishSubject<int>();
     final decrementController = PublishSubject<int>();
 
-    final state$ = DistinctValueConnectableObservable.seeded(
-      Observable.merge(<Stream<int>>[
-        incrementController,
-        decrementController.map((i) => -i),
-      ]).scan<int>((acc, e, _) => acc + e, 0),
-      seedValue: 0,
-    );
+    final streams = [
+      incrementController,
+      decrementController.map((i) => -i),
+    ];
+    final state$ = Rx.merge(streams)
+        .scan<int>((acc, e, _) => acc + e, 0)
+        .publishValueSeededDistinct(seedValue: 0);
 
-    /// or:
-    ///```
-    /// final state$ = publishValueSeededDistinct(
-    ///   Observable.merge(<Stream<int>>[
-    ///     incrementController,
-    ///     decrementController.map((i) => -i),
-    ///   ]).scan<int>((acc, e, _) => acc + e, 0),
-    ///   seedValue: 0,
-    /// );
-    /// ```
     final subscription = state$.connect();
 
     return CounterBloc._(
