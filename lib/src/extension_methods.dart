@@ -3,11 +3,11 @@ import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 
 ///
-/// Include 4 extension functions on Stream:
+/// Include 4 extension methods on [Stream]:
 ///              |        not seeded      |            seeded
 /// -------------------------------------------------------------------
-/// publishValue | [publishValueDistinct] | [publishValueSeededDistinct]
-/// shareValue   | [shareValueDistinct]   | [shareValueSeededDistinct]
+/// publish value | [publishValueDistinct] | [publishValueSeededDistinct]
+/// share value   | [shareValueDistinct]   | [shareValueSeededDistinct]
 ///
 
 extension DistinctValueConnectableExtensions<T> on Stream<T> {

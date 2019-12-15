@@ -2,7 +2,10 @@
 - `Distinct` & `Connectable` & `ValueStream` rxdart
 - Useful for flutter BLoC pattern, expose broadcast state stream to UI, can synchronous access to the last emitted item, and distinct until changed
 
-[![Build Status](https://travis-ci.org/hoc081098/distinct_value_connectable_stream.svg?branch=master)](https://travis-ci.org/hoc081098/distinct_value_connectable_stream) [![Pub](https://img.shields.io/pub/v/distinct_value_connectable_stream.svg)](https://pub.dartlang.org/packages/distinct_value_connectable_stream)
+## Author: [Petrus Nguyễn Thái Học](https://github.com/hoc081098)
+
+[![Build Status](https://travis-ci.org/hoc081098/distinct_value_connectable_stream.svg?branch=master)](https://travis-ci.org/hoc081098/distinct_value_connectable_stream)
+[![Pub](https://img.shields.io/pub/v/distinct_value_connectable_stream.svg)](https://pub.dartlang.org/packages/distinct_value_connectable_stream)
 
 ## Implement BLoC
 

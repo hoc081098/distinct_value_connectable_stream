@@ -48,24 +48,25 @@ class CounterBloc {
 }
 
 main() async {
-  var counterBloc = CounterBloc();
+  final counterBloc = CounterBloc();
+
+  final listen = counterBloc.state.listen((i) => print('[LOGGER] state=$i'));
+  counterBloc
+    ..increment(0)
+    ..increment(2)
+    ..decrement(2)
+    ..decrement(2)
+    ..decrement(2)
+    ..increment(2)
+    ..increment(2)
+    ..increment(0)
+    ..increment(0)
+    ..increment(0)
+    ..increment(0)
+    ..increment(0);
+
+  await Future.delayed(Duration(seconds: 1));
   print(counterBloc.state.value);
-
-  var listen = counterBloc.state.listen((i) => print('[LOGGER] state=$i'));
-  counterBloc.increment(0);
-  counterBloc.increment(2);
-  counterBloc.decrement(2);
-  counterBloc.decrement(2);
-  counterBloc.decrement(2);
-  counterBloc.increment(2);
-  counterBloc.increment(2);
-  counterBloc.increment(0);
-  counterBloc.increment(0);
-  counterBloc.increment(0);
-  counterBloc.increment(0);
-  counterBloc.increment(0);
-
-  await Future.delayed(Duration(seconds: 5));
 
   await listen.cancel();
   await counterBloc.dispose();

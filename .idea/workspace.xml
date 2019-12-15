@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ec595a3b-c726-4e67-8cf1-8c7504a16b88" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CHANGELOG.md" beforeDir="false" afterPath="$PROJECT_DIR$/CHANGELOG.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/distinct_value_connectable_stream.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/distinct_value_connectable_stream.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/distinct_value_connectable_stream_base.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/distinct_value_connectable_stream.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/distinct_value_connectable_stream_example.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/distinct_value_connectable_stream_example.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/src/extension_methods.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/extension_methods.dart" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -45,7 +41,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Dart Command Line App.distinct_value_connectable_stream_example.dart">
+  <component name="RunManager" selected="Dart Test.Test">
     <configuration name="distinct_value_connectable_stream_example.dart" type="DartCommandLineRunConfigurationType" factoryName="Dart Command Line Application" nameIsGenerated="true">
       <option name="filePath" value="$PROJECT_DIR$/example/distinct_value_connectable_stream_example.dart" />
       <method v="2" />
