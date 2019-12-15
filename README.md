@@ -6,9 +6,11 @@
 
 ## Implement BLoC
 
-|                   Without using package |                           Using package |
-| --------------------------------------- | --------------------------------------- |
-|<img src="https://raw.githubusercontent.com/hoc081098/hoc081098.github.io/master/distinct_value_connectable_stream/carbon%20(18).png" width="720">  | <img src="https://github.com/hoc081098/hoc081098.github.io/raw/master/distinct_value_connectable_stream/carbon%20(19).png" width="720"> |
+|                   Without using package |   
+| --------------------------------------- | 
+|<img src="https://raw.githubusercontent.com/hoc081098/hoc081098.github.io/master/distinct_value_connectable_stream/carbon%20(18).png" width="720">  |
+
+<img src="https://github.com/hoc081098/hoc081098.github.io/raw/master/distinct_value_connectable_stream/carbon%20(19).png" width="720"> 
 
 ## Usage
 
