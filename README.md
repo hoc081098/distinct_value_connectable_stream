@@ -9,16 +9,16 @@
 
 ## Implement BLoC
 
- # Without using package
+ ### Without using package
  
  <p align="center">
-    <img src="https://raw.githubusercontent.com/hoc081098/hoc081098.github.io/master/distinct_value_connectable_stream/carbon%20(18).png" height="720"/>
+    <img src="https://raw.githubusercontent.com/hoc081098/hoc081098.github.io/master/distinct_value_connectable_stream/carbon%20(18).png" height="512"/>
  </p>
  
- # Using package
+ ### Using package
   
  <p align="center">
-    <img src="https://github.com/hoc081098/hoc081098.github.io/raw/master/distinct_value_connectable_stream/carbon%20(19).png" height="720"/>
+    <img src="https://github.com/hoc081098/hoc081098.github.io/raw/master/distinct_value_connectable_stream/carbon%20(19).png" height="512"/>
  </p>
 
 ## Usage
