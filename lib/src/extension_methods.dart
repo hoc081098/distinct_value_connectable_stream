@@ -3,13 +3,11 @@ import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 
 ///
-/// Include 4 extension methods on [Stream]:
-///              |        not seeded      |            seeded
-/// -------------------------------------------------------------------
-/// publish value | [publishValueDistinct] | [publishValueSeededDistinct]
-/// share value   | [shareValueDistinct]   | [shareValueSeededDistinct]
+/// Include 4 extension methods on [Stream]
 ///
-
+/// Publish value: [publishValueDistinct], [publishValueSeededDistinct]
+/// Shared value : [shareValueDistinct]  , [shareValueSeededDistinct]
+///
 extension DistinctValueConnectableExtensions<T> on Stream<T> {
   /// Convert the this Stream into a [DistinctValueConnectableStream]
   /// that can be listened to multiple times. It will not begin emitting items
@@ -43,7 +41,7 @@ extension DistinctValueConnectableExtensions<T> on Stream<T> {
   /// await subscription.cancel();
   /// ```
   DistinctValueConnectableStream<T> publishValueDistinct({
-    bool equals(T previous, T next),
+    bool Function(T previous, T next) equals,
   }) =>
       DistinctValueConnectableStream<T>(this, equals: equals);
 
@@ -81,7 +79,7 @@ extension DistinctValueConnectableExtensions<T> on Stream<T> {
   /// ```
   DistinctValueConnectableStream<T> publishValueSeededDistinct({
     @required T seedValue,
-    bool equals(T previous, T next),
+    bool Function(T previous, T next) equals,
   }) =>
       DistinctValueConnectableStream<T>.seeded(
         this,
@@ -122,7 +120,7 @@ extension DistinctValueConnectableExtensions<T> on Stream<T> {
   /// subscription2.cancel();
   /// ```
   ValueStream<T> shareValueDistinct({
-    bool equals(T previous, T next),
+    bool Function(T previous, T next) equals,
   }) =>
       publishValueDistinct(equals: equals).refCount();
 
@@ -163,7 +161,7 @@ extension DistinctValueConnectableExtensions<T> on Stream<T> {
   /// ```
   ValueStream<T> shareValueSeededDistinct({
     @required T seedValue,
-    bool equals(T previous, T next),
+    bool Function(T previous, T next) equals,
   }) =>
       publishValueSeededDistinct(seedValue: seedValue, equals: equals)
           .refCount();

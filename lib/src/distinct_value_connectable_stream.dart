@@ -23,9 +23,12 @@ class DistinctValueConnectableStream<T> extends ConnectableStream<T>
     this._equals,
   ) : super(_subject);
 
+  /// Constructs a [Stream] which only begins emitting events when
+  /// the [connect] method is called, this [Stream] acts like a
+  /// [BehaviorSubject] and distinct until changed.
   factory DistinctValueConnectableStream(
     Stream<T> source, {
-    bool equals(T previous, T next),
+    bool Function(T previous, T next) equals,
   }) {
     return DistinctValueConnectableStream<T>._(
       source,
@@ -34,10 +37,13 @@ class DistinctValueConnectableStream<T> extends ConnectableStream<T>
     );
   }
 
+  /// Constructs a [Stream] which only begins emitting events when
+  /// the [connect] method is called, this [Stream] acts like a
+  /// [BehaviorSubject.seeded] and distinct until changed.
   factory DistinctValueConnectableStream.seeded(
     Stream<T> source, {
     @required T seedValue,
-    bool equals(T previous, T next),
+    bool Function(T previous, T next) equals,
   }) {
     return DistinctValueConnectableStream<T>._(
       source,

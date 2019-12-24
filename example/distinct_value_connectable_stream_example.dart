@@ -47,7 +47,7 @@ class CounterBloc {
   }
 }
 
-main() async {
+void main() async {
   final counterBloc = CounterBloc();
 
   final listen = counterBloc.state.listen((i) => print('[LOGGER] state=$i'));
