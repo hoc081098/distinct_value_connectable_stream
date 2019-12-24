@@ -1,3 +1,7 @@
+## 1.0.3 - Dec 15, 2019
+
+- Fix README.md
+
 ## 1.0.2 - Dec 15, 2019
 
 - Fix README.md
