@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ec595a3b-c726-4e67-8cf1-8c7504a16b88" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CHANGELOG.md" beforeDir="false" afterPath="$PROJECT_DIR$/CHANGELOG.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -193,6 +196,22 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="463" y="123" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1579008616507" />
+    <state width="1323" height="205" key="GridCell.Tab.0.bottom" timestamp="1587577310013">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1323" height="205" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1587577310013" />
+    <state width="1323" height="205" key="GridCell.Tab.0.center" timestamp="1587577310013">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1323" height="205" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1587577310013" />
+    <state width="1323" height="205" key="GridCell.Tab.0.left" timestamp="1587577310013">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1323" height="205" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1587577310013" />
+    <state width="1323" height="205" key="GridCell.Tab.0.right" timestamp="1587577310013">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1323" height="205" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1587577310013" />
     <state x="186" y="10" key="SettingsEditor" timestamp="1579008619313">
       <screen x="0" y="0" width="1366" height="728" />
     </state>

@@ -1,13 +1,13 @@
 name: distinct_value_connectable_stream
 description: Distinct value connectable stream for RxDart, useful for BLoC pattern
-version: 1.0.3+1
+version: 1.1.0
 homepage: https://github.com/hoc081098/distinct_value_connectable_stream
 
 environment:
   sdk: '>=2.6.0 <3.0.0'
 
 dependencies:
-  rxdart: ^0.23.1
+  rxdart: ^0.24.0
   meta: ^1.1.6
 
 dev_dependencies:

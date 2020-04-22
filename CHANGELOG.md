@@ -1,3 +1,7 @@
+## 1.1.0 - Apr 23, 2020
+
+- Breaking change: support for `rxdart` 0.24.x.
+
 ## 1.0.3+1 - Jan 14, 2020
 
 - Fix analysis
