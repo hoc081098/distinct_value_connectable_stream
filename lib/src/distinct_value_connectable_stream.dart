@@ -18,10 +18,13 @@ class DistinctValueConnectableStream<T> extends ConnectableStream<T>
   final bool Function(T, T) _equals;
 
   DistinctValueConnectableStream._(
-    this._source,
+    Stream<T> source,
     this._subject,
     this._equals,
-  ) : super(_subject);
+  )   : assert(source != null),
+        _source =
+            (source.isBroadcast ?? false) ? source : source.asBroadcastStream(),
+        super(_subject);
 
   /// Constructs a [Stream] which only begins emitting events when
   /// the [connect] method is called, this [Stream] acts like a
