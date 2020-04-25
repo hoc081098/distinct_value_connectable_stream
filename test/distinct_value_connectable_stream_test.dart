@@ -165,7 +165,7 @@ void main() {
       });
 
       await Future.delayed(Duration(seconds: 1));
-      expect(count, count);
+      expect(count, 1);
     });
 
     test('distinct until changed with custom equals function with seeded',
@@ -191,7 +191,51 @@ void main() {
       });
 
       await Future.delayed(Duration(seconds: 1));
-      expect(count, count);
+      expect(count, 1);
     });
+
+    test(
+      'distinct until changed without seeded',
+      () async {
+        const values1 = [1, 2, 3];
+        const values2 = [1, 1, 1];
+        const inputs = [values1, values1, values2, values2, values1];
+        const expected = [values1, values2, values1];
+
+        final stream =
+            DistinctValueConnectableStream(Stream.fromIterable(inputs))
+                .refCount();
+
+        var count = 0;
+        stream.listen((actual) => expect(actual, expected[count++]));
+        await Future.delayed(Duration(seconds: 1));
+        expect(count, expected.length);
+      },
+    );
+
+    test(
+      'distinct until changed with custom equals function without seeded',
+      () async {
+        const values1 = [1, 2, 3]; // sum = 6
+        const values2 = [1, 1, 1]; // sum = 3
+        const values3 = [1, 1, 4]; // sum = 6
+        const inputs = [values1, values3, values2, values3, values1];
+        const expected = [values1, values2, values3];
+
+        final stream = DistinctValueConnectableStream(
+          Stream.fromIterable(inputs),
+          equals: (List<int> prev, List<int> cur) => prev.sum == cur.sum,
+        ).refCount();
+
+        var count = 0;
+        stream.listen((actual) => expect(actual, expected[count++]));
+        await Future.delayed(Duration(seconds: 1));
+        expect(count, expected.length);
+      },
+    );
   });
+}
+
+extension _Sum on Iterable<int> {
+  int get sum => reduce((acc, e) => acc + e);
 }
