@@ -92,9 +92,7 @@ class DistinctValueConnectableStream<T> extends ConnectableStream<T>
       );
     };
 
-    _subject.onCancel = () {
-      subscription.cancel();
-    };
+    _subject.onCancel = () => subscription.cancel();
 
     return _subject;
   }
