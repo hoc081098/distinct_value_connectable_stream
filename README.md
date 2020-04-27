@@ -12,13 +12,13 @@
  ### Without using package
  
  <p align="center">
-    <img src="https://github.com/hoc081098/distinct_value_connectable_stream/raw/master/bloc1.png" height="512"/>
+    <img src="https://github.com/hoc081098/distinct_value_connectable_stream/raw/master/bloc1.png" width="480"/>
  </p>
  
  ### Using package
   
  <p align="center">
-    <img src="https://github.com/hoc081098/distinct_value_connectable_stream/raw/master/bloc2.png" height="512"/>
+    <img src="https://github.com/hoc081098/distinct_value_connectable_stream/raw/master/bloc2.png" width="480"/>
  </p>
 
 ## Usage
