@@ -207,10 +207,7 @@ void main() {
             const [expected1, expected2, expected1],
           ),
           seedValue: expected2,
-          equals: (List<int> prev, List<int> cur) {
-            return prev.reduce((acc, e) => acc + e) ==
-                cur.reduce((acc, e) => acc + e);
-          },
+          equals: (List<int> prev, List<int> cur) => prev.sum == cur.sum,
         ).refCount();
 
         var count = 0;
