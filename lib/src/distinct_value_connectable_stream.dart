@@ -20,11 +20,14 @@ class DistinctValueConnectableStream<T> extends ConnectableStream<T>
   DistinctValueConnectableStream._(
     Stream<T> source,
     this._subject,
-    this._equals,
+    bool Function(T, T) equals,
   )   : assert(source != null),
         _source =
             (source.isBroadcast ?? false) ? source : source.asBroadcastStream(),
+        _equals = equals ?? _defaultEquals,
         super(_subject);
+
+  static bool _defaultEquals<T>(T lhs, T rhs) => lhs == rhs;
 
   /// Constructs a [Stream] which only begins emitting events when
   /// the [connect] method is called, this [Stream] acts like a
@@ -101,14 +104,8 @@ class DistinctValueConnectableStream<T> extends ConnectableStream<T>
       _subject.add(data);
       return;
     }
-    if (_equals == null) {
-      if (!(data == _subject.value)) {
-        _subject.add(data);
-      }
-    } else {
-      if (!_equals(data, _subject.value)) {
-        _subject.add(data);
-      }
+    if (!_equals(data, _subject.value)) {
+      _subject.add(data);
     }
   }
 
