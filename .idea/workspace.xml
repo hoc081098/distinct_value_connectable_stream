@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ec595a3b-c726-4e67-8cf1-8c7504a16b88" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test/distinct_value_connectable_stream_test.dart" beforeDir="false" afterPath="$PROJECT_DIR$/test/distinct_value_connectable_stream_test.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -43,52 +44,52 @@
       <option name="filePath" value="$PROJECT_DIR$/test/distinct_value_connectable_stream_test.dart" />
       <method v="2" />
     </configuration>
-    <configuration name="description in distinct_value_connectable_stream_test.dart" type="DartTestRunConfigurationType" factoryName="Dart Test" temporary="true" nameIsGenerated="true">
+    <configuration name="replays the seeded null item in distinct_value_connectable_stream_test.dart" type="DartTestRunConfigurationType" factoryName="Dart Test" temporary="true" nameIsGenerated="true">
       <option name="filePath" value="$PROJECT_DIR$/test/distinct_value_connectable_stream_test.dart" />
       <option name="scope" value="GROUP_OR_TEST_BY_NAME" />
-      <option name="testName" value="description" />
+      <option name="testName" value="replays the seeded null item" />
       <method v="2" />
     </configuration>
-    <configuration name="distinct until changed in distinct_value_connectable_stream_test.dart" type="DartTestRunConfigurationType" factoryName="Dart Test" temporary="true" nameIsGenerated="true">
+    <configuration name="vs distinct().shareValueSeeded() in distinct_value_connectable_stream_test.dart" type="DartTestRunConfigurationType" factoryName="Dart Test" temporary="true" nameIsGenerated="true">
       <option name="filePath" value="$PROJECT_DIR$/test/distinct_value_connectable_stream_test.dart" />
       <option name="scope" value="GROUP_OR_TEST_BY_NAME" />
-      <option name="testName" value="distinct until changed" />
+      <option name="testName" value="vs distinct().shareValueSeeded()" />
       <method v="2" />
     </configuration>
-    <configuration name="distinct until changed with custom equals function with seeded in distinct_value_connectable_stream_test.dart" type="DartTestRunConfigurationType" factoryName="Dart Test" temporary="true" nameIsGenerated="true">
+    <configuration name="vs distinct().shareValueSeeded(...) in distinct_value_connectable_stream_test.dart" type="DartTestRunConfigurationType" factoryName="Dart Test" temporary="true" nameIsGenerated="true">
       <option name="filePath" value="$PROJECT_DIR$/test/distinct_value_connectable_stream_test.dart" />
       <option name="scope" value="GROUP_OR_TEST_BY_NAME" />
-      <option name="testName" value="distinct until changed with custom equals function with seeded" />
+      <option name="testName" value="vs distinct().shareValueSeeded(...)" />
       <method v="2" />
     </configuration>
-    <configuration name="distinct until changed with custom equals function without seeded in distinct_value_connectable_stream_test.dart" type="DartTestRunConfigurationType" factoryName="Dart Test" temporary="true" nameIsGenerated="true">
+    <configuration name="vs distinct().shareValue() in distinct_value_connectable_stream_test.dart" type="DartTestRunConfigurationType" factoryName="Dart Test" temporary="true" nameIsGenerated="true">
       <option name="filePath" value="$PROJECT_DIR$/test/distinct_value_connectable_stream_test.dart" />
       <option name="scope" value="GROUP_OR_TEST_BY_NAME" />
-      <option name="testName" value="distinct until changed with custom equals function without seeded" />
+      <option name="testName" value="vs distinct().shareValue()" />
       <method v="2" />
     </configuration>
-    <configuration name="distinct until changed without seeded in distinct_value_connectable_stream_test.dart" type="DartTestRunConfigurationType" factoryName="Dart Test" temporary="true" nameIsGenerated="true">
+    <configuration name="vs distinct().shareValue(), sames behavior in distinct_value_connectable_stream_test.dart" type="DartTestRunConfigurationType" factoryName="Dart Test" temporary="true" nameIsGenerated="true">
       <option name="filePath" value="$PROJECT_DIR$/test/distinct_value_connectable_stream_test.dart" />
       <option name="scope" value="GROUP_OR_TEST_BY_NAME" />
-      <option name="testName" value="distinct until changed without seeded" />
+      <option name="testName" value="vs distinct().shareValue(), sames behavior" />
       <method v="2" />
     </configuration>
     <list>
       <item itemvalue="Dart Command Line App.distinct_value_connectable_stream_example.dart" />
       <item itemvalue="Dart Test.Test" />
-      <item itemvalue="Dart Test.distinct until changed in distinct_value_connectable_stream_test.dart" />
-      <item itemvalue="Dart Test.distinct until changed with custom equals function without seeded in distinct_value_connectable_stream_test.dart" />
-      <item itemvalue="Dart Test.distinct until changed without seeded in distinct_value_connectable_stream_test.dart" />
-      <item itemvalue="Dart Test.distinct until changed with custom equals function with seeded in distinct_value_connectable_stream_test.dart" />
-      <item itemvalue="Dart Test.description in distinct_value_connectable_stream_test.dart" />
+      <item itemvalue="Dart Test.replays the seeded null item in distinct_value_connectable_stream_test.dart" />
+      <item itemvalue="Dart Test.vs distinct().shareValue() in distinct_value_connectable_stream_test.dart" />
+      <item itemvalue="Dart Test.vs distinct().shareValueSeeded() in distinct_value_connectable_stream_test.dart" />
+      <item itemvalue="Dart Test.vs distinct().shareValueSeeded(...) in distinct_value_connectable_stream_test.dart" />
+      <item itemvalue="Dart Test.vs distinct().shareValue(), sames behavior in distinct_value_connectable_stream_test.dart" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Dart Test.description in distinct_value_connectable_stream_test.dart" />
-        <item itemvalue="Dart Test.distinct until changed with custom equals function with seeded in distinct_value_connectable_stream_test.dart" />
-        <item itemvalue="Dart Test.distinct until changed without seeded in distinct_value_connectable_stream_test.dart" />
-        <item itemvalue="Dart Test.distinct until changed with custom equals function without seeded in distinct_value_connectable_stream_test.dart" />
-        <item itemvalue="Dart Test.distinct until changed in distinct_value_connectable_stream_test.dart" />
+        <item itemvalue="Dart Test.vs distinct().shareValueSeeded(...) in distinct_value_connectable_stream_test.dart" />
+        <item itemvalue="Dart Test.vs distinct().shareValue(), sames behavior in distinct_value_connectable_stream_test.dart" />
+        <item itemvalue="Dart Test.vs distinct().shareValueSeeded() in distinct_value_connectable_stream_test.dart" />
+        <item itemvalue="Dart Test.vs distinct().shareValue() in distinct_value_connectable_stream_test.dart" />
+        <item itemvalue="Dart Test.replays the seeded null item in distinct_value_connectable_stream_test.dart" />
       </list>
     </recent_temporary>
   </component>
@@ -173,7 +174,14 @@
       <option name="project" value="LOCAL" />
       <updated>1587846350912</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="more tests">
+      <created>1587846966328</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1587846966328</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -213,13 +221,14 @@
     <MESSAGE value="Update" />
     <MESSAGE value="release 1.1.0" />
     <MESSAGE value="fix test" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix test" />
+    <MESSAGE value="more tests" />
+    <option name="LAST_COMMIT_MESSAGE" value="more tests" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="221" y="0" key="CommitChangelistDialog2" timestamp="1587846349869">
+    <state x="221" y="0" key="CommitChangelistDialog2" timestamp="1587846965437">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="221" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1587846349869" />
+    <state x="221" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1587846965437" />
     <state width="408" height="466" key="DebuggerActiveHint" timestamp="1587845698150">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -228,34 +237,34 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="92" y="92" width="1182" height="544" key="DiffContextDialog/0.0.1366.728@0.0.1366.728" timestamp="1587846344196" />
-    <state width="1323" height="111" key="GridCell.Tab.0.bottom" timestamp="1587846799935">
+    <state width="1323" height="70" key="GridCell.Tab.0.bottom" timestamp="1587985425454">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="111" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1587846799935" />
-    <state width="1323" height="111" key="GridCell.Tab.0.center" timestamp="1587846799934">
+    <state width="1323" height="70" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1587985425454" />
+    <state width="1323" height="70" key="GridCell.Tab.0.center" timestamp="1587985425454">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="111" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1587846799934" />
-    <state width="1323" height="111" key="GridCell.Tab.0.left" timestamp="1587846799934">
+    <state width="1323" height="70" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1587985425454" />
+    <state width="1323" height="70" key="GridCell.Tab.0.left" timestamp="1587985425453">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="111" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1587846799934" />
-    <state width="1323" height="111" key="GridCell.Tab.0.right" timestamp="1587846799934">
+    <state width="1323" height="70" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1587985425453" />
+    <state width="1323" height="70" key="GridCell.Tab.0.right" timestamp="1587985425454">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="111" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1587846799934" />
-    <state x="275" y="100" key="Vcs.Push.Dialog.v2" timestamp="1587846351396">
+    <state width="1323" height="70" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1587985425454" />
+    <state x="275" y="100" key="Vcs.Push.Dialog.v2" timestamp="1587846967715">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="275" y="100" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1587846351396" />
+    <state x="275" y="100" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1587846967715" />
     <state x="339" y="162" key="run.anything.popup" timestamp="1587844288925">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="339" y="162" key="run.anything.popup/0.0.1366.728@0.0.1366.728" timestamp="1587844288925" />
-    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup" timestamp="1587845634051">
+    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup" timestamp="1587984526079">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1587845634051" />
+    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1587984526079" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

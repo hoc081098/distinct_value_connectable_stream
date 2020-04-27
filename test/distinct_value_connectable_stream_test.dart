@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:distinct_value_connectable_stream/distinct_value_connectable_stream.dart';
 import 'package:mockito/mockito.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:test/test.dart';
 
 class MockStream<T> extends Mock implements Stream<T> {}
@@ -106,6 +107,34 @@ void main() {
       expect(stream, emits(inputs.last));
     });
 
+    test('replays the seeded item', () async {
+      final stream = DistinctValueConnectableStream.seeded(
+              StreamController<int>().stream,
+              seedValue: 3)
+          .autoConnect();
+
+      expect(stream, emitsInOrder(const <int>[3]));
+      expect(stream, emitsInOrder(const <int>[3]));
+      expect(stream, emitsInOrder(const <int>[3]));
+
+      await Future.delayed(Duration(milliseconds: 200));
+      expect(stream, emits(3));
+    });
+
+    test('replays the seeded null item', () async {
+      final stream = DistinctValueConnectableStream.seeded(
+              StreamController<int>().stream,
+              seedValue: null)
+          .autoConnect();
+
+      expect(stream, emitsInOrder(const <int>[null]));
+      expect(stream, emitsInOrder(const <int>[null]));
+      expect(stream, emitsInOrder(const <int>[null]));
+
+      await Future.delayed(Duration(milliseconds: 200));
+      expect(stream, emits(null));
+    });
+
     test('can multicast streams', () async {
       final stream = DistinctValueConnectableStream(
         Stream.fromIterable(const [1, 2, 3]),
@@ -150,53 +179,51 @@ void main() {
       expect(stream, neverEmits(anything));
     });
 
-    test('distinct until changed with seeded', () async {
-      const expected = 1;
+    group('distinct until changed', () {
+      test('with seeded', () async {
+        const expected = 1;
 
-      final stream = DistinctValueConnectableStream.seeded(
-        Stream.fromIterable(const [expected, expected]),
-        seedValue: expected,
-      ).refCount();
+        final stream = DistinctValueConnectableStream.seeded(
+          Stream.fromIterable(const [expected, expected]),
+          seedValue: expected,
+        ).refCount();
 
-      var count = 0;
-      stream.listen((actual) {
-        expect(actual, expected);
-        count++;
+        var count = 0;
+        stream.listen((actual) {
+          expect(actual, expected);
+          count++;
+        });
+
+        await Future.delayed(Duration(seconds: 1));
+        expect(count, 1);
       });
 
-      await Future.delayed(Duration(seconds: 1));
-      expect(count, 1);
-    });
+      test('with seeded, by custom equals function', () async {
+        const expected1 = [1, 2, 3];
+        const expected2 = [1, 1, 4];
 
-    test('distinct until changed with custom equals function with seeded',
-        () async {
-      const expected1 = [1, 2, 3];
-      const expected2 = [1, 1, 4];
+        final stream = DistinctValueConnectableStream.seeded(
+          Stream.fromIterable(
+            const [expected1, expected2, expected1],
+          ),
+          seedValue: expected2,
+          equals: (List<int> prev, List<int> cur) {
+            return prev.reduce((acc, e) => acc + e) ==
+                cur.reduce((acc, e) => acc + e);
+          },
+        ).refCount();
 
-      final stream = DistinctValueConnectableStream.seeded(
-        Stream.fromIterable(
-          const [expected1, expected2, expected1],
-        ),
-        seedValue: expected2,
-        equals: (List<int> prev, List<int> cur) {
-          return prev.reduce((acc, e) => acc + e) ==
-              cur.reduce((acc, e) => acc + e);
-        },
-      ).refCount();
+        var count = 0;
+        stream.listen((actual) {
+          expect(actual, expected2);
+          count++;
+        });
 
-      var count = 0;
-      stream.listen((actual) {
-        expect(actual, expected2);
-        count++;
+        await Future.delayed(Duration(seconds: 1));
+        expect(count, 1);
       });
 
-      await Future.delayed(Duration(seconds: 1));
-      expect(count, 1);
-    });
-
-    test(
-      'distinct until changed without seeded',
-      () async {
+      test('without seeded', () async {
         const values1 = [1, 2, 3];
         const values2 = [1, 1, 1];
         const inputs = [values1, values1, values2, values2, values1];
@@ -210,12 +237,9 @@ void main() {
         stream.listen((actual) => expect(actual, expected[count++]));
         await Future.delayed(Duration(seconds: 1));
         expect(count, expected.length);
-      },
-    );
+      });
 
-    test(
-      'distinct until changed with custom equals function without seeded',
-      () async {
+      test('without seeded, by custom equals function', () async {
         const values1 = [1, 2, 3]; // sum = 6
         const values2 = [1, 1, 1]; // sum = 3
         const values3 = [1, 1, 4]; // sum = 6
@@ -231,8 +255,35 @@ void main() {
         stream.listen((actual) => expect(actual, expected[count++]));
         await Future.delayed(Duration(seconds: 1));
         expect(count, expected.length);
-      },
-    );
+      });
+    });
+
+    test('vs distinct().shareValue(), sames behavior', () async {
+      final shareValue = Stream.fromIterable([1, 1, 2, 2, 3, 3, 4, 4])
+          .interval(const Duration(milliseconds: 200))
+          .distinct()
+          .shareValue();
+      await expectLater(shareValue, emitsInOrder([1, 2, 3, 4]));
+
+      final shareValueDistinct = Stream.fromIterable([1, 1, 2, 2, 3, 3, 4, 4])
+          .interval(const Duration(milliseconds: 200))
+          .shareValueDistinct();
+      await expectLater(shareValueDistinct, emitsInOrder([1, 2, 3, 4]));
+    });
+
+    test('vs distinct().shareValueSeeded(...), different behavior', () async {
+      final shareValueSeeded = Stream.fromIterable([1, 1, 2, 2, 3, 3, 4, 4])
+          .interval(const Duration(milliseconds: 200))
+          .distinct()
+          .shareValueSeeded(1);
+      await expectLater(shareValueSeeded, emitsInOrder([1, 1, 2, 3, 4]));
+
+      final shareValueSeededDistinct =
+          Stream.fromIterable([1, 1, 2, 2, 3, 3, 4, 4])
+              .interval(const Duration(milliseconds: 200))
+              .shareValueSeededDistinct(seedValue: 1);
+      await expectLater(shareValueSeededDistinct, emitsInOrder([1, 2, 3, 4]));
+    });
   });
 }
 
