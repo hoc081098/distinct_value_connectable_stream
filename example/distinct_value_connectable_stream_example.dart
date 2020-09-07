@@ -39,9 +39,9 @@ class CounterBloc {
       decrement: decrementController.add,
       state$: state$,
       dispose: () async {
-        await subscription.cancel();
         await Future.wait<void>(
             [incrementController, decrementController].map((c) => c.close()));
+        await subscription.cancel();
       },
     );
   }
