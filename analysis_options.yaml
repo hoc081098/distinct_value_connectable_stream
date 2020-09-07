@@ -1,6 +1,9 @@
 include: package:pedantic/analysis_options.1.9.0.yaml
 analyzer:
+  strong-mode:
+    implicit-casts: false
+    implicit-dynamic: false
   exclude:
     # Ignore generated files
-    - '**/*.g.dart'
-    - 'lib/src/generated/*.dart'
+    - "**/*.g.dart"
+    - "lib/src/generated/*.dart"
