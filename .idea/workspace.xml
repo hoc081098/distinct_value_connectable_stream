@@ -26,23 +26,7 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ec595a3b-c726-4e67-8cf1-8c7504a16b88" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/src/value_subject.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/analysis_options.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/analysis_options.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/distinct_value_connectable_observable.iml" beforeDir="false" afterPath="$PROJECT_DIR$/distinct_value_connectable_stream.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/distinct_value_connectable_stream_example.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/distinct_value_connectable_stream_example.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/distinct_value_connectable_stream.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/distinct_value_connectable_stream.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/distinct_value_connectable_stream.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/distinct_value_connectable_stream.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/extension_methods.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/extension_methods.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/distinct_value_connectable_stream_test.dart" beforeDir="false" afterPath="$PROJECT_DIR$/test/distinct_value_connectable_stream_test.dart" afterDir="false" />
-    </list>
+    <list default="true" id="ec595a3b-c726-4e67-8cf1-8c7504a16b88" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -276,7 +260,14 @@
       <option name="project" value="LOCAL" />
       <updated>1588003594029</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="wip">
+      <created>1599473758867</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1599473758867</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -332,33 +323,42 @@
     <MESSAGE value="update" />
     <MESSAGE value="publish(1.1.1)" />
     <MESSAGE value="release(1.1.1): update README.md" />
-    <option name="LAST_COMMIT_MESSAGE" value="release(1.1.1): update README.md" />
+    <MESSAGE value="wip" />
+    <option name="LAST_COMMIT_MESSAGE" value="wip" />
   </component>
   <component name="WindowStateProjectService">
     <state x="163" y="0" key="#Project_Structure" timestamp="1599400017320">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="163" y="0" key="#Project_Structure/0.0.1366.728@0.0.1366.728" timestamp="1599400017320" />
-    <state width="1323" height="169" key="GridCell.Tab.0.bottom" timestamp="1599473627430">
+    <state x="225" y="0" key="CommitChangelistDialog2" timestamp="1599473757442">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="169" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1599473627430" />
-    <state width="1323" height="169" key="GridCell.Tab.0.center" timestamp="1599473627430">
+    <state x="225" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1599473757442" />
+    <state width="1323" height="398" key="GridCell.Tab.0.bottom" timestamp="1599473726995">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="169" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1599473627430" />
-    <state width="1323" height="169" key="GridCell.Tab.0.left" timestamp="1599473627430">
+    <state width="1323" height="398" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1599473726995" />
+    <state width="1323" height="398" key="GridCell.Tab.0.center" timestamp="1599473726995">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="169" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1599473627430" />
-    <state width="1323" height="169" key="GridCell.Tab.0.right" timestamp="1599473627430">
+    <state width="1323" height="398" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1599473726995" />
+    <state width="1323" height="398" key="GridCell.Tab.0.left" timestamp="1599473726995">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="169" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1599473627430" />
-    <state x="163" y="0" key="SettingsEditor" timestamp="1599400906467">
+    <state width="1323" height="398" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1599473726995" />
+    <state width="1323" height="398" key="GridCell.Tab.0.right" timestamp="1599473726995">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="163" y="0" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1599400906467" />
+    <state width="1323" height="398" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1599473726995" />
+    <state x="163" y="0" key="SettingsEditor" timestamp="1599474010454">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="163" y="0" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1599474010454" />
+    <state x="275" y="83" key="Vcs.Push.Dialog.v2" timestamp="1599473760235">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="275" y="83" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1599473760235" />
     <state x="346" y="49" width="672" height="678" key="search.everywhere.popup" timestamp="1599400795825">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
