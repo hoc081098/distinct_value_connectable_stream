@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:rxdart/streams.dart';
-import 'package:rxdart/subjects.dart';
+import 'package:rxdart/streams.dart' show ValueStream, ErrorAndStacktrace;
+import 'package:rxdart/subjects.dart' show Subject, PublishSubject;
 
 enum _Event { data, error }
 
@@ -14,26 +14,54 @@ class _DataOrError<T> {
       : event = _Event.data,
         errorAndStacktrace = null;
 
-  void error(ErrorAndStacktrace errorAndStacktrace) {
+  void onError(ErrorAndStacktrace errorAndStacktrace) {
     this.errorAndStacktrace = errorAndStacktrace;
     event = _Event.error;
   }
 
-  void data(T value) {
+  void onData(T value) {
     this.value = value;
     event = _Event.data;
   }
 }
 
+/// A special [StreamController] that captures the latest item that has been
+/// added to the controller.
+///
+/// [ValueSubject] is the same as [PublishSubject], with the ability to capture
+/// latest item that has been added to the controller.
+///
+/// [ValueSubject] is, by default, a broadcast (aka hot) controller, in order
+/// to fulfill the Rx Subject contract. This means the Subject's `stream` can
+/// be listened to multiple times.
+///
+/// ### Example
+///
+///     final subject = ValueSubject<int>(1);
+///
+///     print(subject.value);          // prints 1
+///
+///     // observers will receive 3 and done events.
+///     subject.stream.listen(print); // prints 2
+///     subject.stream.listen(print); // prints 2
+///     subject.stream.listen(print); // prints 2
+///
+///     subject.add(2);
+///     subject.close();
 class ValueSubject<T> extends Subject<T> implements ValueStream<T> {
   final _DataOrError<T> _dataOrError;
 
   ValueSubject._(
     StreamController<T> controller,
-    Stream<T> stream,
     this._dataOrError,
-  ) : super(controller, stream);
+  ) : super(controller, controller.stream);
 
+  /// Constructs a [ValueSubject], optionally pass handlers for
+  /// [onListen], [onCancel] and a flag to handle events [sync].
+  ///
+  /// [seedValue] becomes the current [value] of Subject.
+  ///
+  /// See also [StreamController.broadcast].
   factory ValueSubject(
     T seedValue, {
     void Function() onListen,
@@ -48,17 +76,16 @@ class ValueSubject<T> extends Subject<T> implements ValueStream<T> {
 
     return ValueSubject._(
       controller,
-      controller.stream,
       _DataOrError(seedValue),
     );
   }
 
   @override
-  void onAdd(T event) => _dataOrError.data(event);
+  void onAdd(T event) => _dataOrError.onData(event);
 
   @override
   void onAddError(Object error, [StackTrace stackTrace]) =>
-      _dataOrError.error(ErrorAndStacktrace(error, stackTrace));
+      _dataOrError.onError(ErrorAndStacktrace(error, stackTrace));
 
   @override
   bool get hasValue => _dataOrError.event == _Event.data;
@@ -71,4 +98,16 @@ class ValueSubject<T> extends Subject<T> implements ValueStream<T> {
 
   @override
   bool get hasError => _dataOrError.event == _Event.error;
+
+  @override
+  Subject<R> createForwardingSubject<R>({
+    void Function() onListen,
+    void Function() onCancel,
+    bool sync = false,
+  }) =>
+      PublishSubject(
+        onListen: onListen,
+        onCancel: onCancel,
+        sync: sync,
+      );
 }

@@ -61,12 +61,9 @@ final distinct$ = DistinctValueConnectableStream.seeded(
 final source$ = Stream.fromIterable([1, 2, 2, 3, 3, 3]);
 
 // publish
-final connectable$       = source$.publishValueDistinct();
-final connectableSeeded$ = source$.publishValueSeededDistinct(seedValue: 0);
-
+final connectable$       = source$.publishValueDistinct(0);
 // share
-final shared$            = source$.shareValueDistinct();
-final sharedSeeded$      = source$.shareValueSeededDistinct(seedValue: 0);
+final shared$            = source$.shareValueDistinct(0);
 ```
 
 All extension methods have optional parameter `equals` type `bool Function(T, T)` like constructor based
