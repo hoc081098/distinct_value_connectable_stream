@@ -5,29 +5,37 @@ import 'package:mockito/mockito.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:test/test.dart';
 
+import 'value_subject_test.dart' as value_subject_test;
+
 class MockStream<T> extends Mock implements Stream<T> {}
 
 void main() {
+  value_subject_test.main();
+
   group('DistinctValueConnectableStream', () {
     test('should not emit before connecting', () {
       final stream = MockStream<int>();
       when(stream.isBroadcast).thenReturn(true);
-      when(stream.listen(any, onError: anyNamed('onError')))
+      when(stream.listen(any,
+              onError: anyNamed('onError'), onDone: anyNamed('onDone')))
           .thenReturn(Stream.fromIterable(const [1, 2, 3]).listen(null));
 
-      final distinctStream = DistinctValueConnectableStream(stream);
+      final distinctStream = DistinctValueConnectableStream(stream, null);
 
-      verifyNever(stream.listen(any, onError: anyNamed('onError')));
+      verifyNever(stream.listen(any,
+          onError: anyNamed('onError'), onDone: anyNamed('onDone')));
 
       distinctStream.connect();
 
-      verify(stream.listen(any, onError: anyNamed('onError')));
+      verify(stream.listen(any,
+          onError: anyNamed('onError'), onDone: anyNamed('onDone')));
     });
 
     test('should begin emitting items after connection', () {
       var count = 0;
       const items = [1, 2, 3];
-      final stream = DistinctValueConnectableStream(Stream.fromIterable(items));
+      final stream =
+          DistinctValueConnectableStream(Stream.fromIterable(items), null);
 
       stream.connect();
 
@@ -41,6 +49,7 @@ void main() {
     test('stops emitting after the connection is cancelled', () async {
       final stream = DistinctValueConnectableStream(
         Stream.fromIterable(const [1, 2, 3]),
+        null,
       );
 
       final subscription = stream.connect();
@@ -52,9 +61,11 @@ void main() {
     test('stops emitting after the last subscriber unsubscribes', () async {
       final stream = DistinctValueConnectableStream(
         Stream.fromIterable(const [1, 2, 3]),
+        null,
       ).refCount();
 
-      stream.listen(null)..cancel(); // ignore: unawaited_futures
+      final subscription = stream.listen(null);
+      await subscription.cancel();
 
       expect(stream, neverEmits(anything));
     });
@@ -62,6 +73,7 @@ void main() {
     test('keeps emitting with an active subscription', () async {
       final stream = DistinctValueConnectableStream(
         Stream.fromIterable(const [1, 2, 3]),
+        null,
       ).refCount();
 
       stream.listen(null);
@@ -73,6 +85,7 @@ void main() {
     test('multicasts a single-subscription stream', () async {
       final stream = DistinctValueConnectableStream(
         Stream.fromIterable(const [1, 2, 3]),
+        null,
       ).autoConnect();
 
       expect(stream, emitsInOrder(const <int>[1, 2, 3]));
@@ -80,64 +93,10 @@ void main() {
       expect(stream, emitsInOrder(const <int>[1, 2, 3]));
     });
 
-    test('replays the latest item', () async {
-      const inputs = [1, 2, 3, 4, 5, 6];
-      final stream = DistinctValueConnectableStream(Stream.fromIterable(inputs))
-          .autoConnect();
-
-      final completer = Completer<void>();
-      final outputs = <int>[];
-
-      StreamSubscription<int> subscription;
-      subscription = stream.listen((i) async {
-        outputs.add(i);
-        if (outputs.length == inputs.length) {
-          await subscription.cancel();
-          completer.complete();
-        }
-      });
-
-      await completer.future;
-      expect(outputs, inputs);
-
-      expect(stream, emits(inputs.last));
-      expect(stream, emits(inputs.last));
-      expect(stream, emits(inputs.last));
-      await Future.delayed(Duration(milliseconds: 200));
-      expect(stream, emits(inputs.last));
-    });
-
-    test('replays the seeded item', () async {
-      final stream = DistinctValueConnectableStream.seeded(
-              StreamController<int>().stream,
-              seedValue: 3)
-          .autoConnect();
-
-      expect(stream, emitsInOrder(const <int>[3]));
-      expect(stream, emitsInOrder(const <int>[3]));
-      expect(stream, emitsInOrder(const <int>[3]));
-
-      await Future.delayed(Duration(milliseconds: 200));
-      expect(stream, emits(3));
-    });
-
-    test('replays the seeded null item', () async {
-      final stream = DistinctValueConnectableStream.seeded(
-              StreamController<int>().stream,
-              seedValue: null)
-          .autoConnect();
-
-      expect(stream, emitsInOrder(const <int>[null]));
-      expect(stream, emitsInOrder(const <int>[null]));
-      expect(stream, emitsInOrder(const <int>[null]));
-
-      await Future.delayed(Duration(milliseconds: 200));
-      expect(stream, emits(null));
-    });
-
     test('can multicast streams', () async {
       final stream = DistinctValueConnectableStream(
         Stream.fromIterable(const [1, 2, 3]),
+        null,
       ).refCount();
 
       expect(stream, emitsInOrder(const <int>[1, 2, 3]));
@@ -146,13 +105,13 @@ void main() {
     });
 
     test('transform streams with initial value', () async {
-      final stream = DistinctValueConnectableStream.seeded(
+      final stream = DistinctValueConnectableStream(
         Stream.fromIterable(const [1, 2, 3]),
-        seedValue: 0,
+        0,
       ).refCount();
 
       expect(stream.value, 0);
-      expect(stream, emitsInOrder(const <int>[0, 1, 2, 3]));
+      expect(stream, emitsInOrder(const <int>[1, 2, 3]));
     });
 
     test('provides access to the latest value', () async {
@@ -160,6 +119,7 @@ void main() {
       var count = 0;
       final stream = DistinctValueConnectableStream(
         Stream.fromIterable(const [1, 2, 3]),
+        null,
       ).refCount();
 
       stream.listen(expectAsync1((data) {
@@ -174,98 +134,59 @@ void main() {
     test('provide a function to autoconnect that stops listening', () async {
       final stream = DistinctValueConnectableStream(
         Stream.fromIterable(const [1, 2, 3]),
+        null,
       ).autoConnect(connection: (subscription) => subscription.cancel());
 
       expect(stream, neverEmits(anything));
     });
 
-    group('distinct until changed', () {
-      test('with seeded', () async {
-        const expected = 1;
+    test('distinct until changed by default equals function', () async {
+      const seedValue = 1;
 
-        final stream = DistinctValueConnectableStream.seeded(
-          Stream.fromIterable(const [expected, expected]),
-          seedValue: expected,
-        ).refCount();
+      final stream = DistinctValueConnectableStream(
+        Stream.fromIterable(const [seedValue, seedValue]),
+        seedValue,
+      ).refCount();
 
-        var count = 0;
-        stream.listen((actual) {
-          expect(actual, expected);
-          count++;
-        });
+      var count = 0;
+      stream.listen((_) => count++);
 
-        await Future.delayed(Duration(seconds: 1));
-        expect(count, 1);
-      });
-
-      test('with seeded, by custom equals function', () async {
-        const expected1 = [1, 2, 3];
-        const expected2 = [1, 1, 4];
-
-        final stream = DistinctValueConnectableStream.seeded(
-          Stream.fromIterable(
-            const [expected1, expected2, expected1],
-          ),
-          seedValue: expected2,
-          equals: (List<int> prev, List<int> cur) => prev.sum == cur.sum,
-        ).refCount();
-
-        var count = 0;
-        stream.listen((actual) {
-          expect(actual, expected2);
-          count++;
-        });
-
-        await Future.delayed(Duration(seconds: 1));
-        expect(count, 1);
-      });
-
-      test('without seeded', () async {
-        const values1 = [1, 2, 3];
-        const values2 = [1, 1, 1];
-        const inputs = [values1, values1, values2, values2, values1];
-        const expected = [values1, values2, values1];
-
-        final stream =
-            DistinctValueConnectableStream(Stream.fromIterable(inputs))
-                .refCount();
-
-        var count = 0;
-        stream.listen((actual) => expect(actual, expected[count++]));
-        await Future.delayed(Duration(seconds: 1));
-        expect(count, expected.length);
-      });
-
-      test('without seeded, by custom equals function', () async {
-        const values1 = [1, 2, 3]; // sum = 6
-        const values2 = [1, 1, 1]; // sum = 3
-        const values3 = [1, 1, 4]; // sum = 6
-        const inputs = [values1, values3, values2, values3, values1];
-        const expected = [values1, values2, values3];
-
-        final stream = DistinctValueConnectableStream(
-          Stream.fromIterable(inputs),
-          equals: (List<int> prev, List<int> cur) => prev.sum == cur.sum,
-        ).refCount();
-
-        var count = 0;
-        stream.listen((actual) => expect(actual, expected[count++]));
-        await Future.delayed(Duration(seconds: 1));
-        expect(count, expected.length);
-      });
+      await Future<void>.delayed(const Duration(seconds: 1));
+      expect(count, 0);
+      expect(stream.value, seedValue);
     });
 
-    test('vs distinct().shareValue(), sames behavior', () async {
+    test('distinct until changed by custom equals function', () async {
+      const values1 = [1, 2, 3];
+      const values2 = [1, 1, 4];
+
+      final stream = DistinctValueConnectableStream(
+        Stream.fromIterable(const [values1, values2, values1]),
+        values2,
+        equals: _sumEquals,
+      ).refCount();
+
+      var count = 0;
+      stream.listen((_) => count++);
+
+      await Future<void>.delayed(Duration(seconds: 1));
+      expect(count, 0);
+      expect(stream.value, values2);
+    });
+
+    test('vs distinct().shareValue(), same behavior', () async {
+      final matcher = emitsInOrder(const <int>[1, 2, 3, 4]);
+
       final shareValue = Stream.fromIterable([1, 1, 2, 2, 3, 3, 4, 4])
           .interval(const Duration(milliseconds: 200))
           .distinct()
           .shareValue();
-      await expectLater(shareValue, emitsInOrder([1, 2, 3, 4]));
+      await expectLater(shareValue, matcher);
 
       final shareValueDistinct = Stream.fromIterable([1, 1, 2, 2, 3, 3, 4, 4])
           .interval(const Duration(milliseconds: 200))
-          .shareValueDistinct();
-      await expectLater(shareValueDistinct, emitsInOrder([1, 2, 3, 4]));
+          .shareValueDistinct(null);
+      await expectLater(shareValueDistinct, matcher);
     });
 
     test('vs distinct().shareValueSeeded(...), different behavior', () async {
@@ -273,16 +194,23 @@ void main() {
           .interval(const Duration(milliseconds: 200))
           .distinct()
           .shareValueSeeded(1);
-      await expectLater(shareValueSeeded, emitsInOrder([1, 1, 2, 3, 4]));
+      await expectLater(
+        shareValueSeeded,
+        emitsInOrder(const <int>[1, 1, 2, 3, 4]),
+      );
 
-      final shareValueSeededDistinct =
-          Stream.fromIterable([1, 1, 2, 2, 3, 3, 4, 4])
-              .interval(const Duration(milliseconds: 200))
-              .shareValueSeededDistinct(seedValue: 1);
-      await expectLater(shareValueSeededDistinct, emitsInOrder([1, 2, 3, 4]));
+      final shareValueDistinct = Stream.fromIterable([1, 1, 2, 2, 3, 3, 4, 4])
+          .interval(const Duration(milliseconds: 200))
+          .shareValueDistinct(1);
+      await expectLater(
+        shareValueDistinct,
+        emitsInOrder(const <int>[2, 3, 4]),
+      );
     });
   });
 }
+
+bool _sumEquals(List<int> prev, List<int> cur) => prev.sum == cur.sum;
 
 extension _Sum on Iterable<int> {
   int get sum => reduce((acc, e) => acc + e);

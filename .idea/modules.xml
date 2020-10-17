@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/distinct_value_connectable_observable.iml" filepath="$PROJECT_DIR$/distinct_value_connectable_observable.iml" />
+      <module fileurl="file://$PROJECT_DIR$/distinct_value_connectable_stream.iml" filepath="$PROJECT_DIR$/distinct_value_connectable_stream.iml" />
     </modules>
   </component>
 </project>

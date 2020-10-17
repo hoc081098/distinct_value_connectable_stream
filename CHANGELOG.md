@@ -1,3 +1,19 @@
+### 1.2.0-beta01 - Oct 18, 2020
+
+-   Introduce `ValueSubject` same as `PublishSubject`, with the ability to capture the latest item has been added to the controller.
+-   Rewrite `DistinctValueConnectableStream`: now will not replay the latest data or error, `value` getter instead.
+    This is more consistent to `StreamBuilder.initialData` in `Flutter`.
+
+-   `Extension methods`: removed `publishValueSeededDistinct` and `shareValueSeededDistinct`. 
+    Add to `publishValueDistinct` and `shareValueDistinct` a required parameter `T seedValue`. 
+    This is more consistent to `StreamBuilder.initialData` in `Flutter`.
+    
+-   Added `DistinctValueStream`: It's also `ValueStream` but emphasizes that two consecutive values are not equal 
+    (Equality is determined by `equals` method).
+    
+-   Note that this is a beta release, mainly because the behavior of `DistinctValueConnectableStream` has been adjusted. 
+    If all goes well, we'll release a proper 1.2.0 release soon.
+
 ## 1.1.1 - Apr 27, 2020
 
 -   Minor updates.

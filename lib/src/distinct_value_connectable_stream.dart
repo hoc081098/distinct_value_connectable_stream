@@ -1,108 +1,97 @@
 import 'dart:async';
 
-import 'package:meta/meta.dart';
-import 'package:rxdart/rxdart.dart';
+import 'package:rxdart/streams.dart'
+    show ConnectableStream, ConnectableStreamSubscription;
 
+import 'distinct_value_stream.dart';
+import 'value_subject.dart';
+
+/// A [ConnectableStream] that converts a single-subscription Stream into
+/// a broadcast [Stream], and provides synchronous access to the latest emitted value.
 ///
-/// Like [ValueConnectableStream] of RxDart package
-///
-/// Except: data events are skipped if they are equal to the previous data event
-///
-/// Equality is determined by the provided equals method. If that is omitted,
-/// the '==' operator on the last provided data element is used.
-///
+/// This is a combine of [ConnectableStream], [ValueStream], [ValueSubject] and [Stream.distinct].
 class DistinctValueConnectableStream<T> extends ConnectableStream<T>
-    implements ValueStream<T> {
+    implements DistinctValueStream<T> {
   final Stream<T> _source;
-  final BehaviorSubject<T> _subject;
-  final bool Function(T, T) _equals;
-
-  DistinctValueConnectableStream._(
-    Stream<T> source,
-    this._subject,
-    bool Function(T, T) equals,
-  )   : assert(source != null),
-        _source =
-            (source.isBroadcast ?? false) ? source : source.asBroadcastStream(),
-        _equals = equals ?? _defaultEquals,
-        super(_subject);
-
-  static bool _defaultEquals<T>(T lhs, T rhs) => lhs == rhs;
-
-  /// Constructs a [Stream] which only begins emitting events when
-  /// the [connect] method is called, this [Stream] acts like a
-  /// [BehaviorSubject] and distinct until changed.
-  factory DistinctValueConnectableStream(
-    Stream<T> source, {
-    bool Function(T previous, T next) equals,
-  }) {
-    return DistinctValueConnectableStream<T>._(
-      source,
-      BehaviorSubject<T>(),
-      equals,
-    );
-  }
-
-  /// Constructs a [Stream] which only begins emitting events when
-  /// the [connect] method is called, this [Stream] acts like a
-  /// [BehaviorSubject.seeded] and distinct until changed.
-  factory DistinctValueConnectableStream.seeded(
-    Stream<T> source, {
-    @required T seedValue,
-    bool Function(T previous, T next) equals,
-  }) {
-    return DistinctValueConnectableStream<T>._(
-      source,
-      BehaviorSubject<T>.seeded(seedValue),
-      equals,
-    );
-  }
+  final ValueSubject<T> _subject;
 
   @override
-  ValueStream<T> autoConnect({
+  final bool Function(T, T) equals;
+
+  DistinctValueConnectableStream._(
+    this._source,
+    this._subject,
+    bool Function(T, T) equals,
+  )   : assert(_source != null),
+        equals = equals ?? DistinctValueStream.defaultEquals,
+        super(_subject);
+
+  /// Constructs a [Stream] which only begins emitting events when
+  /// the [connect] method is called, this [Stream] acts like a
+  /// [ValueSubject] and distinct until changed.
+  ///
+  /// Data events are skipped if they are equal to the previous data event.
+  /// Equality is determined by the provided [equals] method. If that is omitted,
+  /// the '==' operator on the last provided data element is used.
+  factory DistinctValueConnectableStream(
+    Stream<T> source,
+    T seedValue, {
+    bool Function(T previous, T next) equals,
+    bool sync = false,
+  }) =>
+      DistinctValueConnectableStream<T>._(
+          source, ValueSubject(seedValue, sync: sync), equals);
+
+  ConnectableStreamSubscription<T> _connect() =>
+      ConnectableStreamSubscription<T>(
+        _source.listen(
+          _onData,
+          onError: _subject.addError,
+          onDone: _subject.close,
+        ),
+        _subject,
+      );
+
+  @override
+  DistinctValueStream<T> autoConnect({
     void Function(StreamSubscription<T> subscription) connection,
   }) {
     _subject.onListen = () {
-      if (connection != null) {
-        connection(connect());
-      } else {
-        connect();
-      }
+      final subscription = _connect();
+      connection?.call(subscription);
     };
+    _subject.onCancel = null;
 
-    return _subject;
+    return this;
   }
 
   @override
   StreamSubscription<T> connect() {
-    return ConnectableStreamSubscription<T>(
-      _source.listen(_onData, onError: _subject.addError),
-      _subject,
-    );
+    _subject.onListen = _subject.onCancel = null;
+    return _connect();
   }
 
   @override
-  ValueStream<T> refCount() {
+  DistinctValueStream<T> refCount() {
     ConnectableStreamSubscription<T> subscription;
 
-    _subject.onListen = () {
-      subscription = ConnectableStreamSubscription<T>(
-        _source.listen(_onData, onError: _subject.addError),
-        _subject,
-      );
-    };
-
+    _subject.onListen = () => subscription = _connect();
     _subject.onCancel = () => subscription.cancel();
 
-    return _subject;
+    return this;
   }
 
   void _onData(T data) {
-    if (!_subject.hasValue) {
-      _subject.add(data);
+    bool isEqual;
+
+    try {
+      isEqual = equals(_subject.value, data);
+    } catch (e, s) {
+      _subject.addError(e, s);
       return;
     }
-    if (!_equals(data, _subject.value)) {
+
+    if (!isEqual) {
       _subject.add(data);
     }
   }
@@ -112,4 +101,10 @@ class DistinctValueConnectableStream<T> extends ConnectableStream<T>
 
   @override
   T get value => _subject.value;
+
+  @override
+  Object get error => _subject.error;
+
+  @override
+  bool get hasError => _subject.hasError;
 }
