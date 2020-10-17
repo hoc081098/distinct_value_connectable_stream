@@ -1,4 +1,4 @@
-### 1.2.0-beta01 - Oct 18, 2020
+## 1.2.0-beta01 - Oct 18, 2020
 
 -   Introduce `ValueSubject` same as `PublishSubject`, with the ability to capture the latest item has been added to the controller.
 -   Rewrite `DistinctValueConnectableStream`: now will not replay the latest data or error, `value` getter instead.
