@@ -10,7 +10,7 @@ class _DataOrError<T> {
   T value;
   ErrorAndStacktrace errorAndStacktrace;
 
-  _DataOrError(this.value)
+  _DataOrError.data(this.value)
       : event = _Event.data,
         errorAndStacktrace = null;
 
@@ -76,7 +76,7 @@ class ValueSubject<T> extends Subject<T> implements ValueStream<T> {
 
     return ValueSubject._(
       controller,
-      _DataOrError(seedValue),
+      _DataOrError.data(seedValue),
     );
   }
 

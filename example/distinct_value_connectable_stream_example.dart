@@ -8,7 +8,7 @@ class CounterBloc {
   final void Function(int) decrement;
 
   /// Outputs
-  final ValueStream<int> state$;
+  final DistinctValueStream<int> state$;
 
   /// Clean up
   final void Function() dispose;

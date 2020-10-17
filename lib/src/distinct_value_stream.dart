@@ -7,5 +7,5 @@ abstract class DistinctValueStream<T> extends ValueStream<T> {
   bool Function(T, T) get equals;
 
   /// Use '==' operator on the last provided data element.
-  static bool defaultEquals<T>(T lhs, T rhs) => lhs == rhs;
+  static final defaultEquals = (Object lhs, Object rhs) => lhs == rhs;
 }

@@ -42,15 +42,23 @@ class DistinctValueConnectableStream<T> extends ConnectableStream<T>
       DistinctValueConnectableStream<T>._(
           source, ValueSubject(seedValue, sync: sync), equals);
 
+  ConnectableStreamSubscription<T> _connect() =>
+      ConnectableStreamSubscription<T>(
+        _source.listen(
+          _onData,
+          onError: _subject.addError,
+          onDone: _subject.close,
+        ),
+        _subject,
+      );
+
   @override
-  DistinctValueStream<T> autoConnect(
-      {void Function(StreamSubscription<T> subscription) connection}) {
+  DistinctValueStream<T> autoConnect({
+    void Function(StreamSubscription<T> subscription) connection,
+  }) {
     _subject.onListen = () {
-      if (connection != null) {
-        connection(connect());
-      } else {
-        connect();
-      }
+      final subscription = _connect();
+      connection?.call(subscription);
     };
     _subject.onCancel = null;
 
@@ -58,21 +66,16 @@ class DistinctValueConnectableStream<T> extends ConnectableStream<T>
   }
 
   @override
-  StreamSubscription<T> connect() => ConnectableStreamSubscription<T>(
-        _source.listen(_onData, onError: _subject.addError),
-        _subject,
-      );
+  StreamSubscription<T> connect() {
+    _subject.onListen = _subject.onCancel = null;
+    return _connect();
+  }
 
   @override
   DistinctValueStream<T> refCount() {
     ConnectableStreamSubscription<T> subscription;
 
-    _subject.onListen = () {
-      subscription = ConnectableStreamSubscription<T>(
-        _source.listen(_onData, onError: _subject.addError),
-        _subject,
-      );
-    };
+    _subject.onListen = () => subscription = _connect();
     _subject.onCancel = () => subscription.cancel();
 
     return this;

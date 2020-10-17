@@ -12,16 +12,19 @@ void main() {
     test('should not emit before connecting', () {
       final stream = MockStream<int>();
       when(stream.isBroadcast).thenReturn(true);
-      when(stream.listen(any, onError: anyNamed('onError')))
+      when(stream.listen(any,
+              onError: anyNamed('onError'), onDone: anyNamed('onDone')))
           .thenReturn(Stream.fromIterable(const [1, 2, 3]).listen(null));
 
       final distinctStream = DistinctValueConnectableStream(stream, null);
 
-      verifyNever(stream.listen(any, onError: anyNamed('onError')));
+      verifyNever(stream.listen(any,
+          onError: anyNamed('onError'), onDone: anyNamed('onDone')));
 
       distinctStream.connect();
 
-      verify(stream.listen(any, onError: anyNamed('onError')));
+      verify(stream.listen(any,
+          onError: anyNamed('onError'), onDone: anyNamed('onDone')));
     });
 
     test('should begin emitting items after connection', () {
@@ -57,7 +60,8 @@ void main() {
         null,
       ).refCount();
 
-      stream.listen(null)..cancel(); // ignore: unawaited_futures
+      final subscription = stream.listen(null);
+      await subscription.cancel();
 
       expect(stream, neverEmits(anything));
     });
