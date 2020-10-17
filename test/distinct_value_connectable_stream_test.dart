@@ -5,9 +5,13 @@ import 'package:mockito/mockito.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:test/test.dart';
 
+import 'value_subject_test.dart' as value_subject_test;
+
 class MockStream<T> extends Mock implements Stream<T> {}
 
 void main() {
+  value_subject_test.main();
+
   group('DistinctValueConnectableStream', () {
     test('should not emit before connecting', () {
       final stream = MockStream<int>();

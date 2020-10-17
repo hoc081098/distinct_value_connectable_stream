@@ -94,7 +94,7 @@ class ValueSubject<T> extends Subject<T> implements ValueStream<T> {
   T get value => _dataOrError.value;
 
   @override
-  Object get error => _dataOrError.errorAndStacktrace.error;
+  Object get error => _dataOrError.errorAndStacktrace?.error;
 
   @override
   bool get hasError => _dataOrError.event == _Event.error;
