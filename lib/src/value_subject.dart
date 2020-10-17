@@ -29,7 +29,7 @@ class _DataOrError<T> {
 /// added to the controller.
 ///
 /// [ValueSubject] is the same as [PublishSubject], with the ability to capture
-/// latest item that has been added to the controller.
+/// the latest item has been added to the controller.
 ///
 /// [ValueSubject] is, by default, a broadcast (aka hot) controller, in order
 /// to fulfill the Rx Subject contract. This means the Subject's `stream` can
