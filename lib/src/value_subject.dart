@@ -1,21 +1,21 @@
 import 'dart:async';
 
-import 'package:rxdart/streams.dart' show ValueStream, ErrorAndStacktrace;
-import 'package:rxdart/subjects.dart' show Subject, PublishSubject;
+import 'package:rxdart/rxdart.dart'
+    show ValueStream, ErrorAndStackTrace, Subject, PublishSubject;
 
 enum _Event { data, error }
 
 class _DataOrError<T> {
   _Event event;
   T value;
-  ErrorAndStacktrace errorAndStacktrace;
+  ErrorAndStackTrace error;
 
   _DataOrError.data(this.value)
       : event = _Event.data,
-        errorAndStacktrace = null;
+        error = null;
 
-  void onError(ErrorAndStacktrace errorAndStacktrace) {
-    this.errorAndStacktrace = errorAndStacktrace;
+  void onError(ErrorAndStackTrace error) {
+    this.error = error;
     event = _Event.error;
   }
 
@@ -85,7 +85,7 @@ class ValueSubject<T> extends Subject<T> implements ValueStream<T> {
 
   @override
   void onAddError(Object error, [StackTrace stackTrace]) =>
-      _dataOrError.onError(ErrorAndStacktrace(error, stackTrace));
+      _dataOrError.onError(ErrorAndStackTrace(error, stackTrace));
 
   @override
   bool get hasValue => _dataOrError.event == _Event.data;
@@ -94,7 +94,7 @@ class ValueSubject<T> extends Subject<T> implements ValueStream<T> {
   T get value => _dataOrError.value;
 
   @override
-  Object get error => _dataOrError.errorAndStacktrace?.error;
+  ErrorAndStackTrace get errorAndStackTrace => _dataOrError.error;
 
   @override
   bool get hasError => _dataOrError.event == _Event.error;

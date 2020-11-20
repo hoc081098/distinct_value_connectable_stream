@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:rxdart/streams.dart'
-    show ConnectableStream, ConnectableStreamSubscription;
+import 'package:rxdart/rxdart.dart'
+    show ConnectableStream, ConnectableStreamSubscription, ErrorAndStackTrace;
 
 import 'distinct_value_stream.dart';
 import 'value_subject.dart';
@@ -103,7 +103,7 @@ class DistinctValueConnectableStream<T> extends ConnectableStream<T>
   T get value => _subject.value;
 
   @override
-  Object get error => _subject.error;
+  ErrorAndStackTrace get errorAndStackTrace => _subject.errorAndStackTrace;
 
   @override
   bool get hasError => _subject.hasError;
