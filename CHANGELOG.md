@@ -1,3 +1,7 @@
+## 1.2.0-beta02 - Dec 7, 2020
+
+-   Updated `rxdart: ^0.25.0`.
+
 ## 1.2.0-beta01 - Oct 18, 2020
 
 -   Introduce `ValueSubject` same as `PublishSubject`, with the ability to capture the latest item has been added to the controller.
