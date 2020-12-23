@@ -1,34 +1,50 @@
 import 'dart:async';
 
 import 'package:distinct_value_connectable_stream/distinct_value_connectable_stream.dart';
-import 'package:mockito/mockito.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:test/test.dart';
 
-import 'value_subject_test.dart' as value_subject_test;
+class MockStream<T> implements Stream<T> {
+  final calls = <Map<String, dynamic>>[];
 
-class MockStream<T> extends Mock implements Stream<T> {}
+  @override
+  dynamic noSuchMethod(Invocation invocation) {}
+
+  @override
+  StreamSubscription<T> listen(
+    void Function(T event)? onData, {
+    Function? onError,
+    void Function()? onDone,
+    bool? cancelOnError,
+  }) {
+    calls.add(<String, dynamic>{
+      'onData': onData,
+      'onError': onError,
+      'onDone': onDone,
+      'cancelOnError': cancelOnError,
+    });
+    return Stream<T>.empty().listen(
+      onData,
+      onError: onError,
+      onDone: onDone,
+      cancelOnError: cancelOnError,
+    );
+  }
+}
 
 void main() {
-  value_subject_test.main();
-
   group('DistinctValueConnectableStream', () {
     test('should not emit before connecting', () {
       final stream = MockStream<int>();
-      when(stream.isBroadcast).thenReturn(true);
-      when(stream.listen(any,
-              onError: anyNamed('onError'), onDone: anyNamed('onDone')))
-          .thenReturn(Stream.fromIterable(const [1, 2, 3]).listen(null));
 
       final distinctStream = DistinctValueConnectableStream(stream, null);
-
-      verifyNever(stream.listen(any,
-          onError: anyNamed('onError'), onDone: anyNamed('onDone')));
-
+      expect(stream.calls.isEmpty, isTrue);
       distinctStream.connect();
 
-      verify(stream.listen(any,
-          onError: anyNamed('onError'), onDone: anyNamed('onDone')));
+      final call = stream.calls.single;
+      expect(call['onData'], isNotNull);
+      expect(call['onError'], isNotNull);
+      expect(call['onDone'], isNotNull);
     });
 
     test('should begin emitting items after connection', () {
@@ -185,6 +201,7 @@ void main() {
 
       final shareValueDistinct = Stream.fromIterable([1, 1, 2, 2, 3, 3, 4, 4])
           .interval(const Duration(milliseconds: 200))
+          .cast<int?>()
           .shareValueDistinct(null);
       await expectLater(shareValueDistinct, matcher);
     });

@@ -40,8 +40,8 @@ extension DistinctValueConnectableExtensions<T> on Stream<T> {
   /// ```
   DistinctValueConnectableStream<T> publishValueDistinct(
     T seedValue, {
-    bool Function(T previous, T next) equals,
-    bool sync = false,
+    bool Function(T previous, T next)? equals,
+    bool sync = true,
   }) =>
       DistinctValueConnectableStream<T>(this, seedValue,
           equals: equals, sync: sync);
@@ -80,8 +80,8 @@ extension DistinctValueConnectableExtensions<T> on Stream<T> {
   /// ```
   DistinctValueStream<T> shareValueDistinct(
     T seedValue, {
-    bool Function(T previous, T next) equals,
-    bool sync = false,
+    bool Function(T previous, T next)? equals,
+    bool sync = true,
   }) =>
       publishValueDistinct(seedValue, equals: equals, sync: sync).refCount();
 }

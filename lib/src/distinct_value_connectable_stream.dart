@@ -1,10 +1,8 @@
 import 'dart:async';
 
-import 'package:rxdart/rxdart.dart'
-    show ConnectableStream, ConnectableStreamSubscription, ErrorAndStackTrace;
+import 'package:rxdart_ext/rxdart_ext.dart';
 
 import 'distinct_value_stream.dart';
-import 'value_subject.dart';
 
 /// A [ConnectableStream] that converts a single-subscription Stream into
 /// a broadcast [Stream], and provides synchronous access to the latest emitted value.
@@ -21,9 +19,8 @@ class DistinctValueConnectableStream<T> extends ConnectableStream<T>
   DistinctValueConnectableStream._(
     this._source,
     this._subject,
-    bool Function(T, T) equals,
-  )   : assert(_source != null),
-        equals = equals ?? DistinctValueStream.defaultEquals,
+    bool Function(T, T)? equals,
+  )   : equals = equals ?? DistinctValueStream.defaultEquals,
         super(_subject);
 
   /// Constructs a [Stream] which only begins emitting events when
@@ -36,8 +33,8 @@ class DistinctValueConnectableStream<T> extends ConnectableStream<T>
   factory DistinctValueConnectableStream(
     Stream<T> source,
     T seedValue, {
-    bool Function(T previous, T next) equals,
-    bool sync = false,
+    bool Function(T previous, T next)? equals,
+    bool sync = true,
   }) =>
       DistinctValueConnectableStream<T>._(
           source, ValueSubject(seedValue, sync: sync), equals);
@@ -54,7 +51,7 @@ class DistinctValueConnectableStream<T> extends ConnectableStream<T>
 
   @override
   DistinctValueStream<T> autoConnect({
-    void Function(StreamSubscription<T> subscription) connection,
+    void Function(StreamSubscription<T> subscription)? connection,
   }) {
     _subject.onListen = () {
       final subscription = _connect();
@@ -73,7 +70,7 @@ class DistinctValueConnectableStream<T> extends ConnectableStream<T>
 
   @override
   DistinctValueStream<T> refCount() {
-    ConnectableStreamSubscription<T> subscription;
+    late ConnectableStreamSubscription<T> subscription;
 
     _subject.onListen = () => subscription = _connect();
     _subject.onCancel = () => subscription.cancel();
@@ -103,7 +100,7 @@ class DistinctValueConnectableStream<T> extends ConnectableStream<T>
   T get value => _subject.value;
 
   @override
-  ErrorAndStackTrace get errorAndStackTrace => _subject.errorAndStackTrace;
+  ErrorAndStackTrace? get errorAndStackTrace => _subject.errorAndStackTrace;
 
   @override
   bool get hasError => _subject.hasError;

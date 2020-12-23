@@ -1,5 +1,4 @@
 import 'package:distinct_value_connectable_stream/distinct_value_connectable_stream.dart';
-import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 
 class CounterBloc {
@@ -14,10 +13,10 @@ class CounterBloc {
   final void Function() dispose;
 
   CounterBloc._({
-    @required this.increment,
-    @required this.decrement,
-    @required this.state$,
-    @required this.dispose,
+    required this.increment,
+    required this.decrement,
+    required this.state$,
+    required this.dispose,
   });
 
   factory CounterBloc() {
@@ -29,7 +28,7 @@ class CounterBloc {
       decrementController.map((i) => -i),
     ];
     final state$ = Rx.merge(streams)
-        .scan<int>((acc, e, _) => acc + e, 0)
+        .scan<int>((acc, e, _) => acc! + e, 0)
         .publishValueDistinct(0);
 
     final subscription = state$.connect();
@@ -71,5 +70,5 @@ void main() async {
   print(counterBloc.state$.value);
 
   await listen.cancel();
-  await counterBloc.dispose();
+  counterBloc.dispose();
 }
