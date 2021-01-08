@@ -1,3 +1,7 @@
+## 1.2.0-nullsafety.1 - Jan 8, 2021
+
+-   Update README.md.
+
 ## 1.2.0-nullsafety.0 - Jan 8, 2021
 
 -   Migrate this package to null safety.
