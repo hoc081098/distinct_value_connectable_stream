@@ -4,7 +4,7 @@
 
 ## Author: [Petrus Nguyễn Thái Học](https://github.com/hoc081098)
 
-[![Build Status](https://travis-ci.org/hoc081098/distinct_value_connectable_stream.svg?branch=master)](https://travis-ci.org/hoc081098/distinct_value_connectable_stream)
+[![Build Status](https://travis-ci.com/hoc081098/distinct_value_connectable_stream.svg?branch=master)](https://travis-ci.com/hoc081098/distinct_value_connectable_stream)
 [![Pub](https://img.shields.io/pub/v/distinct_value_connectable_stream.svg)](https://pub.dartlang.org/packages/distinct_value_connectable_stream)
 
 ## Implement BLoC
