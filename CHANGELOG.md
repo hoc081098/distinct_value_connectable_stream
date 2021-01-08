@@ -1,3 +1,9 @@
+## 1.2.0-nullsafety.0 - Jan 8, 2021
+
+-   Migrate this package to null safety.
+-   Sdk constraints: >=2.12.0-0 <3.0.0 based on beta release guidelines.
+-   Depends on [rxdart_ext](https://pub.dev/packages/rxdart_ext).
+
 ## 1.2.0-beta02 - Dec 7, 2020
 
 -   Updated `rxdart: ^0.25.0`.
