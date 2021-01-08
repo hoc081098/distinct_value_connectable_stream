@@ -1,4 +1,4 @@
-import 'package:rxdart/rxdart.dart';
+import 'package:rxdart_ext/rxdart_ext.dart' show ValueStream;
 
 import '../distinct_value_connectable_stream.dart';
 import 'distinct_value_stream.dart';
