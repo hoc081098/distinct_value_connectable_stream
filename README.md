@@ -1,6 +1,39 @@
 # distinct_value_connectable_stream <img src="https://avatars3.githubusercontent.com/u/6407041?s=200&v=4" width="32">
-- `Distinct` & `Connectable` & `ValueStream` rxdart
-- Useful for flutter BLoC pattern, expose broadcast state stream to UI, can synchronous access to the last emitted item, and distinct until changed
+
+-   `Distinct` & `Connectable` & `ValueStream` RxDart Stream.
+-   Useful for flutter `BLoC pattern` - `StreamBuilder`.
+
+------
+
+-   [x] `Distinct`: distinct until changed.
+-   [x] `Value`: can synchronous access to the last emitted item.
+-   [x] `NotReplay`: not replay the latest value.
+-   [x] `Connectable`: broadcast stream - can be listened to multiple time.
+
+```
+                                Stream (dart:core)
+                                   ^
+                                   |
+                                   |
+            |--------------------------------------------|
+            |                                            |
+            |                                            |
+        ValueStream (rxdart)                             |
+            ^                                            |
+            |                                            |
+            |                                            |
+    NotReplayValueStream (rxdart_ext)                    |
+            ^                                    ConnectableStream (rxdart)
+            |                                            ^
+            |                                            |
+    DistinctValueStream (this package)                   |
+            ^                                            |
+            |                                            |
+            |------------                     -----------|
+                        |                     |
+                        |                     |
+                     DistinctValueConnectableStream (this package)
+```
 
 ## Author: [Petrus Nguyễn Thái Học](https://github.com/hoc081098)
 
@@ -26,8 +59,6 @@
 [comment]: <> ( </p>)
 
 ## Usage
-
-Import `distinct_value_connectable_stream`:
 
 ```dart
 import 'package:distinct_value_connectable_stream/distinct_value_connectable_stream.dart';
