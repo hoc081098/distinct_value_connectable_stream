@@ -3,6 +3,12 @@
 -   `Distinct` & `Connectable` & `ValueStream` RxDart Stream.
 -   Useful for flutter `BLoC pattern` - `StreamBuilder`.
 
+## Author: [Petrus Nguyễn Thái Học](https://github.com/hoc081098)
+
+[![Build Status](https://travis-ci.com/hoc081098/distinct_value_connectable_stream.svg?branch=master)](https://travis-ci.com/hoc081098/distinct_value_connectable_stream)
+[![Pub](https://img.shields.io/pub/v/distinct_value_connectable_stream.svg)](https://pub.dev/packages/distinct_value_connectable_stream)
+[![codecov](https://codecov.io/gh/hoc081098/distinct_value_connectable_stream/branch/master/graph/badge.svg?token=L0jTkGFCfz)](https://codecov.io/gh/hoc081098/distinct_value_connectable_stream)
+
 ------
 
 -   [x] `Distinct`: distinct until changed.
@@ -34,11 +40,6 @@
                         |                     |
                      DistinctValueConnectableStream (this package)
 ```
-
-## Author: [Petrus Nguyễn Thái Học](https://github.com/hoc081098)
-
-[![Build Status](https://travis-ci.com/hoc081098/distinct_value_connectable_stream.svg?branch=master)](https://travis-ci.com/hoc081098/distinct_value_connectable_stream)
-[![Pub](https://img.shields.io/pub/v/distinct_value_connectable_stream.svg)](https://pub.dev/packages/distinct_value_connectable_stream)
 
 [comment]: <> (## Implement BLoC)
 
