@@ -1,3 +1,9 @@
+## 1.2.0-nullsafety.2 - Jan 9, 2021
+
+-   **Breaking change**: Any errors from upstream and from `equals` callback will be not added to Stream.
+    They are considered unhandled, and will be passed to the current `Zone`'s error handler.
+    By default, unhandled async errors are treated as if they were uncaught top-level errors.
+
 ## 1.2.0-nullsafety.1 - Jan 8, 2021
 
 -   Update README.md.

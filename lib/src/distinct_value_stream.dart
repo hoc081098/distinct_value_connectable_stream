@@ -1,4 +1,5 @@
-import 'package:rxdart_ext/rxdart_ext.dart' show NotReplayValueStream;
+import 'package:rxdart_ext/rxdart_ext.dart'
+    show NotReplayValueStream, ValueWrapper;
 
 /// An [Stream] that provides synchronous access to the last emitted item,
 /// and two consecutive values are not equal.
@@ -10,4 +11,10 @@ abstract class DistinctValueStream<T> extends NotReplayValueStream<T> {
   /// Default [equals] function.
   /// Use '==' operator on the last provided data element.
   static bool defaultEquals<T>(T lhs, T rhs) => lhs == rhs;
+
+  @override
+  Never get errorAndStackTrace;
+
+  @override
+  ValueWrapper<T> get valueWrapper;
 }

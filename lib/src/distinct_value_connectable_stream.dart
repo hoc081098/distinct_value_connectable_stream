@@ -99,8 +99,9 @@ class DistinctValueConnectableStream<T> extends ConnectableStream<T>
   }
 
   @override
-  ErrorAndStackTrace? get errorAndStackTrace => null;
+  Never get errorAndStackTrace =>
+      throw StateError('This Stream always has no error!');
 
   @override
-  ValueWrapper<T>? get valueWrapper => _subject.valueWrapper;
+  ValueWrapper<T> get valueWrapper => _subject.valueWrapper!;
 }

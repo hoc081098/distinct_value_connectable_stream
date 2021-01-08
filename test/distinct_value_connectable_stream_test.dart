@@ -248,6 +248,33 @@ void main() {
       expect(() => stream.refCount(), throwsStateError);
       expect(() => stream.autoConnect(), throwsStateError);
     });
+
+    test('nullable generic type', () {
+      expect(
+        Stream<int?>.fromIterable([
+          null,
+          1,
+          2,
+          null,
+          3,
+          4,
+          4,
+          null,
+          null,
+        ]).shareValueDistinct(null),
+        emitsInOrder(
+          <dynamic>[
+            1,
+            2,
+            null,
+            3,
+            4,
+            null,
+            emitsDone,
+          ],
+        ),
+      );
+    });
   });
 }
 
