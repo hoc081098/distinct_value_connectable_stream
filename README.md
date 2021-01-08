@@ -5,21 +5,25 @@
 ## Author: [Petrus Nguyễn Thái Học](https://github.com/hoc081098)
 
 [![Build Status](https://travis-ci.com/hoc081098/distinct_value_connectable_stream.svg?branch=master)](https://travis-ci.com/hoc081098/distinct_value_connectable_stream)
-[![Pub](https://img.shields.io/pub/v/distinct_value_connectable_stream.svg)](https://pub.dartlang.org/packages/distinct_value_connectable_stream)
+[![Pub](https://img.shields.io/pub/v/distinct_value_connectable_stream.svg)](https://pub.dev/packages/distinct_value_connectable_stream)
 
-## Implement BLoC
+[comment]: <> (## Implement BLoC)
 
- ### Without using package
+[comment]: <> ( ### Without using package)
  
- <p align="center">
-    <img src="https://github.com/hoc081098/distinct_value_connectable_stream/raw/master/bloc1.png" width="480"/>
- </p>
+[comment]: <> ( <p align="center">)
+
+[comment]: <> (    <img src="https://github.com/hoc081098/distinct_value_connectable_stream/raw/master/bloc1.png" width="480"/>)
+
+[comment]: <> ( </p>)
  
- ### Using package
+[comment]: <> ( ### Using package)
   
- <p align="center">
-    <img src="https://github.com/hoc081098/distinct_value_connectable_stream/raw/master/bloc2.png" width="480"/>
- </p>
+[comment]: <> ( <p align="center">)
+
+[comment]: <> (    <img src="https://github.com/hoc081098/distinct_value_connectable_stream/raw/master/bloc2.png" width="480"/>)
+
+[comment]: <> ( </p>)
 
 ## Usage
 
@@ -29,65 +33,22 @@ Import `distinct_value_connectable_stream`:
 import 'package:distinct_value_connectable_stream/distinct_value_connectable_stream.dart';
 ```
 
-### 1. Constructor based
-
-Wrap your `Stream` in a `DistinctValueConnectableStream` using `constructor`:
-
 ```dart
-final Stream<State> state$;
-final distinct$ = DistinctValueConnectableStream(state$);
-final distinctSeeded$ = DistinctValueConnectableStream.seeded(
-  state$,
-  seedValue: State.initial(),
+class UiState { ... }
+
+final Stream<UiState> state$ = ...;
+
+final distinctState$ = state$.publishValueDistinct();
+distinctState$.connect();
+
+StreamBuilder<UiState>(
+  initialData: distinctState$.value,
+  stream: distinctState$,
+  builder: (context, snapshot) {
+    final UiState state = snapshot.data;
+    return ...;
+  },
 );
-```
-
-You can pass `equals` parameter type `bool Function(T, T)` to `constructor`, used to determined equality (default is `operator ==`):
-
-```dart
-final Stream<State> state$;
-final bool Function(State, State) isEquals;
-
-final distinct$ = DistinctValueConnectableStream.seeded(
-  state$,
-  seedValue: State.initial(),
-  equals: isEquals,
-);
-```
-
-### 2. Extension method based
-
-```dart
-final source$ = Stream.fromIterable([1, 2, 2, 3, 3, 3]);
-
-// publish
-final connectable$       = source$.publishValueDistinct(0);
-// share
-final shared$            = source$.shareValueDistinct(0);
-```
-
-All extension methods have optional parameter `equals` type `bool Function(T, T)` like constructor based
-
-```dart
-final source$ = Stream.fromIterable([1, 2, 2, 3, 3, 3]);
-final connectable$ = source$.publishValueDistinct();
-
-// Does not print anything at first
-connectable$.listen(print);
-
-// Start listening to the source Stream. Will cause the previous
-// line to start printing 1, 2, 3
-final subscription = connectable$.connect();
-
-// Late subscribers will receive the last emitted value
-connectable$.listen(print); // Prints 3
-
-// Can access the latest emitted value synchronously. Prints 3
-print(connectable$.value);
-
-// Stop emitting items from the source stream and close the underlying
-// BehaviorSubject
-await subscription.cancel();
 ```
 
 ## Features and bugs
@@ -100,22 +61,4 @@ License
 -------
     MIT License
 
-    Copyright (c) 2019 Petrus Nguyễn Thái Học
-
-    Permission is hereby granted, free of charge, to any person obtaining a copy
-    of this software and associated documentation files (the "Software"), to deal
-    in the Software without restriction, including without limitation the rights
-    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    copies of the Software, and to permit persons to whom the Software is
-    furnished to do so, subject to the following conditions:
-
-    The above copyright notice and this permission notice shall be included in all
-    copies or substantial portions of the Software.
-
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-    SOFTWARE.
+    Copyright (c) 2020 Petrus Nguyễn Thái Học
