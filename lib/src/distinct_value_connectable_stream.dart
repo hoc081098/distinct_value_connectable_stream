@@ -79,10 +79,11 @@ class DistinctValueConnectableStream<T> extends ConnectableStream<T>
   }
 
   void _onData(T data) {
-    bool isEqual;
+    final value = _subject.requireValue;
 
+    bool isEqual;
     try {
-      isEqual = equals(_subject.requireValue, data);
+      isEqual = equals(value, data);
     } catch (e, s) {
       _subject.addError(e, s);
       return;
