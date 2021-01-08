@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:distinct_value_connectable_stream/distinct_value_connectable_stream.dart';
-import 'package:rxdart/rxdart.dart';
+import 'package:rxdart_ext/rxdart_ext.dart';
 import 'package:test/test.dart';
 
 class MockStream<T> implements Stream<T> {
