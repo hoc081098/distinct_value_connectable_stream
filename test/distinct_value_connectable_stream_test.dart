@@ -80,7 +80,7 @@ void main() {
         null,
       ).refCount();
 
-      final subscription = stream.listen(null);
+      final subscription = stream.collect();
       await subscription.cancel();
 
       expect(stream, neverEmits(anything));
@@ -92,8 +92,8 @@ void main() {
         null,
       ).refCount();
 
-      stream.listen(null);
-      stream.listen(null)..cancel(); // ignore: unawaited_futures
+      stream.collect();
+      stream.collect()..cancel(); // ignore: unawaited_futures
 
       expect(stream, emitsInOrder(const <int>[1, 2, 3]));
     });
@@ -222,6 +222,21 @@ void main() {
       await expectLater(
         shareValueDistinct,
         emitsInOrder(const <int>[2, 3, 4]),
+      );
+    });
+
+    test('throws error', () {
+      runZonedGuarded(
+        () =>
+            Stream<void>.error(Exception()).shareValueDistinct(null).collect(),
+        (e, s) => expect(e, isException),
+      );
+
+      runZonedGuarded(
+        () => Stream.value(2)
+            .shareValueDistinct(1, equals: (l, r) => throw Exception())
+            .collect(),
+        (e, s) => expect(e, isException),
       );
     });
   });
