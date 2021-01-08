@@ -76,7 +76,7 @@ StreamBuilder<UiState>(
   initialData: distinctState$.requireValue,
   stream: distinctState$,
   builder: (context, snapshot) {
-    final UiState state = snapshot.data;
+    final UiState state = snapshot.requireData;
     return ...;
   },
 );
