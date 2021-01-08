@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:distinct_value_connectable_stream/distinct_value_connectable_stream.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -20,27 +22,28 @@ class CounterBloc {
   });
 
   factory CounterBloc() {
-    final incrementController = PublishSubject<int>();
-    final decrementController = PublishSubject<int>();
+    final incrementController = StreamController<int>();
+    final decrementController = StreamController<int>();
 
     final streams = [
-      incrementController,
-      decrementController.map((i) => -i),
+      incrementController.stream,
+      decrementController.stream.map((i) => -i),
     ];
     final state$ = Rx.merge(streams)
         .scan<int>((acc, e, _) => acc! + e, 0)
         .publishValueDistinct(0);
 
     final subscription = state$.connect();
-
     return CounterBloc._(
       increment: incrementController.add,
       decrement: decrementController.add,
       state$: state$,
       dispose: () async {
-        await Future.wait<void>(
-            [incrementController, decrementController].map((c) => c.close()));
         await subscription.cancel();
+        await Future.wait<void>([
+          incrementController.close(),
+          decrementController.close(),
+        ]);
       },
     );
   }
