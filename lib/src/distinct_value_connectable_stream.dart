@@ -43,7 +43,7 @@ class DistinctValueConnectableStream<T> extends ConnectableStream<T>
       ConnectableStreamSubscription<T>(
         _source.listen(
           _onData,
-          onError: _subject.addError,
+          onError: null,
           onDone: _subject.close,
         ),
         _subject,
@@ -82,7 +82,7 @@ class DistinctValueConnectableStream<T> extends ConnectableStream<T>
     bool isEqual;
 
     try {
-      isEqual = equals(_subject.value, data);
+      isEqual = equals(_subject.requireValue, data);
     } catch (e, s) {
       _subject.addError(e, s);
       return;
@@ -94,14 +94,8 @@ class DistinctValueConnectableStream<T> extends ConnectableStream<T>
   }
 
   @override
-  bool get hasValue => _subject.hasValue;
-
-  @override
-  T get value => _subject.value;
-
-  @override
   ErrorAndStackTrace? get errorAndStackTrace => _subject.errorAndStackTrace;
 
   @override
-  bool get hasError => _subject.hasError;
+  ValueWrapper<T>? get valueWrapper => _subject.valueWrapper;
 }

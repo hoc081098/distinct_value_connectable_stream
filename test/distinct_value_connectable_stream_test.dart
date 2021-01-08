@@ -43,7 +43,7 @@ void main() {
 
       final call = stream.calls.single;
       expect(call['onData'], isNotNull);
-      expect(call['onError'], isNotNull);
+      expect(call['onError'], isNull);
       expect(call['onDone'], isNotNull);
     });
 
