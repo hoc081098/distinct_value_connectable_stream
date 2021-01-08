@@ -239,6 +239,15 @@ void main() {
         (e, s) => expect(e, isException),
       );
     });
+
+    test('cannot reuse', () {
+      final stream = Stream.value(2).publishValueDistinct(1);
+      stream.connect();
+
+      expect(() => stream.connect(), throwsStateError);
+      expect(() => stream.refCount(), throwsStateError);
+      expect(() => stream.autoConnect(), throwsStateError);
+    });
   });
 }
 

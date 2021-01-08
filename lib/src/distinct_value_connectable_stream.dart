@@ -12,6 +12,7 @@ class DistinctValueConnectableStream<T> extends ConnectableStream<T>
     implements DistinctValueStream<T> {
   final Stream<T> _source;
   final ValueSubject<T> _subject;
+  var _used = false;
 
   @override
   final bool Function(T, T) equals;
@@ -49,10 +50,19 @@ class DistinctValueConnectableStream<T> extends ConnectableStream<T>
         _subject,
       );
 
+  void _checkUsed() {
+    if (_used) {
+      throw StateError('Cannot reuse this stream. This causes many problems.');
+    }
+    _used = true;
+  }
+
   @override
   DistinctValueStream<T> autoConnect({
     void Function(StreamSubscription<T> subscription)? connection,
   }) {
+    _checkUsed();
+
     _subject.onListen = () {
       final subscription = _connect();
       connection?.call(subscription);
@@ -64,12 +74,16 @@ class DistinctValueConnectableStream<T> extends ConnectableStream<T>
 
   @override
   StreamSubscription<T> connect() {
+    _checkUsed();
+
     _subject.onListen = _subject.onCancel = null;
     return _connect();
   }
 
   @override
   DistinctValueStream<T> refCount() {
+    _checkUsed();
+
     late ConnectableStreamSubscription<T> subscription;
 
     _subject.onListen = () => subscription = _connect();
