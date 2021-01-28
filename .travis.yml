@@ -6,13 +6,13 @@ script:
   - dartfmt -n ./lib --set-exit-if-changed
   - pub get
   - pub global activate coverage
-  - pub run --enable-asserts test/distinct_value_connectable_stream_test.dart
+  - pub run --enable-asserts test/main_test.dart
   - dart
     --disable-service-auth-codes
     --enable-vm-service=8111
     --pause-isolates-on-exit
     --enable-asserts
-    test/distinct_value_connectable_stream_test.dart &
+    test/main_test.dart &
   - nohup pub global run coverage:collect_coverage
     --port=8111
     --out=coverage.json
