@@ -49,23 +49,27 @@ extension AsDistinctValueStreamExtension<T> on Stream<T> {
 /// the '==' operator on the last provided data element is used.
 ///
 /// This stream is a broadcast stream if this stream is.
-class _DistinctValueStream<T> extends Stream<T>
+class _DistinctValueStream<T> extends StreamView<T>
     implements DistinctValueStream<T> {
   @override
   final bool Function(T p1, T p2) equals;
 
-  final Stream<T> _source;
   T _value;
 
   /// Construct a [_DistinctValueStream] with source stream, seed value.
   _DistinctValueStream(
-    this._source,
+    Stream<T> source,
     this._value,
-    bool Function(T p1, T p2)? equals,
-  ) : equals = equals ?? DistinctValueStream.defaultEquals;
-
-  @override
-  bool get isBroadcast => _source.isBroadcast;
+    bool Function(T, T)? eq,
+  )   : equals = eq ?? DistinctValueStream.defaultEquals,
+        super(
+          _buildStream(
+            source,
+            () => _value,
+            (value) => _value = value,
+            eq ?? DistinctValueStream.defaultEquals,
+          ),
+        );
 
   @override
   Never get errorAndStackTrace =>
@@ -74,23 +78,47 @@ class _DistinctValueStream<T> extends Stream<T>
   @override
   ValueWrapper<T> get valueWrapper => ValueWrapper(_value);
 
-  @override
-  StreamSubscription<T> listen(
-    void Function(T event)? onData, {
-    Function? onError,
-    void Function()? onDone,
-    bool? cancelOnError,
-  }) {
-    return _source.listen(
-      (data) {
-        if (!equals(_value, data)) {
-          _value = data;
-          onData?.call(data);
-        }
-      },
-      onError: onError,
-      onDone: onDone,
-      cancelOnError: cancelOnError,
-    );
+  static Stream<T> _buildStream<T>(
+    Stream<T> source,
+    T Function() getValue,
+    Function(T value) setValue,
+    bool Function(T, T) equals,
+  ) {
+    final controller = source.isBroadcast
+        ? StreamController<T>.broadcast(sync: true)
+        : StreamController<T>(sync: true);
+
+    late StreamSubscription<T> subscription;
+
+    controller.onListen = () {
+      subscription = source.listen(
+        (data) {
+          if (!equals(getValue(), data)) {
+            setValue(data);
+            controller.add(data);
+          }
+        },
+        onError: controller.addError,
+        onDone: controller.close,
+      );
+
+      if (!source.isBroadcast) {
+        controller.onPause = subscription.pause;
+        controller.onResume = subscription.resume;
+      }
+    };
+    controller.onCancel = () => subscription.cancel();
+
+    return controller.stream;
   }
+}
+
+void main() {
+  late StreamSubscription<int> listen;
+  listen = Stream.fromIterable([1, 2, 3, 4]).distinctValue(1).listen((event) {
+    print(event);
+    if (event == 3) {
+      listen.onData((data) {});
+    }
+  });
 }
