@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:rxdart_ext/rxdart_ext.dart'
-    show NotReplayValueStream, ValueWrapper;
+    show NotReplayValueStream, ValueStreamController, ValueWrapper;
 
 /// An [Stream] that provides synchronous access to the last emitted item,
 /// and two consecutive values are not equal.
@@ -49,52 +49,27 @@ extension AsDistinctValueStreamExtension<T> on Stream<T> {
 /// the '==' operator on the last provided data element is used.
 ///
 /// This stream is a broadcast stream if this stream is.
-class _DistinctValueStream<T> extends StreamView<T>
+class _DistinctValueStream<T> extends Stream<T>
     implements DistinctValueStream<T> {
   @override
   final bool Function(T p1, T p2) equals;
 
-  T _value;
+  final ValueStreamController<T> controller;
+  late final NotReplayValueStream<T> stream = controller.stream;
 
   /// Construct a [_DistinctValueStream] with source stream, seed value.
   _DistinctValueStream(
     Stream<T> source,
-    this._value,
+    T value,
     bool Function(T, T)? eq,
   )   : equals = eq ?? DistinctValueStream.defaultEquals,
-        super(
-          _buildStream(
-            source,
-            () => _value,
-            (value) => _value = value,
-            eq ?? DistinctValueStream.defaultEquals,
-          ),
-        );
-
-  @override
-  Never get errorAndStackTrace =>
-      throw StateError('_DistinctValueStream always has no error!');
-
-  @override
-  ValueWrapper<T> get valueWrapper => ValueWrapper(_value);
-
-  static Stream<T> _buildStream<T>(
-    Stream<T> source,
-    T Function() getValue,
-    Function(T value) setValue,
-    bool Function(T, T) equals,
-  ) {
-    final controller = source.isBroadcast
-        ? StreamController<T>.broadcast(sync: true)
-        : StreamController<T>(sync: true);
-
+        controller = ValueStreamController<T>(value, sync: true) {
     late StreamSubscription<T> subscription;
 
     controller.onListen = () {
       subscription = source.listen(
         (data) {
-          if (!equals(getValue(), data)) {
-            setValue(data);
+          if (!equals(valueWrapper.value, data)) {
             controller.add(data);
           }
         },
@@ -108,9 +83,28 @@ class _DistinctValueStream<T> extends StreamView<T>
       }
     };
     controller.onCancel = () => subscription.cancel();
-
-    return controller.stream;
   }
+
+  @override
+  Never get errorAndStackTrace =>
+      throw StateError('_DistinctValueStream always has no error!');
+
+  @override
+  ValueWrapper<T> get valueWrapper => stream.valueWrapper!;
+
+  @override
+  StreamSubscription<T> listen(
+    void Function(T event)? onData, {
+    Function? onError,
+    void Function()? onDone,
+    bool? cancelOnError,
+  }) =>
+      controller.stream.listen(
+        onData,
+        onError: onError,
+        onDone: onDone,
+        cancelOnError: cancelOnError,
+      );
 }
 
 void main() {
