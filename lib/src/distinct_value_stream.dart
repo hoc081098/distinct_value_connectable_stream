@@ -32,7 +32,7 @@ extension AsDistinctValueStreamExtension<T> on Stream<T> {
   /// Equality is determined by the provided [equals] method. If that is omitted,
   /// the '==' operator on the last provided data element is used.
   ///
-  /// The returned stream is a broadcast stream if this stream is.
+  /// This stream is a single-subscription stream.
   DistinctValueStream<T> distinctValue(
     T value, {
     bool Function(T p1, T p2)? equals,
@@ -48,28 +48,31 @@ extension AsDistinctValueStreamExtension<T> on Stream<T> {
 /// Equality is determined by the provided [equals] method. If that is omitted,
 /// the '==' operator on the last provided data element is used.
 ///
-/// This stream is a broadcast stream if this stream is.
+/// This stream is a single-subscription stream.
 class _DistinctValueStream<T> extends Stream<T>
     implements DistinctValueStream<T> {
   @override
   final bool Function(T p1, T p2) equals;
 
   final ValueStreamController<T> controller;
-  late final NotReplayValueStream<T> stream = controller.stream;
+  late final stream = controller.stream;
+
+  @override
+  bool get isBroadcast => false;
 
   /// Construct a [_DistinctValueStream] with source stream, seed value.
   _DistinctValueStream(
     Stream<T> source,
     T value,
-    bool Function(T, T)? eq,
-  )   : equals = eq ?? DistinctValueStream.defaultEquals,
+    bool Function(T, T)? equals,
+  )   : equals = equals ?? DistinctValueStream.defaultEquals,
         controller = ValueStreamController<T>(value, sync: true) {
     late StreamSubscription<T> subscription;
 
     controller.onListen = () {
       subscription = source.listen(
         (data) {
-          if (!equals(valueWrapper.value, data)) {
+          if (!this.equals(valueWrapper.value, data)) {
             controller.add(data);
           }
         },
@@ -99,7 +102,7 @@ class _DistinctValueStream<T> extends Stream<T>
     void Function()? onDone,
     bool? cancelOnError,
   }) =>
-      controller.stream.listen(
+      stream.listen(
         onData,
         onError: onError,
         onDone: onDone,
@@ -109,10 +112,9 @@ class _DistinctValueStream<T> extends Stream<T>
 
 void main() {
   late StreamSubscription<int> listen;
-  listen = Stream.fromIterable([1, 2, 3, 4]).distinctValue(1).listen((event) {
+  final distinctValue = Stream.fromIterable([1, 2, 3, 4]).distinctValue(1);
+  listen = distinctValue.listen((event) {
     print(event);
-    if (event == 3) {
-      listen.onData((data) {});
-    }
   });
+  distinctValue.listen((event) { });
 }
