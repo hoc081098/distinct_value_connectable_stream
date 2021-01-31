@@ -15,10 +15,36 @@ abstract class DistinctValueStream<T> extends NotReplayValueStream<T> {
   static bool defaultEquals<T>(T lhs, T rhs) => lhs == rhs;
 
   @override
-  Never get errorAndStackTrace;
+  Null get errorAndStackTrace;
 
   @override
   ValueWrapper<T> get valueWrapper;
+}
+
+/// Extensions to access value and error easily.
+extension DistinctValueStreamExtensions<T> on DistinctValueStream<T> {
+  /// A flag that turns true as soon as at least one event has been emitted.
+  /// Always returns `true`.
+  bool get hasValue => true;
+
+  /// Returns latest value.
+  T get value => valueWrapper.value;
+
+  /// Returns latest value.
+  T get requireValue => valueWrapper.value;
+
+  /// A flag that turns true as soon as at an error event has been emitted.
+  /// Always returns `false`.
+  bool get hasError => false;
+
+  /// Last emitted error.
+  /// Always returns `null`.
+  Object? get error => null;
+
+  /// Last emitted error.
+  /// Always throws.
+  Never get requireError =>
+      throw StateError('DistinctValueStream always has no error!');
 }
 
 /// Convert this [Stream] to a [DistinctValueStream].
@@ -88,8 +114,7 @@ class _DistinctValueStream<T> extends Stream<T>
   }
 
   @override
-  Never get errorAndStackTrace =>
-      throw StateError('_DistinctValueStream always has no error!');
+  Null get errorAndStackTrace => null;
 
   @override
   ValueWrapper<T> get valueWrapper => controller.stream.valueWrapper!;
