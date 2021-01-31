@@ -48,7 +48,7 @@ extension DistinctValueStreamExtensions<T> on DistinctValueStream<T> {
 }
 
 /// Convert this [Stream] to a [DistinctValueStream].
-extension AsDistinctValueStreamExtension<T> on Stream<T> {
+extension ToDistinctValueStreamExtension<T> on Stream<T> {
   /// Convert this [Stream] to a [DistinctValueStream].
   ///
   /// Returned stream acts like [Stream.distinct] except it provides seed value
