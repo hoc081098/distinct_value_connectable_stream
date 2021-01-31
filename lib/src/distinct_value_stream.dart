@@ -55,7 +55,6 @@ class _DistinctValueStream<T> extends Stream<T>
   final bool Function(T p1, T p2) equals;
 
   final ValueStreamController<T> controller;
-  late final stream = controller.stream;
 
   @override
   bool get isBroadcast => false;
@@ -93,7 +92,7 @@ class _DistinctValueStream<T> extends Stream<T>
       throw StateError('_DistinctValueStream always has no error!');
 
   @override
-  ValueWrapper<T> get valueWrapper => stream.valueWrapper!;
+  ValueWrapper<T> get valueWrapper => controller.stream.valueWrapper!;
 
   @override
   StreamSubscription<T> listen(
@@ -102,19 +101,10 @@ class _DistinctValueStream<T> extends Stream<T>
     void Function()? onDone,
     bool? cancelOnError,
   }) =>
-      stream.listen(
+      controller.stream.listen(
         onData,
         onError: onError,
         onDone: onDone,
         cancelOnError: cancelOnError,
       );
-}
-
-void main() {
-  late StreamSubscription<int> listen;
-  final distinctValue = Stream.fromIterable([1, 2, 3, 4]).distinctValue(1);
-  listen = distinctValue.listen((event) {
-    print(event);
-  });
-  distinctValue.listen((event) { });
 }
