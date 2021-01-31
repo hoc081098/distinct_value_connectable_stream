@@ -63,7 +63,8 @@ extension AsDistinctValueStreamExtension<T> on Stream<T> {
     T value, {
     bool Function(T p1, T p2)? equals,
   }) =>
-      _DistinctValueStream(this, value, equals);
+      _DistinctValueStream(
+          this, value, equals ?? DistinctValueStream.defaultEquals);
 }
 
 /// Default implementation of [DistinctValueStream].
@@ -89,15 +90,14 @@ class _DistinctValueStream<T> extends Stream<T>
   _DistinctValueStream(
     Stream<T> source,
     T value,
-    bool Function(T, T)? equals,
-  )   : equals = equals ?? DistinctValueStream.defaultEquals,
-        controller = ValueStreamController<T>(value, sync: true) {
+    this.equals,
+  ) : controller = ValueStreamController<T>(value, sync: true) {
     late StreamSubscription<T> subscription;
 
     controller.onListen = () {
       subscription = source.listen(
         (data) {
-          if (!this.equals(valueWrapper.value, data)) {
+          if (!equals(valueWrapper.value, data)) {
             controller.add(data);
           }
         },
