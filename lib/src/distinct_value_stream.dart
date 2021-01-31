@@ -101,7 +101,7 @@ class _DistinctValueStream<T> extends Stream<T>
             controller.add(data);
           }
         },
-        onError: controller.addError,
+        onError: null,
         onDone: controller.close,
       );
 
