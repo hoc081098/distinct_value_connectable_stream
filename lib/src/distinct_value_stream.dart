@@ -39,7 +39,7 @@ extension DistinctValueStreamExtensions<T> on DistinctValueStream<T> {
 
   /// Last emitted error.
   /// Always returns `null`.
-  Object? get error => null;
+  Null get error => null;
 
   /// Last emitted error.
   /// Always throws.
