@@ -1,3 +1,9 @@
+## 1.2.0-nullsafety.3 - Feb 1, 2021
+
+-   `DistinctValueStream`: change return type of `Null get errorAndStackTrace` (previous is `Never`).
+-   Add `DistinctValueStreamExtensions`: easily access value and error.
+-   Add `distinctValue` extension method: convert a `Stream` to a single-subscription `DistinctValueStream`.
+
 ## 1.2.0-nullsafety.2 - Jan 9, 2021
 
 -   **Breaking change**: Any errors from upstream and from `equals` callback will be not added to Stream.

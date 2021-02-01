@@ -21,7 +21,7 @@ abstract class DistinctValueStream<T> extends NotReplayValueStream<T> {
   ValueWrapper<T> get valueWrapper;
 }
 
-/// Extensions to access value and error easily.
+/// Extensions to easily access value and error.
 extension DistinctValueStreamExtensions<T> on DistinctValueStream<T> {
   /// A flag that turns true as soon as at least one event has been emitted.
   /// Always returns `true`.
