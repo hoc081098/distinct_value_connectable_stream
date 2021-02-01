@@ -41,6 +41,13 @@
                      DistinctValueConnectableStream (this package)
 ```
 
+-   Broadcast
+    -   `DistinctValueConnectableStream`.
+    -   `publishValueDistinct`.
+    -   `shareValueDistinct`.
+    
+-   Single-subscription: `distinctValue`.
+
 [comment]: <> (## Implement BLoC)
 
 [comment]: <> ( ### Without using package)
