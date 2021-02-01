@@ -115,5 +115,16 @@ void main() {
         subscription.resume();
       }
     });
+
+    test('extensions', () {
+      final distinctValue = Stream.value(1).distinctValue(0);
+      expect(distinctValue.hasValue, true);
+      expect(distinctValue.value, 0);
+      expect(distinctValue.requireValue, 0);
+
+      expect(distinctValue.hasError, false);
+      expect(distinctValue.error, null);
+      expect(() => distinctValue.requireError, throwsStateError);
+    });
   });
 }
