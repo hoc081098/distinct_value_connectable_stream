@@ -53,7 +53,10 @@ void main() async {
   final counterBloc = CounterBloc();
 
   print('[LOGGER] state=${counterBloc.state$.value}');
-  final listen = counterBloc.state$.listen((i) => print('[LOGGER] state=$i'));
+  final listen1 =
+      counterBloc.state$.listen((i) => print('[LOGGER 1] state=$i'));
+  final listen2 =
+      counterBloc.state$.listen((i) => print('[LOGGER 2] state=$i'));
 
   counterBloc
     ..increment(0)
@@ -72,6 +75,7 @@ void main() async {
   await Future<void>.delayed(Duration(seconds: 1));
   print(counterBloc.state$.value);
 
-  await listen.cancel();
+  await listen1.cancel();
+  await listen2.cancel();
   counterBloc.dispose();
 }
