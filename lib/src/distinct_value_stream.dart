@@ -12,7 +12,7 @@ abstract class DistinctValueStream<T> extends NotReplayValueStream<T> {
 
   /// Default [equals] function.
   /// Use '==' operator on the last provided data element.
-  static bool defaultEquals<T>(T lhs, T rhs) => lhs == rhs;
+  static bool defaultEquals(Object? lhs, Object? rhs) => lhs == rhs;
 
   @override
   Null get errorAndStackTrace;
