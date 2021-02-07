@@ -1,3 +1,7 @@
+## 1.2.0-nullsafety.4 - Feb 1, 2021
+
+-   Remove generic type of `DistinctValueStream.defaultEquals`.
+
 ## 1.2.0-nullsafety.3 - Feb 1, 2021
 
 -   `DistinctValueStream`: change return type of `Null get errorAndStackTrace` (previous is `Never`).
