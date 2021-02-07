@@ -50,7 +50,11 @@ class DistinctValueConnectableStream<T> extends ConnectableStream<T>
   ConnectableStreamSubscription<T> _connect() =>
       ConnectableStreamSubscription<T>(
         _source.listen(
-          _onData,
+          (data) {
+            if (!equals(_subject.requireValue, data)) {
+              _subject.add(data);
+            }
+          },
           onError: null,
           onDone: _subject.close,
         ),
@@ -97,12 +101,6 @@ class DistinctValueConnectableStream<T> extends ConnectableStream<T>
     _subject.onCancel = () => subscription.cancel();
 
     return this;
-  }
-
-  void _onData(T data) {
-    if (!equals(_subject.requireValue, data)) {
-      _subject.add(data);
-    }
   }
 
   @override
