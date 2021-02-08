@@ -1,3 +1,7 @@
+## 1.2.0-nullsafety.5 - Feb 8, 2021
+
+-   Update dependencies.
+
 ## 1.2.0-nullsafety.4 - Feb 7, 2021
 
 -   Remove generic type of `DistinctValueStream.defaultEquals`.
