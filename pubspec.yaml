@@ -1,7 +1,7 @@
 name: distinct_value_connectable_stream
 description: Distinct value connectable stream for RxDart, useful for BLoC pattern
 author: Petrus Nguyen Thai Hoc <hoc081098@gmail.com>
-version: 1.2.0-nullsafety.5
+version: 1.2.0-nullsafety.6
 homepage: https://github.com/hoc081098/distinct_value_connectable_stream.git
 repository: https://github.com/hoc081098/distinct_value_connectable_stream.git
 issue_tracker: https://github.com/hoc081098/distinct_value_connectable_stream/issues
