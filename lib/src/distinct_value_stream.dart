@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:meta/meta.dart';
 import 'package:rxdart_ext/rxdart_ext.dart'
     show NotReplayValueStream, ValueStreamController, ValueWrapper;
 

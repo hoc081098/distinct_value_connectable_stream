@@ -1,9 +1,10 @@
 language: dart
 dart:
-  - dev
+  - stable
   - beta
+  - dev
 script:
-  - dartanalyzer --fatal-infos --fatal-warnings ./lib ./test
+  - dartanalyzer --fatal-infos --fatal-warnings lib test
   - dartfmt -n ./lib --set-exit-if-changed
   - pub get
   - pub global activate coverage
