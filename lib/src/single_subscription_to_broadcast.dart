@@ -14,12 +14,12 @@ extension BroadcastDistinctValueStreamExtensions<T> on DistinctValueStream<T> {
   ///
   /// This is useful for converting a single-subscription stream into a
   /// broadcast Stream, that also provides access to the latest value synchronously.
-  DistinctValueConnectableStream<T> publishValueDistinct() {
+  DistinctValueConnectableStream<T> publishValueDistinct({bool sync = true}) {
     final self = this;
     return self is DistinctValueConnectableStream<T>
         ? self
         : DistinctValueConnectableStream<T>(this, requireValue,
-            equals: self.equals, sync: true);
+            equals: equals, sync: sync);
   }
 
   /// Convert the this Stream into a new [DistinctValueStream] that can
@@ -30,7 +30,7 @@ extension BroadcastDistinctValueStreamExtensions<T> on DistinctValueStream<T> {
   /// This is useful for converting a single-subscription stream into a
   /// broadcast Stream. It's also useful for providing sync access to the latest
   /// emitted value.
-  DistinctValueStream<T> shareValueDistinct() =>
+  DistinctValueStream<T> asBroadcastDistinctValueStream() =>
       isBroadcast ? this : _AsBroadcastStream(this);
 }
 

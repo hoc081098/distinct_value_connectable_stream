@@ -5,10 +5,10 @@ void main() {
   group(
     'Single-subscription DistinctValueStream to broadcast DistinctValueStream',
     () {
-      test('shareValueDistinct', () {
+      test('asBroadcastDistinctValueStream', () {
         final stream = Stream.fromIterable([0, 1, 1, 2, 3, 4, 4])
             .distinctValue(0)
-            .shareValueDistinct();
+            .asBroadcastDistinctValueStream();
 
         expect(stream.value, 0);
         expect(stream.isBroadcast, true);
