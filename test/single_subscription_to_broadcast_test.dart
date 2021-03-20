@@ -5,7 +5,7 @@ void main() {
   group(
     'Single-subscription DistinctValueStream to broadcast DistinctValueStream',
     () {
-      test('asBroadcastDistinctValueStream', () {
+      test('asBroadcastDistinctValueStream', () async {
         final stream = Stream.fromIterable([0, 1, 1, 2, 3, 4, 4])
             .distinctValue(0)
             .asBroadcastDistinctValueStream();
@@ -13,8 +13,11 @@ void main() {
         expect(stream.value, 0);
         expect(stream.isBroadcast, true);
 
-        expect(stream, emitsInOrder(<Object>[1, 2, 3, 4]));
-        expect(stream, emitsInOrder(<Object>[1, 2, 3, 4]));
+        expect(stream, emitsInOrder(<Object>[1, 2, 3, 4, emitsDone]));
+        await expectLater(
+            stream, emitsInOrder(<Object>[1, 2, 3, 4, emitsDone]));
+
+        expect(stream, emitsDone);
       });
     },
   );
