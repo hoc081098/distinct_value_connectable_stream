@@ -1,3 +1,7 @@
+import 'dart:async';
+
+import 'package:rxdart/src/utils/value_wrapper.dart';
+
 import '../distinct_value_connectable_stream.dart';
 import 'distinct_value_stream.dart';
 
@@ -10,15 +14,12 @@ extension BroadcastDistinctValueStreamExtensions<T> on DistinctValueStream<T> {
   ///
   /// This is useful for converting a single-subscription stream into a
   /// broadcast Stream, that also provides access to the latest value synchronously.
-  DistinctValueConnectableStream<T> publishValueDistinct({
-    bool Function(T previous, T next)? equals,
-    bool sync = true,
-  }) {
+  DistinctValueConnectableStream<T> publishValueDistinct() {
     final self = this;
     return self is DistinctValueConnectableStream<T>
         ? self
         : DistinctValueConnectableStream<T>(this, requireValue,
-            equals: equals, sync: sync);
+            equals: self.equals, sync: true);
   }
 
   /// Convert the this Stream into a new [DistinctValueStream] that can
@@ -29,11 +30,23 @@ extension BroadcastDistinctValueStreamExtensions<T> on DistinctValueStream<T> {
   /// This is useful for converting a single-subscription stream into a
   /// broadcast Stream. It's also useful for providing sync access to the latest
   /// emitted value.
-  DistinctValueStream<T> shareValueDistinct({
-    bool Function(T previous, T next)? equals,
-    bool sync = true,
-  }) =>
-      isBroadcast
-          ? this
-          : publishValueDistinct(equals: equals, sync: sync).refCount();
+  DistinctValueStream<T> shareValueDistinct() =>
+      isBroadcast ? this : _AsBroadcastStream(this);
+}
+
+class _AsBroadcastStream<T> extends StreamView<T>
+    implements DistinctValueStream<T> {
+  final DistinctValueStream<T> source;
+
+  _AsBroadcastStream(this.source)
+      : super(source.asBroadcastStream(onCancel: (s) => s.cancel()));
+
+  @override
+  bool Function(T p1, T p2) get equals => source.equals;
+
+  @override
+  Null get errorAndStackTrace => null;
+
+  @override
+  ValueWrapper<T> get valueWrapper => source.valueWrapper;
 }
