@@ -7,7 +7,7 @@ import 'distinct_value_stream.dart';
 
 /// Convert single-subscription [DistinctValueStream] to broadcast [DistinctValueStream].
 extension BroadcastDistinctValueStreamExtensions<T> on DistinctValueStream<T> {
-  /// Convert the this Stream into a [DistinctValueConnectableStream]
+  /// Convert the this [DistinctValueStream] into a [DistinctValueConnectableStream]
   /// that can be listened to multiple times, providing an initial seeded value.
   /// It will not begin emitting items from the original Stream
   /// until the `connect` method is invoked.
@@ -22,7 +22,7 @@ extension BroadcastDistinctValueStreamExtensions<T> on DistinctValueStream<T> {
             equals: equals, sync: sync);
   }
 
-  /// Convert the this Stream into a new [DistinctValueStream] that can
+  /// Convert the this [DistinctValueStream] into a new [DistinctValueStream] that can
   /// be listened to multiple times, providing an initial value.
   /// It will automatically begin emitting items when first listened to,
   /// and shut down when no listeners remain.
