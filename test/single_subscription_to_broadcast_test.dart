@@ -22,6 +22,7 @@ void main() {
         final stream = source.asBroadcastDistinctValueStream();
 
         expect(identical(stream.equals, source.equals), true);
+        expect(stream.errorAndStackTrace, null);
         await _test(stream);
       });
 
