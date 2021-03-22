@@ -5,7 +5,7 @@ import 'package:rxdart/src/utils/value_wrapper.dart';
 import '../distinct_value_connectable_stream.dart';
 import 'distinct_value_stream.dart';
 
-/// Convert single-subscription [DistinctValueStream] to broadcast [DistinctValueStream].
+/// Convert a [DistinctValueStream] to a broadcast [DistinctValueStream].
 extension BroadcastDistinctValueStreamExtensions<T> on DistinctValueStream<T> {
   /// Convert the this [DistinctValueStream] into a [DistinctValueConnectableStream]
   /// that can be listened to multiple times, providing an initial seeded value.
