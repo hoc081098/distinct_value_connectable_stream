@@ -18,10 +18,10 @@ void main() {
       }
 
       test('Single-Subscription', () async {
-        final stream = Stream.fromIterable(elements)
-            .distinctValue(0)
-            .asBroadcastDistinctValueStream();
+        final source = Stream.fromIterable(elements).distinctValue(0);
+        final stream = source.asBroadcastDistinctValueStream();
 
+        expect(identical(stream.equals, source.equals), true);
         await _test(stream);
       });
 
