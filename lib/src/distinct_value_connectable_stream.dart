@@ -63,7 +63,7 @@ class _DistinctValueConnectableStream<T>
         super._(_subject);
 
   ConnectableStreamSubscription<T> _connect() {
-    if (_source is DistinctValueConnectableStream<T>) {
+    if (_source is DistinctValueStream<T>) {
       return ConnectableStreamSubscription<T>(
         _source.listen(_subject.add, onError: null, onDone: _subject.close),
         _subject,
