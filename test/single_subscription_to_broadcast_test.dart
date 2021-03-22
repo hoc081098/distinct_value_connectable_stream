@@ -5,8 +5,8 @@ void main() {
   final elements = [0, 1, 1, 2, 3, 4, 4];
   final expected = <Object>[1, 2, 3, 4, emitsDone];
 
-  group('To broadcast DistinctValueStream', () {
-    group('asBroadcastDistinctValueStream', () {
+  group('DistinctValueStream to broadcast DistinctValueStream', () {
+    group('using asBroadcastDistinctValueStream', () {
       Future<void> _test(DistinctValueStream<int> stream) async {
         expect(stream.value, 0);
         expect(stream.isBroadcast, true);
@@ -17,7 +17,7 @@ void main() {
         expect(stream, emitsDone);
       }
 
-      test('Single-Subscription', () async {
+      test('with a Single-Subscription Stream', () async {
         final source = Stream.fromIterable(elements).distinctValue(0);
         final stream = source.asBroadcastDistinctValueStream();
 
@@ -25,7 +25,7 @@ void main() {
         await _test(stream);
       });
 
-      test('Broadcast', () async {
+      test('with a Broadcast Stream', () async {
         final source = Stream.fromIterable(elements).shareValueDistinct(0);
         final stream = source.asBroadcastDistinctValueStream();
 
@@ -34,7 +34,7 @@ void main() {
       });
     });
 
-    group('asDistinctValueConnectableStream', () {
+    group('using asDistinctValueConnectableStream', () {
       Future<void> _test(DistinctValueConnectableStream<int> stream) async {
         expect(stream.value, 0);
         expect(stream.isBroadcast, true);
@@ -47,7 +47,7 @@ void main() {
         expect(stream, emitsDone);
       }
 
-      test('Single-Subscription', () async {
+      test('with a Single-Subscription Stream', () async {
         final stream = Stream.fromIterable(elements)
             .distinctValue(0)
             .asDistinctValueConnectableStream();
@@ -55,7 +55,7 @@ void main() {
         await _test(stream);
       });
 
-      test('Broadcast', () async {
+      test('with a Broadcast Stream', () async {
         final source = Stream.fromIterable(elements).publishValueDistinct(0);
         final stream = source.asDistinctValueConnectableStream();
 
