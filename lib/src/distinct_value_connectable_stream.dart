@@ -95,7 +95,6 @@ class _DistinctValueConnectableStream<T>
   DistinctValueStream<T> autoConnect({
     void Function(StreamSubscription<T> subscription)? connection,
   }) {
-    print('auto');
     _checkUsed();
 
     _subject.onListen = () {
@@ -109,7 +108,6 @@ class _DistinctValueConnectableStream<T>
 
   @override
   StreamSubscription<T> connect() {
-    print('conn');
     _checkUsed();
 
     _subject.onListen = _subject.onCancel = null;
@@ -118,7 +116,6 @@ class _DistinctValueConnectableStream<T>
 
   @override
   DistinctValueStream<T> refCount() {
-    print('ref');
     _checkUsed();
 
     late ConnectableStreamSubscription<T> subscription;
