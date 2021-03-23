@@ -15,21 +15,9 @@ import 'distinct_value_stream.dart';
 /// a broadcast [Stream], and provides synchronous access to the latest emitted value.
 ///
 /// This is a combine of [ConnectableStream], [ValueStream], [ValueSubject] and [Stream.distinct].
-class DistinctValueConnectableStream<T> extends ConnectableStream<T>
+abstract class DistinctValueConnectableStream<T> extends ConnectableStream<T>
     implements DistinctValueStream<T> {
-  final Stream<T> _source;
-  final ValueSubject<T> _subject;
-  var _used = false;
-
-  @override
-  final bool Function(T, T) equals;
-
-  DistinctValueConnectableStream._(
-    this._source,
-    this._subject,
-    bool Function(T, T)? equals,
-  )   : equals = equals ?? DistinctValueStream.defaultEquals,
-        super(_subject);
+  DistinctValueConnectableStream._(Stream<T> stream) : super(stream);
 
   /// Constructs a [Stream] which only begins emitting events when
   /// the [connect] method is called, this [Stream] acts like a
@@ -44,22 +32,57 @@ class DistinctValueConnectableStream<T> extends ConnectableStream<T>
     bool Function(T previous, T next)? equals,
     bool sync = true,
   }) =>
-      DistinctValueConnectableStream<T>._(
+      _DistinctValueConnectableStream<T>._(
           source, ValueSubject(seedValue, sync: sync), equals);
 
-  ConnectableStreamSubscription<T> _connect() =>
-      ConnectableStreamSubscription<T>(
-        _source.listen(
-          (data) {
-            if (!equals(_subject.requireValue, data)) {
-              _subject.add(data);
-            }
-          },
-          onError: null,
-          onDone: _subject.close,
-        ),
+  @override
+  DistinctValueStream<T> autoConnect(
+      {void Function(StreamSubscription<T> subscription)? connection});
+
+  @override
+  StreamSubscription<T> connect();
+
+  @override
+  DistinctValueStream<T> refCount();
+}
+
+class _DistinctValueConnectableStream<T>
+    extends DistinctValueConnectableStream<T> {
+  final Stream<T> _source;
+  final ValueSubject<T> _subject;
+  var _used = false;
+
+  @override
+  final bool Function(T, T) equals;
+
+  _DistinctValueConnectableStream._(
+    this._source,
+    this._subject,
+    bool Function(T, T)? equals,
+  )   : equals = equals ?? DistinctValueStream.defaultEquals,
+        super._(_subject);
+
+  ConnectableStreamSubscription<T> _connect() {
+    if (_source is DistinctValueStream<T>) {
+      return ConnectableStreamSubscription<T>(
+        _source.listen(_subject.add, onError: null, onDone: _subject.close),
         _subject,
       );
+    }
+
+    return ConnectableStreamSubscription<T>(
+      _source.listen(
+        (data) {
+          if (!equals(_subject.requireValue, data)) {
+            _subject.add(data);
+          }
+        },
+        onError: null,
+        onDone: _subject.close,
+      ),
+      _subject,
+    );
+  }
 
   void _checkUsed() {
     if (_used) {
