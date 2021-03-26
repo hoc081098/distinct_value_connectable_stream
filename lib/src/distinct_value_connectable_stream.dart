@@ -4,11 +4,13 @@ import 'package:rxdart_ext/rxdart_ext.dart'
     show
         ConnectableStream,
         ConnectableStreamSubscription,
+        PublishSubject,
+        Subject,
         ValueStream,
         ValueSubject,
-        ValueWrapper,
-        ValueStreamExtensions;
+        ValueWrapper;
 
+import '../distinct_value_connectable_stream.dart';
 import 'distinct_value_stream.dart';
 
 /// A [ConnectableStream] that converts a single-subscription Stream into
@@ -33,7 +35,10 @@ abstract class DistinctValueConnectableStream<T> extends ConnectableStream<T>
     bool sync = true,
   }) =>
       _DistinctValueConnectableStream<T>._(
-          source, ValueSubject(seedValue, sync: sync), equals);
+        source,
+        DistinctValueSubject(seedValue, sync: sync, equals: equals),
+        equals,
+      );
 
   @override
   DistinctValueStream<T> autoConnect(
@@ -49,7 +54,7 @@ abstract class DistinctValueConnectableStream<T> extends ConnectableStream<T>
 class _DistinctValueConnectableStream<T>
     extends DistinctValueConnectableStream<T> {
   final Stream<T> _source;
-  final ValueSubject<T> _subject;
+  final DistinctValueSubject<T> _subject;
   var _used = false;
 
   @override
@@ -62,27 +67,16 @@ class _DistinctValueConnectableStream<T>
   )   : equals = equals ?? DistinctValueStream.defaultEquals,
         super._(_subject);
 
-  ConnectableStreamSubscription<T> _connect() {
-    if (_source is DistinctValueStream<T>) {
-      return ConnectableStreamSubscription<T>(
-        _source.listen(_subject.add, onError: null, onDone: _subject.close),
-        _subject,
-      );
-    }
-
-    return ConnectableStreamSubscription<T>(
-      _source.listen(
-        (data) {
-          if (!equals(_subject.requireValue, data)) {
-            _subject.add(data);
-          }
-        },
-        onError: null,
-        onDone: _subject.close,
-      ),
-      _subject,
-    );
-  }
+  late final _connection = ConnectableStreamSubscription<T>(
+    _source.listen(
+      _source is DistinctValueStream<T>
+          ? _subject._addUncheckedWithoutComparing
+          : _subject._addUnchecked,
+      onError: null,
+      onDone: _subject.close,
+    ),
+    _subject,
+  );
 
   void _checkUsed() {
     if (_used) {
@@ -98,7 +92,7 @@ class _DistinctValueConnectableStream<T>
     _checkUsed();
 
     _subject.onListen = () {
-      final subscription = _connect();
+      final subscription = _connection;
       connection?.call(subscription);
     };
     _subject.onCancel = null;
@@ -111,17 +105,17 @@ class _DistinctValueConnectableStream<T>
     _checkUsed();
 
     _subject.onListen = _subject.onCancel = null;
-    return _connect();
+    return _connection;
   }
 
   @override
   DistinctValueStream<T> refCount() {
     _checkUsed();
 
-    late ConnectableStreamSubscription<T> subscription;
+    ConnectableStreamSubscription<T>? subscription;
 
-    _subject.onListen = () => subscription = _connect();
-    _subject.onCancel = () => subscription.cancel();
+    _subject.onListen = () => subscription = _connection;
+    _subject.onCancel = () => subscription?.cancel();
 
     return this;
   }
@@ -130,7 +124,7 @@ class _DistinctValueConnectableStream<T>
   Null get errorAndStackTrace => null;
 
   @override
-  ValueWrapper<T> get valueWrapper => _subject.valueWrapper!;
+  ValueWrapper<T> get valueWrapper => _subject.valueWrapper;
 }
 
 /// Provide two extension methods for [Stream]:
@@ -214,4 +208,123 @@ extension DistinctValueConnectableExtensions<T> on Stream<T> {
     bool sync = true,
   }) =>
       publishValueDistinct(seedValue, equals: equals, sync: sync).refCount();
+}
+
+/// TODO
+class DistinctValueSubject<T> extends Subject<T>
+    implements DistinctValueStream<T> {
+  var _isAddingStream = false;
+  final ValueSubject<T> _subject;
+
+  @override
+  final bool Function(T p1, T p2) equals;
+
+  DistinctValueSubject._(
+    this.equals,
+    this._subject,
+  ) : super(_subject, _subject.stream);
+
+  /// TODO
+  factory DistinctValueSubject(
+    T seedValue, {
+    bool Function(T p1, T p2)? equals,
+    void Function()? onListen,
+    FutureOr<void> Function()? onCancel,
+    bool sync = false,
+  }) {
+    final subject = ValueSubject<T>(
+      seedValue,
+      onListen: onListen,
+      onCancel: onCancel,
+      sync: sync,
+    );
+    return DistinctValueSubject._(
+        equals ?? DistinctValueStream.defaultEquals, subject);
+  }
+
+  @override
+  Null get errorAndStackTrace => null;
+
+  @override
+  ValueWrapper<T> get valueWrapper => _subject.valueWrapper!;
+
+  @override
+  void add(T event) {
+    if (_isAddingStream) {
+      throw StateError(
+          'You cannot add items while items are being added from addStream');
+    }
+    _addUnchecked(event);
+  }
+
+  @pragma('vm:prefer-inline')
+  @pragma('dart2js:tryInline')
+  void _addUnchecked(T event) {
+    if (!equals(valueWrapper.value, event)) {
+      _addUncheckedWithoutComparing(event);
+    }
+  }
+
+  @pragma('vm:prefer-inline')
+  @pragma('dart2js:tryInline')
+  void _addUncheckedWithoutComparing(T event) => _subject.add(event);
+
+  @pragma('vm:prefer-inline')
+  @pragma('dart2js:tryInline')
+  Future<void> _closeUnchecked() => _subject.close();
+
+  @override
+  Future<void> close() {
+    if (_isAddingStream) {
+      throw StateError(
+          'You cannot close the subject while items are being added from addStream');
+    }
+    return _closeUnchecked();
+  }
+
+  @override
+  void addError(Object error, [StackTrace? stackTrace]) =>
+      throw StateError('Cannot add error to DistinctValueSubject');
+
+  @override
+  Future<void> addStream(Stream<T> source, {bool? cancelOnError}) {
+    if (_isAddingStream) {
+      throw StateError(
+          'You cannot add items while items are being added from addStream');
+    }
+
+    final completer = Completer<void>.sync();
+
+    var isOnDoneCalled = false;
+    final onDone = () {
+      if (!isOnDoneCalled) {
+        isOnDoneCalled = true;
+        _isAddingStream = false;
+        completer.complete();
+      }
+    };
+    _isAddingStream = true;
+
+    source.listen(
+      _addUnchecked,
+      onError: (Object e, StackTrace s) =>
+          throw StateError('Cannot add error to DistinctValueSubject'),
+      onDone: onDone,
+      cancelOnError: cancelOnError,
+    );
+
+    return completer.future;
+  }
+
+  @override
+  Subject<R> createForwardingSubject<R>({
+    void Function()? onListen,
+    void Function()? onCancel,
+    bool sync = false,
+  }) =>
+      PublishSubject<R>(
+        onListen: onListen,
+        onCancel: onCancel,
+        sync: sync,
+      );
 }
