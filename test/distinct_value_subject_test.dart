@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:distinct_value_connectable_stream/distinct_value_connectable_stream.dart';
 import 'package:test/test.dart';
 
@@ -52,6 +54,24 @@ void main() {
 
         await s.addStream(Stream.fromIterable([0, 1, 1, 2, 3, 4]));
         await s.close();
+      }
+
+      {
+        final s = DistinctValueSubject(0);
+        expect(s, emitsInOrder(<Object>[2, 1, 2, 3, 4, emitsDone]));
+
+        s.add(2);
+        await s.addStream(Stream.fromIterable([2, 1, 1, 2, 3, 4]));
+        await s.close();
+      }
+
+      {
+        final s = DistinctValueSubject(0);
+
+        await runZonedGuarded(
+          () => s.addStream(Stream.error(Exception())),
+          (e, s) => expect(e, isA<StateError>()),
+        );
       }
     });
   });

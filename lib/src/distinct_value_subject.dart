@@ -65,10 +65,8 @@ class DistinctValueSubject<T> extends Subject<T>
     source.listen(
       add,
       onError: addError,
-      onDone: () {
-        close();
-        completer.complete();
-      },
+      onDone: completer.complete,
+      cancelOnError: cancelOnError,
     );
     return completer.future;
   }
