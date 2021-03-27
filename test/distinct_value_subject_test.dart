@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:distinct_value_connectable_stream/distinct_value_connectable_stream.dart';
+import 'package:rxdart_ext/rxdart_ext.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -72,6 +73,32 @@ void main() {
           () => s.addStream(Stream.error(Exception())),
           (e, s) => expect(e, isA<StateError>()),
         );
+      }
+    });
+
+    test('Rx', () {
+      {
+        final s = DistinctValueSubject(0);
+        expect(
+          s.flatMap((value) => Stream.value(value)),
+          emitsInOrder(<Object>[1, 2, 3]),
+        );
+
+        s.add(1);
+        s.add(2);
+        s.add(3);
+      }
+
+      {
+        final s = DistinctValueSubject(0, sync: true);
+        expect(
+          s.flatMap((value) => Stream.value(value)),
+          emitsInOrder(<Object>[1, 2, 3]),
+        );
+
+        s.add(1);
+        s.add(2);
+        s.add(3);
       }
     });
   });
