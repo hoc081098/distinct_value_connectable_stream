@@ -1,20 +1,22 @@
 import 'dart:async';
 
+import 'package:meta/meta.dart';
 import 'package:rxdart_ext/rxdart_ext.dart'
     show
         ConnectableStream,
         ConnectableStreamSubscription,
         ValueStream,
         ValueSubject,
-        ValueWrapper,
-        ValueStreamExtensions;
+        ValueWrapper;
 
 import 'distinct_value_stream.dart';
+import 'distinct_value_subject.dart';
 
 /// A [ConnectableStream] that converts a single-subscription Stream into
 /// a broadcast [Stream], and provides synchronous access to the latest emitted value.
 ///
 /// This is a combine of [ConnectableStream], [ValueStream], [ValueSubject] and [Stream.distinct].
+@sealed
 abstract class DistinctValueConnectableStream<T> extends ConnectableStream<T>
     implements DistinctValueStream<T> {
   DistinctValueConnectableStream._(Stream<T> stream) : super(stream);
@@ -33,7 +35,10 @@ abstract class DistinctValueConnectableStream<T> extends ConnectableStream<T>
     bool sync = true,
   }) =>
       _DistinctValueConnectableStream<T>._(
-          source, ValueSubject(seedValue, sync: sync), equals);
+        source,
+        DistinctValueSubject(seedValue, sync: sync, equals: equals),
+        equals,
+      );
 
   @override
   DistinctValueStream<T> autoConnect(
@@ -49,7 +54,7 @@ abstract class DistinctValueConnectableStream<T> extends ConnectableStream<T>
 class _DistinctValueConnectableStream<T>
     extends DistinctValueConnectableStream<T> {
   final Stream<T> _source;
-  final ValueSubject<T> _subject;
+  final DistinctValueSubject<T> _subject;
   var _used = false;
 
   @override
@@ -62,27 +67,14 @@ class _DistinctValueConnectableStream<T>
   )   : equals = equals ?? DistinctValueStream.defaultEquals,
         super._(_subject);
 
-  ConnectableStreamSubscription<T> _connect() {
-    if (_source is DistinctValueStream<T>) {
-      return ConnectableStreamSubscription<T>(
-        _source.listen(_subject.add, onError: null, onDone: _subject.close),
-        _subject,
-      );
-    }
-
-    return ConnectableStreamSubscription<T>(
-      _source.listen(
-        (data) {
-          if (!equals(_subject.requireValue, data)) {
-            _subject.add(data);
-          }
-        },
-        onError: null,
-        onDone: _subject.close,
-      ),
-      _subject,
-    );
-  }
+  late final _connection = ConnectableStreamSubscription<T>(
+    _source.listen(
+      _subject.add,
+      onError: null,
+      onDone: _subject.close,
+    ),
+    _subject,
+  );
 
   void _checkUsed() {
     if (_used) {
@@ -98,7 +90,7 @@ class _DistinctValueConnectableStream<T>
     _checkUsed();
 
     _subject.onListen = () {
-      final subscription = _connect();
+      final subscription = _connection;
       connection?.call(subscription);
     };
     _subject.onCancel = null;
@@ -111,17 +103,17 @@ class _DistinctValueConnectableStream<T>
     _checkUsed();
 
     _subject.onListen = _subject.onCancel = null;
-    return _connect();
+    return _connection;
   }
 
   @override
   DistinctValueStream<T> refCount() {
     _checkUsed();
 
-    late ConnectableStreamSubscription<T> subscription;
+    ConnectableStreamSubscription<T>? subscription;
 
-    _subject.onListen = () => subscription = _connect();
-    _subject.onCancel = () => subscription.cancel();
+    _subject.onListen = () => subscription = _connection;
+    _subject.onCancel = () => subscription?.cancel();
 
     return this;
   }
@@ -130,7 +122,7 @@ class _DistinctValueConnectableStream<T>
   Null get errorAndStackTrace => null;
 
   @override
-  ValueWrapper<T> get valueWrapper => _subject.valueWrapper!;
+  ValueWrapper<T> get valueWrapper => _subject.valueWrapper;
 }
 
 /// Provide two extension methods for [Stream]:
