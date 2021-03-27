@@ -76,6 +76,10 @@ void main() {
       }
     });
 
+    test('get error', () {
+      expect(DistinctValueSubject(0).errorAndStackTrace, isNull);
+    });
+
     test('Rx', () {
       {
         final s = DistinctValueSubject(0);
