@@ -43,15 +43,18 @@
 
 ## API
 
--   Broadcast
-    -   `DistinctValueConnectableStream`.
-    -   `publishValueDistinct`.
-    -   `shareValueDistinct`.
-    
--   Single-subscription: `distinctValue`.
--   Single-subscription `DistinctValueStream` to broadcast `DistinctValueStream`
-    -    `asDistinctValueConnectableStream`
-    -    `asBroadcastDistinctValueStream`
+- Broadcast
+    - [DistinctValueSubject](https://pub.dev/documentation/distinct_value_connectable_stream/1.2.0/distinct_value_connectable_stream/DistinctValueSubject-class.html)
+    - [DistinctValueConnectableStream](https://pub.dev/documentation/distinct_value_connectable_stream/1.2.0/distinct_value_connectable_stream/DistinctValueConnectableStream-class.html)
+    - [publishValueDistinct](https://pub.dev/documentation/distinct_value_connectable_stream/1.2.0/distinct_value_connectable_stream/DistinctValueConnectableExtensions/publishValueDistinct.html)
+    - [shareValueDistinct](https://pub.dev/documentation/distinct_value_connectable_stream/1.2.0/distinct_value_connectable_stream/DistinctValueConnectableExtensions/shareValueDistinct.html)
+
+- Single-subscription:
+    - [distinctValue](https://pub.dev/documentation/distinct_value_connectable_stream/1.2.0/distinct_value_connectable_stream/DistinctValueStreamExtensions/distinctValue.html)
+
+- Single-subscription `DistinctValueStream` to broadcast `DistinctValueStream`
+    - [asDistinctValueConnectableStream](https://pub.dev/documentation/distinct_value_connectable_stream/1.2.0/distinct_value_connectable_stream/BroadcastDistinctValueStreamExtensions/asDistinctValueConnectableStream.html)
+    - [asBroadcastDistinctValueStream](https://pub.dev/documentation/distinct_value_connectable_stream/1.2.0/distinct_value_connectable_stream/BroadcastDistinctValueStreamExtensions/asBroadcastDistinctValueStream.html)
 
 [comment]: <> (## Implement BLoC)
 
