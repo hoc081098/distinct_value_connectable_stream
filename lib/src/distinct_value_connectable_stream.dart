@@ -70,8 +70,8 @@ class _DistinctValueConnectableStream<T>
   late final _connection = ConnectableStreamSubscription<T>(
     _source.listen(
       _source is DistinctValueStream<T>
-          ? _subject._addUncheckedWithoutComparing
-          : _subject._addUnchecked,
+          ? _subject._addWithoutComparing
+          : _subject.add,
       onError: null,
       onDone: _subject.close,
     ),
@@ -213,7 +213,6 @@ extension DistinctValueConnectableExtensions<T> on Stream<T> {
 /// TODO
 class DistinctValueSubject<T> extends Subject<T>
     implements DistinctValueStream<T> {
-  var _isAddingStream = false;
   final ValueSubject<T> _subject;
 
   @override
@@ -250,37 +249,17 @@ class DistinctValueSubject<T> extends Subject<T>
 
   @override
   void add(T event) {
-    if (_isAddingStream) {
-      throw StateError(
-          'You cannot add items while items are being added from addStream');
-    }
-    _addUnchecked(event);
-  }
-
-  @pragma('vm:prefer-inline')
-  @pragma('dart2js:tryInline')
-  void _addUnchecked(T event) {
     if (!equals(valueWrapper.value, event)) {
-      _addUncheckedWithoutComparing(event);
+      _addWithoutComparing(event);
     }
   }
 
   @pragma('vm:prefer-inline')
   @pragma('dart2js:tryInline')
-  void _addUncheckedWithoutComparing(T event) => _subject.add(event);
-
-  @pragma('vm:prefer-inline')
-  @pragma('dart2js:tryInline')
-  Future<void> _closeUnchecked() => _subject.close();
+  void _addWithoutComparing(T event) => _subject.add(event);
 
   @override
-  Future<void> close() {
-    if (_isAddingStream) {
-      throw StateError(
-          'You cannot close the subject while items are being added from addStream');
-    }
-    return _closeUnchecked();
-  }
+  Future<void> close() => _subject.close();
 
   @override
   void addError(Object error, [StackTrace? stackTrace]) =>
@@ -288,32 +267,10 @@ class DistinctValueSubject<T> extends Subject<T>
 
   @override
   Future<void> addStream(Stream<T> source, {bool? cancelOnError}) {
-    if (_isAddingStream) {
-      throw StateError(
-          'You cannot add items while items are being added from addStream');
-    }
-
-    final completer = Completer<void>.sync();
-
-    var isOnDoneCalled = false;
-    final onDone = () {
-      if (!isOnDoneCalled) {
-        isOnDoneCalled = true;
-        _isAddingStream = false;
-        completer.complete();
-      }
-    };
-    _isAddingStream = true;
-
-    source.listen(
-      _addUnchecked,
-      onError: (Object e, StackTrace s) =>
-          throw StateError('Cannot add error to DistinctValueSubject'),
-      onDone: onDone,
+    return _subject.addStream(
+      source.distinctValue(valueWrapper.value),
       cancelOnError: cancelOnError,
     );
-
-    return completer.future;
   }
 
   @override
