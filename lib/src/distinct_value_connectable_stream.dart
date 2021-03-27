@@ -9,7 +9,6 @@ import 'package:rxdart_ext/rxdart_ext.dart'
         ValueSubject,
         ValueWrapper;
 
-import '../distinct_value_connectable_stream.dart';
 import 'distinct_value_stream.dart';
 import 'distinct_value_subject.dart';
 

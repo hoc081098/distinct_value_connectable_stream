@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:rxdart/src/utils/value_wrapper.dart';
 
-import '../distinct_value_connectable_stream.dart';
+import 'distinct_value_connectable_stream.dart';
 import 'distinct_value_stream.dart';
 
 /// Convert a [DistinctValueStream] to a broadcast [DistinctValueStream].
