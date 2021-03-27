@@ -1,22 +1,23 @@
 import 'dart:async';
 
+import 'package:meta/meta.dart';
 import 'package:rxdart_ext/rxdart_ext.dart'
     show
         ConnectableStream,
         ConnectableStreamSubscription,
-        PublishSubject,
-        Subject,
         ValueStream,
         ValueSubject,
         ValueWrapper;
 
 import '../distinct_value_connectable_stream.dart';
 import 'distinct_value_stream.dart';
+import 'distinct_value_subject.dart';
 
 /// A [ConnectableStream] that converts a single-subscription Stream into
 /// a broadcast [Stream], and provides synchronous access to the latest emitted value.
 ///
 /// This is a combine of [ConnectableStream], [ValueStream], [ValueSubject] and [Stream.distinct].
+@sealed
 abstract class DistinctValueConnectableStream<T> extends ConnectableStream<T>
     implements DistinctValueStream<T> {
   DistinctValueConnectableStream._(Stream<T> stream) : super(stream);
@@ -69,9 +70,7 @@ class _DistinctValueConnectableStream<T>
 
   late final _connection = ConnectableStreamSubscription<T>(
     _source.listen(
-      _source is DistinctValueStream<T>
-          ? _subject._addWithoutComparing
-          : _subject.add,
+      _subject.add,
       onError: null,
       onDone: _subject.close,
     ),
@@ -208,80 +207,4 @@ extension DistinctValueConnectableExtensions<T> on Stream<T> {
     bool sync = true,
   }) =>
       publishValueDistinct(seedValue, equals: equals, sync: sync).refCount();
-}
-
-/// TODO
-class DistinctValueSubject<T> extends Subject<T>
-    implements DistinctValueStream<T> {
-  final ValueSubject<T> _subject;
-
-  @override
-  final bool Function(T p1, T p2) equals;
-
-  DistinctValueSubject._(
-    this.equals,
-    this._subject,
-  ) : super(_subject, _subject.stream);
-
-  /// TODO
-  factory DistinctValueSubject(
-    T seedValue, {
-    bool Function(T p1, T p2)? equals,
-    void Function()? onListen,
-    FutureOr<void> Function()? onCancel,
-    bool sync = false,
-  }) {
-    final subject = ValueSubject<T>(
-      seedValue,
-      onListen: onListen,
-      onCancel: onCancel,
-      sync: sync,
-    );
-    return DistinctValueSubject._(
-        equals ?? DistinctValueStream.defaultEquals, subject);
-  }
-
-  @override
-  Null get errorAndStackTrace => null;
-
-  @override
-  ValueWrapper<T> get valueWrapper => _subject.valueWrapper!;
-
-  @override
-  void add(T event) {
-    if (!equals(valueWrapper.value, event)) {
-      _addWithoutComparing(event);
-    }
-  }
-
-  @pragma('vm:prefer-inline')
-  @pragma('dart2js:tryInline')
-  void _addWithoutComparing(T event) => _subject.add(event);
-
-  @override
-  Future<void> close() => _subject.close();
-
-  @override
-  void addError(Object error, [StackTrace? stackTrace]) =>
-      throw StateError('Cannot add error to DistinctValueSubject');
-
-  @override
-  Future<void> addStream(Stream<T> source, {bool? cancelOnError}) {
-    return _subject.addStream(
-      source.distinctValue(valueWrapper.value),
-      cancelOnError: cancelOnError,
-    );
-  }
-
-  @override
-  Subject<R> createForwardingSubject<R>({
-    void Function()? onListen,
-    void Function()? onCancel,
-    bool sync = false,
-  }) =>
-      PublishSubject<R>(
-        onListen: onListen,
-        onCancel: onCancel,
-        sync: sync,
-      );
 }
