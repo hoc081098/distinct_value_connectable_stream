@@ -1,3 +1,9 @@
+## 1.2.0 - Mar 27, 2021
+
+-   Update dependencies.
+-   Add `DistinctValueSubject`.
+-   Add extensions for `DistinctValueStream`: `asDistinctValueConnectableStream`, `asBroadcastDistinctValueStream`.
+
 ## 1.2.0-nullsafety.5 - Feb 8, 2021
 
 -   Update dependencies.
