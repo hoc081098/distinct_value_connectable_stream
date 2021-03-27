@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:rxdart/src/utils/value_wrapper.dart';
+import 'package:rxdart_ext/rxdart_ext.dart' show ValueWrapper;
 
 import 'distinct_value_connectable_stream.dart';
 import 'distinct_value_stream.dart';
