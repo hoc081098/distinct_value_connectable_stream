@@ -1,9 +1,8 @@
 import 'dart:async';
 
-import 'package:rxdart_ext/rxdart_ext.dart' show ValueWrapper;
-
 import 'distinct_value_connectable_stream.dart';
 import 'distinct_value_stream.dart';
+import 'distinct_value_stream_mixin.dart';
 
 /// Convert a [DistinctValueStream] to a broadcast [DistinctValueStream].
 extension BroadcastDistinctValueStreamExtensions<T> on DistinctValueStream<T> {
@@ -19,7 +18,7 @@ extension BroadcastDistinctValueStreamExtensions<T> on DistinctValueStream<T> {
     final self = this;
     return self is DistinctValueConnectableStream<T>
         ? self
-        : DistinctValueConnectableStream<T>(this, requireValue,
+        : DistinctValueConnectableStream<T>(this, value,
             equals: equals, sync: sync);
   }
 
@@ -36,6 +35,7 @@ extension BroadcastDistinctValueStreamExtensions<T> on DistinctValueStream<T> {
 }
 
 class _AsBroadcastStream<T> extends StreamView<T>
+    with DistinctValueStreamMixin<T>
     implements DistinctValueStream<T> {
   final DistinctValueStream<T> source;
 
@@ -46,8 +46,5 @@ class _AsBroadcastStream<T> extends StreamView<T>
   bool Function(T p1, T p2) get equals => source.equals;
 
   @override
-  Null get errorAndStackTrace => null;
-
-  @override
-  ValueWrapper<T> get valueWrapper => source.valueWrapper;
+  T get value => source.value;
 }

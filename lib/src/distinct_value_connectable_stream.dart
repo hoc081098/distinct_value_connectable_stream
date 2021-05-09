@@ -6,10 +6,10 @@ import 'package:rxdart_ext/rxdart_ext.dart'
         ConnectableStream,
         ConnectableStreamSubscription,
         ValueStream,
-        ValueSubject,
-        ValueWrapper;
+        ValueSubject;
 
 import 'distinct_value_stream.dart';
+import 'distinct_value_stream_mixin.dart';
 import 'distinct_value_subject.dart';
 
 /// A [ConnectableStream] that converts a single-subscription Stream into
@@ -52,7 +52,7 @@ abstract class DistinctValueConnectableStream<T> extends ConnectableStream<T>
 }
 
 class _DistinctValueConnectableStream<T>
-    extends DistinctValueConnectableStream<T> {
+    extends DistinctValueConnectableStream<T> with DistinctValueStreamMixin<T> {
   final Stream<T> _source;
   final DistinctValueSubject<T> _subject;
   var _used = false;
@@ -119,10 +119,7 @@ class _DistinctValueConnectableStream<T>
   }
 
   @override
-  Null get errorAndStackTrace => null;
-
-  @override
-  ValueWrapper<T> get valueWrapper => _subject.valueWrapper;
+  T get value => _subject.value;
 }
 
 /// Provide two extension methods for [Stream]:

@@ -1,7 +1,8 @@
 import 'dart:async';
 
+import 'package:distinct_value_connectable_stream/src/distinct_value_stream_mixin.dart';
 import 'package:rxdart_ext/rxdart_ext.dart'
-    show NotReplayValueStream, ValueStreamController, ValueWrapper;
+    show NotReplayValueStream, ValueStreamController;
 
 /// An [Stream] that provides synchronous access to the last emitted item,
 /// and two consecutive values are not equal.
@@ -15,36 +16,25 @@ abstract class DistinctValueStream<T> extends NotReplayValueStream<T> {
   static bool defaultEquals(Object? lhs, Object? rhs) => lhs == rhs;
 
   @override
-  Null get errorAndStackTrace;
+  T get value;
 
   @override
-  ValueWrapper<T> get valueWrapper;
-}
+  T get valueOrNull;
 
-/// Extensions to easily access value and error.
-extension DistinctValueStreamExtensions<T> on DistinctValueStream<T> {
-  /// A flag that turns true as soon as at least one event has been emitted.
-  /// Always returns `true`.
-  bool get hasValue => true;
+  @override
+  bool get hasValue;
 
-  /// Returns latest value.
-  T get value => valueWrapper.value;
+  @override
+  Never get error;
 
-  /// Returns latest value.
-  T get requireValue => valueWrapper.value;
+  @override
+  Null get errorOrNull;
 
-  /// A flag that turns true as soon as at an error event has been emitted.
-  /// Always returns `false`.
-  bool get hasError => false;
+  @override
+  bool get hasError;
 
-  /// Last emitted error.
-  /// Always returns `null`.
-  Null get error => null;
-
-  /// Last emitted error.
-  /// Always throws.
-  Never get requireError =>
-      throw StateError('DistinctValueStream always has no error!');
+  @override
+  Null get stackTrace;
 }
 
 /// Convert this [Stream] to a [DistinctValueStream].
@@ -77,6 +67,7 @@ extension ToDistinctValueStreamExtension<T> on Stream<T> {
 ///
 /// This stream is a single-subscription stream.
 class _DistinctValueStream<T> extends Stream<T>
+    with DistinctValueStreamMixin<T>
     implements DistinctValueStream<T> {
   @override
   final bool Function(T p1, T p2) equals;
@@ -89,15 +80,15 @@ class _DistinctValueStream<T> extends Stream<T>
   /// Construct a [_DistinctValueStream] with source stream, seed value.
   _DistinctValueStream(
     Stream<T> source,
-    T value,
+    T seedValue,
     this.equals,
-  ) : controller = ValueStreamController<T>(value, sync: true) {
+  ) : controller = ValueStreamController<T>(seedValue, sync: true) {
     late StreamSubscription<T> subscription;
 
     controller.onListen = () {
       subscription = source.listen(
         (data) {
-          if (!equals(valueWrapper.value, data)) {
+          if (!equals(value, data)) {
             controller.add(data);
           }
         },
@@ -114,12 +105,6 @@ class _DistinctValueStream<T> extends Stream<T>
   }
 
   @override
-  Null get errorAndStackTrace => null;
-
-  @override
-  ValueWrapper<T> get valueWrapper => controller.stream.valueWrapper!;
-
-  @override
   StreamSubscription<T> listen(
     void Function(T event)? onData, {
     Function? onError,
@@ -132,4 +117,7 @@ class _DistinctValueStream<T> extends Stream<T>
         onDone: onDone,
         cancelOnError: cancelOnError,
       );
+
+  @override
+  T get value => controller.stream.value;
 }

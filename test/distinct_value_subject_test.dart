@@ -77,7 +77,8 @@ void main() {
     });
 
     test('get error', () {
-      expect(DistinctValueSubject(0).errorAndStackTrace, isNull);
+      expect(DistinctValueSubject(0).errorOrNull, isNull);
+      expect(DistinctValueSubject(0).stackTrace, isNull);
     });
 
     test('Rx', () {

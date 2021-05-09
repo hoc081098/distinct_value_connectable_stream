@@ -1,3 +1,7 @@
+## 1.3.0 - May 9, 2021
+
+-   Update `rxdart` to `0.27.0`.
+
 ## 1.2.0 - Mar 27, 2021
 
 -   Update dependencies.
