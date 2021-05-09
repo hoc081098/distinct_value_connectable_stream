@@ -2,7 +2,7 @@ import 'package:rxdart_ext/rxdart_ext.dart' show ValueStreamError;
 
 import 'distinct_value_stream.dart';
 
-/// TODO
+/// This mixin implements all [DistinctValueStream] members except [DistinctValueStream.value].
 mixin DistinctValueStreamMixin<T> implements DistinctValueStream<T> {
   @override
   Never get error => throw ValueStreamError.hasNoError();
