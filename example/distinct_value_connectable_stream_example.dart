@@ -30,7 +30,7 @@ class CounterBloc {
       decrementController.stream.map((i) => -i),
     ];
     final state$ = Rx.merge(streams)
-        .scan<int>((acc, e, _) => acc! + e, 0)
+        .scan<int>((acc, e, _) => acc + e, 0)
         .publishValueDistinct(0);
 
     final subscription = state$.connect();

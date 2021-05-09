@@ -278,15 +278,14 @@ void main() {
 
     test('extensions', () {
       final distinctValue = Stream.value(1).shareValueDistinct(0);
-      expect(distinctValue.valueWrapper, ValueWrapper(0));
+      expect(distinctValue.valueOrNull, 0);
       expect(distinctValue.hasValue, true);
       expect(distinctValue.value, 0);
-      expect(distinctValue.requireValue, 0);
 
-      expect(distinctValue.errorAndStackTrace, isNull);
+      expect(distinctValue.stackTrace, isNull);
       expect(distinctValue.hasError, false);
-      expect(distinctValue.error, null);
-      expect(() => distinctValue.requireError, throwsStateError);
+      expect(distinctValue.errorOrNull, null);
+      expect(() => distinctValue.error, throwsA(isA<ValueStreamError>()));
     });
   });
 }

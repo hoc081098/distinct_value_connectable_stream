@@ -1,8 +1,9 @@
 import 'dart:async';
 
+import 'package:distinct_value_connectable_stream/src/distinct_value_stream_mixin.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart_ext/rxdart_ext.dart'
-    show PublishSubject, Subject, ValueSubject, ValueWrapper;
+    show PublishSubject, Subject, ValueSubject;
 
 import 'distinct_value_stream.dart';
 
@@ -38,6 +39,7 @@ import 'distinct_value_stream.dart';
 ///     subject.close();
 @sealed
 class DistinctValueSubject<T> extends Subject<T>
+    with DistinctValueStreamMixin<T>
     implements DistinctValueStream<T> {
   final ValueSubject<T> _subject;
 
@@ -73,16 +75,10 @@ class DistinctValueSubject<T> extends Subject<T>
         equals ?? DistinctValueStream.defaultEquals, subject);
   }
 
-  @override
-  Null get errorAndStackTrace => null;
-
-  @override
-  ValueWrapper<T> get valueWrapper => _subject.valueWrapper!;
-
   @nonVirtual
   @override
   void add(T event) {
-    if (!equals(valueWrapper.value, event)) {
+    if (!equals(value, event)) {
       _subject.add(event);
     }
   }
@@ -91,7 +87,7 @@ class DistinctValueSubject<T> extends Subject<T>
   Future<void> close() => _subject.close();
 
   @override
-  void addError(Object error, [StackTrace? stackTrace]) =>
+  Never addError(Object error, [StackTrace? stackTrace]) =>
       throw StateError('Cannot add error to DistinctValueSubject');
 
   @override
@@ -117,4 +113,7 @@ class DistinctValueSubject<T> extends Subject<T>
         onCancel: onCancel,
         sync: sync,
       );
+
+  @override
+  T get value => _subject.value;
 }
