@@ -1,5 +1,7 @@
 # distinct_value_connectable_stream <img src="https://avatars3.githubusercontent.com/u/6407041?s=200&v=4" width="32">
 
+# **DEPRECATED**. This package is now merged into [rxdart_ext](https://pub.dev/packages/rxdart_ext) package. Please use [rxdart_ext](https://pub.dev/packages/rxdart_ext) package for the same purpose, thanks.
+
 -   `Distinct` & `Connectable` & `ValueStream` RxDart Stream.
 -   Useful for flutter `BLoC pattern` - `StreamBuilder`.
 
@@ -59,15 +61,15 @@
 [comment]: <> (## Implement BLoC)
 
 [comment]: <> ( ### Without using package)
- 
+
 [comment]: <> ( <p align="center">)
 
 [comment]: <> (    <img src="https://github.com/hoc081098/distinct_value_connectable_stream/raw/master/bloc1.png" width="480"/>)
 
 [comment]: <> ( </p>)
- 
+
 [comment]: <> ( ### Using package)
-  
+
 [comment]: <> ( <p align="center">)
 
 [comment]: <> (    <img src="https://github.com/hoc081098/distinct_value_connectable_stream/raw/master/bloc2.png" width="480"/>)
@@ -89,7 +91,7 @@ final distinctState$ = state$.publishValueDistinct(UiState.initial());
 distinctState$.connect();
 
 StreamBuilder<UiState>(
-  initialData: distinctState$.requireValue,
+  initialData: distinctState$.value,
   stream: distinctState$,
   builder: (context, snapshot) {
     final UiState state = snapshot.requireData;

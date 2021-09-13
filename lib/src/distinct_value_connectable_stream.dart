@@ -1,126 +1,18 @@
+// ignore_for_file: deprecated_member_use_from_same_package
+
 import 'dart:async';
 
-import 'package:meta/meta.dart';
-import 'package:rxdart_ext/rxdart_ext.dart'
-    show
-        ConnectableStream,
-        ConnectableStreamSubscription,
-        ValueStream,
-        ValueSubject;
+import 'package:rxdart_ext/rxdart_ext.dart';
 
 import 'distinct_value_stream.dart';
-import 'distinct_value_stream_mixin.dart';
-import 'distinct_value_subject.dart';
 
 /// A [ConnectableStream] that converts a single-subscription Stream into
 /// a broadcast [Stream], and provides synchronous access to the latest emitted value.
 ///
 /// This is a combine of [ConnectableStream], [ValueStream], [ValueSubject] and [Stream.distinct].
-@sealed
-abstract class DistinctValueConnectableStream<T> extends ConnectableStream<T>
-    implements DistinctValueStream<T> {
-  DistinctValueConnectableStream._(Stream<T> stream) : super(stream);
-
-  /// Constructs a [Stream] which only begins emitting events when
-  /// the [connect] method is called, this [Stream] acts like a
-  /// [ValueSubject] and distinct until changed.
-  ///
-  /// Data events are skipped if they are equal to the previous data event.
-  /// Equality is determined by the provided [equals] method. If that is omitted,
-  /// the '==' operator on the last provided data element is used.
-  factory DistinctValueConnectableStream(
-    Stream<T> source,
-    T seedValue, {
-    bool Function(T previous, T next)? equals,
-    bool sync = true,
-  }) =>
-      _DistinctValueConnectableStream<T>._(
-        source,
-        DistinctValueSubject(seedValue, sync: sync, equals: equals),
-        equals,
-      );
-
-  @override
-  DistinctValueStream<T> autoConnect(
-      {void Function(StreamSubscription<T> subscription)? connection});
-
-  @override
-  StreamSubscription<T> connect();
-
-  @override
-  DistinctValueStream<T> refCount();
-}
-
-class _DistinctValueConnectableStream<T>
-    extends DistinctValueConnectableStream<T> with DistinctValueStreamMixin<T> {
-  final Stream<T> _source;
-  final DistinctValueSubject<T> _subject;
-  var _used = false;
-
-  @override
-  final bool Function(T, T) equals;
-
-  _DistinctValueConnectableStream._(
-    this._source,
-    this._subject,
-    bool Function(T, T)? equals,
-  )   : equals = equals ?? DistinctValueStream.defaultEquals,
-        super._(_subject);
-
-  late final _connection = ConnectableStreamSubscription<T>(
-    _source.listen(
-      _subject.add,
-      onError: null,
-      onDone: _subject.close,
-    ),
-    _subject,
-  );
-
-  void _checkUsed() {
-    if (_used) {
-      throw StateError('Cannot reuse this stream. This causes many problems.');
-    }
-    _used = true;
-  }
-
-  @override
-  DistinctValueStream<T> autoConnect({
-    void Function(StreamSubscription<T> subscription)? connection,
-  }) {
-    _checkUsed();
-
-    _subject.onListen = () {
-      final subscription = _connection;
-      connection?.call(subscription);
-    };
-    _subject.onCancel = null;
-
-    return this;
-  }
-
-  @override
-  StreamSubscription<T> connect() {
-    _checkUsed();
-
-    _subject.onListen = _subject.onCancel = null;
-    return _connection;
-  }
-
-  @override
-  DistinctValueStream<T> refCount() {
-    _checkUsed();
-
-    ConnectableStreamSubscription<T>? subscription;
-
-    _subject.onListen = () => subscription = _connection;
-    _subject.onCancel = () => subscription?.cancel();
-
-    return this;
-  }
-
-  @override
-  T get value => _subject.value;
-}
+@Deprecated(
+    "Use StateConnectableStream from 'rxdart_ext' package instead. This package is deprecated!")
+typedef DistinctValueConnectableStream<T> = StateConnectableStream<T>;
 
 /// Provide two extension methods for [Stream]:
 /// - [publishValueDistinct]
@@ -157,13 +49,14 @@ extension DistinctValueConnectableExtensions<T> on Stream<T> {
   /// // ValueSubject
   /// subscription.cancel();
   /// ```
+  @Deprecated(
+      "Use StateConnectableExtensions.publishState from 'rxdart_ext' package instead. This package is deprecated!")
   DistinctValueConnectableStream<T> publishValueDistinct(
     T seedValue, {
     bool Function(T previous, T next)? equals,
     bool sync = true,
   }) =>
-      DistinctValueConnectableStream<T>(this, seedValue,
-          equals: equals, sync: sync);
+      publishState(seedValue, equals: equals, sync: sync);
 
   /// Convert the this Stream into a new [DistinctValueStream] that can
   /// be listened to multiple times, providing an initial value.
@@ -197,10 +90,12 @@ extension DistinctValueConnectableExtensions<T> on Stream<T> {
   /// subscription.cancel();
   /// subscription2.cancel();
   /// ```
+  @Deprecated(
+      "Use StateConnectableExtensions.shareState from 'rxdart_ext' package instead. This package is deprecated!")
   DistinctValueStream<T> shareValueDistinct(
     T seedValue, {
     bool Function(T previous, T next)? equals,
     bool sync = true,
   }) =>
-      publishValueDistinct(seedValue, equals: equals, sync: sync).refCount();
+      shareState(seedValue, equals: equals, sync: sync);
 }
