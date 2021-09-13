@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use_from_same_package
+
 import 'package:distinct_value_connectable_stream/distinct_value_connectable_stream.dart';
 import 'package:test/test.dart';
 

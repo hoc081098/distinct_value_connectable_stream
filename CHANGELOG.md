@@ -1,3 +1,7 @@
+## 2.0.0 - Sep 13,  2021
+
+-   **DEPRECATED**. This package is now merged into [rxdart_ext](https://pub.dev/packages/rxdart_ext) package. Please use [rxdart_ext](https://pub.dev/packages/rxdart_ext) package for the same purpose, thanks.
+
 ## 1.3.0 - May 9, 2021
 
 -   Update `rxdart` to `0.27.0`.

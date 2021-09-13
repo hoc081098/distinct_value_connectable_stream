@@ -1,8 +1,11 @@
+// ignore_for_file: deprecated_member_use_from_same_package
+
 import 'dart:async';
+
+import 'package:rxdart_ext/rxdart_ext.dart';
 
 import 'distinct_value_connectable_stream.dart';
 import 'distinct_value_stream.dart';
-import 'distinct_value_stream_mixin.dart';
 
 /// Convert a [DistinctValueStream] to a broadcast [DistinctValueStream].
 extension BroadcastDistinctValueStreamExtensions<T> on DistinctValueStream<T> {
@@ -35,7 +38,6 @@ extension BroadcastDistinctValueStreamExtensions<T> on DistinctValueStream<T> {
 }
 
 class _AsBroadcastStream<T> extends StreamView<T>
-    with DistinctValueStreamMixin<T>
     implements DistinctValueStream<T> {
   final DistinctValueStream<T> source;
 
@@ -47,4 +49,22 @@ class _AsBroadcastStream<T> extends StreamView<T>
 
   @override
   T get value => source.value;
+
+  @override
+  Never get error => throw ValueStreamError.hasNoError();
+
+  @override
+  Null get errorOrNull => null;
+
+  @override
+  bool get hasError => false;
+
+  @override
+  Null get stackTrace => null;
+
+  @override
+  bool get hasValue => true;
+
+  @override
+  T get valueOrNull => value;
 }
