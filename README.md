@@ -91,7 +91,7 @@ final distinctState$ = state$.publishValueDistinct(UiState.initial());
 distinctState$.connect();
 
 StreamBuilder<UiState>(
-  initialData: distinctState$.requireValue,
+  initialData: distinctState$.value,
   stream: distinctState$,
   builder: (context, snapshot) {
     final UiState state = snapshot.requireData;
